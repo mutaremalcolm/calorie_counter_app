@@ -13,8 +13,6 @@ import ContactPage from "./routes/contact";
 import SignInPage from "./routes/signIn";
 import SignUpPage from "./routes/signUp";
 import DashboardPage from "./routes/dashboard";
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
 
 const router = createBrowserRouter([
   {
