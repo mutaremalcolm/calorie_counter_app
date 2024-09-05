@@ -1,51 +1,87 @@
-# React + TypeScript + Vite
+<a name="readme-top"></a>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<!-- -------------------------------------------------------------------------- -->
+<!-- HEADING STUFF  -->
+<div align="center">
+  <!-- <h2>Take-Home Assessment</h2> -->
+  <h4>Calorie Counter Application<h4>
+  <h3> 
+    <a href='https://github.com/mutaremalcolm/calorie_counter_app' target='_blank'>
+      <h5>live demo ↗</h5>
+    </a>
+  </h3>
+  <p align="center">
+    <a href="https://github.com/mutaremalcolm/calorie_counter_app">Report Bug</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/mutaremalcolm/calorie_counter_app">Request Feature</a>
+  </p>
+</div>
 
-Currently, two official plugins are available:
+<!-- -------------------------------------------------------------------------- -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 👋 Introduction:
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+The Calorie Counter app helps users track daily calorie intake and manage nutrition goals. By entering details like weight, activity level, and exercise frequency, users can calculate their daily calorie needs and set weight loss goals. The app provides personalized recommendations based on these inputs.
 
-- Configure the top-level `parserOptions` property like this:
+Integrated with the Calorie Calculator API from RapidAPI, the app offers accurate results and an easy-to-use interface. Users can track progress over time, making it a convenient tool for maintaining a healthy lifestyle.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+<br/>
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+<!-- -------------------------------------------------------------------------- -->
+<!-- DEMO IMAGES  -->
+<!-- <div align=center>
+<a href='https://thymia-mutaremalcolms-projects.vercel.app/' align=center>
+    <img src="./src/assets/GitHub/mobile-demo.png" alt="Demo-Mobile-View" title="Demo-Image-Mobile" width="170" height="255">    
+    <img src="./src/assets/GitHub/desktop-demo.png" alt="Demo-Desktop-View" title="Demo-Image-Desktop" width="400" height="250"> 
+</a>
+</div>
+<br> -->
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+<!-- -------------------------------------------------------------------------- -->
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
-# calorie_counter_app
+### 🔑 Assessment Requirements:
+
+---
+
+#### Required Features:
+
+✔ **Repository Setup & Version Control**: Setup GitHub with ReadMe
+
+**User Interaction**: Implement user authentication.
+
+ **User Interaction**: Allow user to input their metrics to be used in calorie calculations.
+
+**Calculate Calories**: Calculate values based on user information.
+
+**Display Calories**: Display calories to user.
+
+
+✔ **Fully Responsive & Mobile Compatibility**: Ensure UI is responsive and mobile-friendly.
+
+<br/>
+
+#### Bonus Features:
+
+✔ **Light & Dark Mode options**: Implement light and dark mode to give users options
+
+
+<br/>
+
+<!-- -------------------------------------------------------------------------- -->
+
+### 🎯 Future potential improvements:
+
+---
+
+💥 Calculate Macro-Nutrient Values Based on Calorie Needs.
+
+💥 Develop Application As Mobile Application.
+
+<br/>
+
+<!-- -------------------------------------------------------------------------- -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<br/> <br/>
