@@ -1,50 +1,85 @@
-# React + TypeScript + Vite
+<a name="readme-top"></a>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<!-- -------------------------------------------------------------------------- -->
+<!-- HEADING STUFF  -->
+<div align="center">
+  <h2>Take-Home Assessment</h2>
+  <h4>NextJs app handling 2-back memory game<h4>
+  <h3> 
+    <a href='https://thymia-mutaremalcolms-projects.vercel.app/' target='_blank'>
+      <h5>live demo ↗</h5>
+    </a>
+  </h3>
+  <p align="center">
+    <a href="https://github.com/yourusername/thymia-take-home/issues">Report Bug</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/yourusername/thymia-take-home/issues">Request Feature</a>
+  </p>
+</div>
 
-Currently, two official plugins are available:
+<!-- -------------------------------------------------------------------------- -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 👋 Introduction:
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+The project focuses on developing a gamified version of the 2-back task, a cognitive assessment used to measure working memory. In this task, users see a sequence of letters and must identify if the current letter matches the one shown two steps earlier.
 
-- Configure the top-level `parserOptions` property like this:
+I selected Next.js for its built-in routing capabilities and utilized a global React context to manage state across components. The game features a random letter generator that displays stimuli at set intervals. Additionally, I implemented error logging, simulated post requests, and added a toggle function to show event logs as toast notifications.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+<br/>
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+<!-- -------------------------------------------------------------------------- -->
+<!-- DEMO IMAGES  -->
+<!-- <div align=center>
+<a href='https://thymia-mutaremalcolms-projects.vercel.app/' align=center>
+    <img src="./src/assets/GitHub/mobile-demo.png" alt="Demo-Mobile-View" title="Demo-Image-Mobile" width="170" height="255">    
+    <img src="./src/assets/GitHub/desktop-demo.png" alt="Demo-Desktop-View" title="Demo-Image-Desktop" width="400" height="250"> 
+</a>
+</div>
+<br> -->
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+<!-- -------------------------------------------------------------------------- -->
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### 🔑 Assessment Requirements:
+
+---
+
+#### Required Features:
+
+✔ **Repository Setup & Version Control**: Setup GitHub with ReadMe
+
+✔ **User Interaction**: Create a React app allowing user name input before starting the 2-back task.
+
+✔ **Task Completion Conditions**: End task after either three errors or displaying 15 letters.
+
+
+✔ **Fully Responsive & Mobile Compatibility**: Ensure UI is responsive and mobile-friendly.
+
+<br/>
+
+#### Bonus Features:
+
+✔ **Hosting App / Deployment**: Deploy the solution online for easy reviewing.
+
+✔ **Light & Dark Mode options**: Implement light and dark mode to give users options
+
+
+<br/>
+
+<!-- -------------------------------------------------------------------------- -->
+
+### 🎯 Future potential improvements:
+
+---
+
+💥 Refactor the code (Game into different components).
+
+💥 Change stimuli from numbers to images.
+
+<br/>
+
+<!-- -------------------------------------------------------------------------- -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<br/> <br/>
