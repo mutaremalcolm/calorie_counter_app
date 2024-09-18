@@ -1,12 +1,37 @@
-import './App.css'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import Login from "./components/Auth/Login";
+import Dashboard from "./components/pages/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
+import Home from "./components/Home";
+import Navigation from "./components/Navigation";
+import Signup from "./components/Auth/Signup";
+import Footer from "./components/Footer";
 
-function App() {
-
+const App: React.FC = () => {
   return (
-    <>
-      <h1>Calorie App</h1>
-    </>
-  )
-}
+    <AuthProvider>
+      <Router>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<div>Page Not Found</div>} />
+        </Routes>
+      </Router>
+      <Footer />
+    </AuthProvider>
+  );
+};
 
-export default App
+export default App;
