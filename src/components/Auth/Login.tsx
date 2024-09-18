@@ -1,6 +1,6 @@
 import React from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/firebaseConfig";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -111,9 +111,12 @@ const Login: React.FC = () => {
 
             {/* Submit Button */}
             <section className="flex justify-center mt-6">
+              <Link
+              to="/login">
               <Button className="mt-4 text-white bg-purple-600" type="submit">
                 Login
               </Button>
+              </Link>
             </section>
           </form>
         </CardContent>
