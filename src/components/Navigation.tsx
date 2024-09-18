@@ -24,7 +24,7 @@ const Navigation = () => {
                 <button onClick={logout}>Logout</button>
               </>
             ) : (
-              <ul className="flex space-x-4"> {/* Space between list items */}
+              <ul className="flex space-x-4 font-nunito-sans"> 
                 <li>
                   <Link to="/calculators">Calorie Calculator</Link>
                 </li>

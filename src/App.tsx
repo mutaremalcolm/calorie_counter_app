@@ -28,8 +28,8 @@ const App: React.FC = () => {
           />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
+        <Footer />
       </Router>
-      <Footer />
     </AuthProvider>
   );
 };
