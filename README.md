@@ -3,17 +3,17 @@
 <!-- -------------------------------------------------------------------------- -->
 <!-- HEADING STUFF  -->
 <div align="center">
-  <h2>Take-Home Assessment</h2>
-  <h4>NextJs app handling 2-back memory game<h4>
+  <h2>Calorie Counting Application</h2>
+  <h4>Vite Raect Web based application<h4>
   <h3> 
-    <a href='https://thymia-mutaremalcolms-projects.vercel.app/' target='_blank'>
+    <a href='https:calorie-counter-app-git-main-mutaremalcolms-projects.vercel.app/' target='_blank'>
       <h5>live demo ↗</h5>
     </a>
   </h3>
   <p align="center">
-    <a href="https://github.com/yourusername/thymia-take-home/issues">Report Bug</a>
+    <a href="https://github.com/users/mutaremalcolm/projects/11">Project Khan Board</a>
     &nbsp;·&nbsp;
-    <a href="https://github.com/yourusername/thymia-take-home/issues">Request Feature</a>
+    <h5>To see the steps i took to build the project, click here</h5>
   </p>
 </div>
 
@@ -23,10 +23,9 @@
 
 ---
 
-The project focuses on developing a gamified version of the 2-back task, a cognitive assessment used to measure working memory. In this task, users see a sequence of letters and must identify if the current letter matches the one shown two steps earlier.
+I developed the Calorie Counter application to empower individuals seeking better control over their dietary habits and to support them in achieving their fitness goals. The application simplifies the process of tracking calorie intake and calculating the precise portions needed to meet specific weight objectives. In addition, it offers supplementary tools such as a BMI calculator and a Macro-Nutrient calculator to provide more comprehensive health insights.
 
-I selected Next.js for its built-in routing capabilities and utilized a global React context to manage state across components. The game features a random letter generator that displays stimuli at set intervals. Additionally, I implemented error logging, simulated post requests, and added a toggle function to show event logs as toast notifications.
-
+For the tech stack, I chose Vite for its fast build times, NextAuth for seamless authentication, Firebase for reliable data persistence, and ZOD for robust validation.
 <br/>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -41,43 +40,9 @@ I selected Next.js for its built-in routing capabilities and utilized a global R
 
 <!-- -------------------------------------------------------------------------- -->
 
-### 🔑 Assessment Requirements:
 
----
-
-#### Required Features:
-
-✔ **Repository Setup & Version Control**: Setup GitHub with ReadMe
-
-✔ **User Interaction**: Create a React app allowing user name input before starting the 2-back task.
-
-✔ **Task Completion Conditions**: End task after either three errors or displaying 15 letters.
-
-
-✔ **Fully Responsive & Mobile Compatibility**: Ensure UI is responsive and mobile-friendly.
-
-<br/>
-
-#### Bonus Features:
-
-✔ **Hosting App / Deployment**: Deploy the solution online for easy reviewing.
-
-✔ **Light & Dark Mode options**: Implement light and dark mode to give users options
-
-
-<br/>
 
 <!-- -------------------------------------------------------------------------- -->
-
-### 🎯 Future potential improvements:
-
----
-
-💥 Refactor the code (Game into different components).
-
-💥 Change stimuli from numbers to images.
-
-<br/>
 
 <!-- -------------------------------------------------------------------------- -->
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

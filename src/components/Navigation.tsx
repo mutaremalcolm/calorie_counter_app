@@ -24,7 +24,7 @@ const Navigation = () => {
                 <button onClick={logout}>Logout</button>
               </>
             ) : (
-              <ul className="flex space-x-4 font-nunito-sans"> 
+              <ul className="flex space-x-4 font-nunito-sans text-gray-500"> 
                 <li>
                   <Link to="/calculators">Calorie Calculator</Link>
                 </li>
@@ -32,7 +32,7 @@ const Navigation = () => {
                   <Link to="/calculators">Calculators</Link>
                 </li>
                 <li>
-                  <Link to="/login">Login</Link>
+                  <Link to="/login">Sign in</Link>
                 </li>
               </ul>
             )}
