@@ -3,7 +3,7 @@ import HeroImage from "../assets/Hero-Image.jpg";
 
 const Hero = () => {
   return (
-    <section className="hero flex items-center justify-between px-6 py-12 mt-2">
+    <section className="hero flex items-center justify-between px-6 py-5 mt-2">
       {/* Hero Image */}
       <div className="w-full lg:w-1/2">
         <img
