@@ -31,7 +31,7 @@ const Footer = () => {
                   <Link
                     to={link.link}
                     key={link.name}
-                    className="flex gap-4 md:flex-col lg:flex-row font-nunito-sans"
+                    className="flex gap-4 md:flex-col lg:flex-row font-nunito-sansk"
                   >
                     <p className="medium-14 whitespace-nowrap">{link.name}</p>
                   </Link>

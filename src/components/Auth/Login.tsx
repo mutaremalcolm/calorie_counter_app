@@ -1,7 +1,6 @@
 import React from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../firebase/firebaseConfig";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -46,6 +45,7 @@ const Login: React.FC = () => {
 
   const onSubmit = async (data: LoginSchemaType) => {
     const { email, password } = data;
+    const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
@@ -111,12 +111,9 @@ const Login: React.FC = () => {
 
             {/* Submit Button */}
             <section className="flex justify-center mt-6">
-              <Link
-              to="/login">
               <Button className="mt-4 text-white bg-purple-600" type="submit">
                 Login
               </Button>
-              </Link>
             </section>
           </form>
         </CardContent>
