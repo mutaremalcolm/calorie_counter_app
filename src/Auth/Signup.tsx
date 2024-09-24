@@ -12,8 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input"; 
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input"; 
 
 const LoginSchema = z.object({
   email: z
