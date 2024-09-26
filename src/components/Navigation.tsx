@@ -20,24 +20,22 @@ const Navigation = () => {
           <div className="flex-grow flex justify-end items-center space-x-6">
             {currentUser ? (
               <>
-                <Link to="/dashboard">Dashboard</Link>
-                <button onClick={logout}>Logout</button>
+                {/* Protected Links*/}
+                <ul className="flex space-x-4 font-nunito-sans text-gray-500">
+                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/calorie-calculator">Calorie Calculator</Link>
+                  <Link to="/calculators">Calculators</Link>
+                  <button onClick={logout}>Logout</button>
+                </ul>
               </>
             ) : (
-              <ul className="flex space-x-4 font-nunito-sans text-gray-500"> 
-                <li>
-                  <Link to="/calculators">Calorie Calculator</Link>
-                </li>
-                <li>
-                  <Link to="/calculators">Calculators</Link>
-                </li>
+              <ul className="flex space-x-4 font-nunito-sans text-gray-500">
                 <li>
                   <Link to="/login">Sign in</Link>
                 </li>
               </ul>
             )}
-
-            {/* Sign-Up Button */}
+            
             <Link to="/Signup" target="_blank" rel="noopener noreferrer">
               <Button className="text-white bg-purple-600 text-base font-semibold">
                 Sign Up
