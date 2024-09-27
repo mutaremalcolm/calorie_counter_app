@@ -21,26 +21,46 @@ const Navigation = () => {
             {currentUser ? (
               <>
                 {/* Protected Links*/}
-                <ul className="flex space-x-4 font-nunito-sans text-gray-500">
+                <ul className="flex space-x-4 font-nunito-sans text-gray-500 items-center">
                   <Link to="/dashboard">Dashboard</Link>
                   <Link to="/calorie-calculator">Calorie Calculator</Link>
                   <Link to="/calculators">Calculators</Link>
-                  <button onClick={logout}>Logout</button>
+                  
+                  {/* Avatar and Logout */}
+                  <div className="flex items-center space-x-4">
+                    {currentUser.photoURL ? (
+                      <img
+                        src={currentUser.photoURL}
+                        alt="User Avatar"
+                        className="w-10 h-10 rounded-full"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-gray-500 flex items-center justify-center text-white">
+                        {currentUser.displayName?.charAt(0) || "U"}
+                      </div>
+                    )}
+                    <button onClick={logout} className="text-gray-500 hover:text-gray-700">
+                      Logout
+                    </button>
+                  </div>
                 </ul>
               </>
             ) : (
-              <ul className="flex space-x-4 font-nunito-sans text-gray-500">
-                <li>
-                  <Link to="/login">Sign in</Link>
-                </li>
-              </ul>
+              <>
+                <ul className="flex space-x-4 font-nunito-sans text-gray-500">
+                  <li>
+                    <Link to="/login">Sign in</Link>
+                  </li>
+                </ul>
+
+                {/* Show Sign Up button only if the user is NOT logged in */}
+                <Link to="/signup" target="_blank" rel="noopener noreferrer">
+                  <Button className="text-white bg-purple-600 text-base font-semibold">
+                    Sign Up
+                  </Button>
+                </Link>
+              </>
             )}
-            
-            <Link to="/Signup" target="_blank" rel="noopener noreferrer">
-              <Button className="text-white bg-purple-600 text-base font-semibold">
-                Sign Up
-              </Button>
-            </Link>
           </div>
         </main>
       </nav>
