@@ -1,7 +1,6 @@
 import React from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase/firebaseConfig";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,8 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input"; 
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input"; 
 
 
 const LoginSchema = z.object({
@@ -30,7 +29,7 @@ const LoginSchema = z.object({
 
 type LoginSchemaType = z.infer<typeof LoginSchema>;
 
-const Signup: React.FC = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const {
@@ -46,6 +45,7 @@ const Signup: React.FC = () => {
 
   const onSubmit = async (data: LoginSchemaType) => {
     const { email, password } = data;
+    const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
@@ -63,13 +63,13 @@ const Signup: React.FC = () => {
           </CardTitle>
           <section className="text-center mb-5">
             <CardDescription>
-              Before we get started, lets get you signed up!!!
+              Your tool to help you track and manage your calorie intake, helping you achieve your fitness goals.
             </CardDescription>
           </section>
           <section className="text-center mt-5">
             <CardDescription>
               <section className="mt-5 text-black dark:text-white">
-                To create an account please enter your details below
+                Enter your details to log in and access your Dashboard
               </section>
             </CardDescription>
           </section>
@@ -112,7 +112,7 @@ const Signup: React.FC = () => {
             {/* Submit Button */}
             <section className="flex justify-center mt-6">
               <Button className="mt-4 text-white bg-purple-600" type="submit">
-                Sign Up
+                Login
               </Button>
             </section>
           </form>
@@ -122,4 +122,4 @@ const Signup: React.FC = () => {
   );
 };
 
-export default Signup;
+export default Login;

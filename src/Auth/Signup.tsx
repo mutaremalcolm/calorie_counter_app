@@ -1,7 +1,6 @@
 import React from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../firebase/firebaseConfig";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,13 +12,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input"; 
-
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input"; 
 
 const LoginSchema = z.object({
   email: z
-    .string()
+    .string() 
     .email({ message: "Invalid email address" })
     .min(7, { message: "Email is too short" })
     .max(30, { message: "Email is too long" }),
@@ -30,7 +28,7 @@ const LoginSchema = z.object({
 
 type LoginSchemaType = z.infer<typeof LoginSchema>;
 
-const Login: React.FC = () => {
+const Signup: React.FC = () => {
   const navigate = useNavigate();
 
   const {
@@ -44,13 +42,15 @@ const Login: React.FC = () => {
     reValidateMode: "onChange",
   });
 
+  const auth = getAuth();
+
   const onSubmit = async (data: LoginSchemaType) => {
     const { email, password } = data;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch (error) {
-      console.error("Error logging in:", error);
+      console.error("Error signing up:", error);
     }
   };
 
@@ -63,13 +63,13 @@ const Login: React.FC = () => {
           </CardTitle>
           <section className="text-center mb-5">
             <CardDescription>
-              Your tool to help you track and manage your calorie intake, helping you achieve your fitness goals.
+              Before we get started, let's get you signed up!
             </CardDescription>
           </section>
           <section className="text-center mt-5">
             <CardDescription>
               <section className="mt-5 text-black dark:text-white">
-                Enter your details to log in and access your Dashboard
+                To create an account, please enter your details below.
               </section>
             </CardDescription>
           </section>
@@ -111,12 +111,9 @@ const Login: React.FC = () => {
 
             {/* Submit Button */}
             <section className="flex justify-center mt-6">
-              <Link
-              to="/login">
               <Button className="mt-4 text-white bg-purple-600" type="submit">
-                Login
+                Sign Up
               </Button>
-              </Link>
             </section>
           </form>
         </CardContent>
@@ -125,4 +122,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Signup;

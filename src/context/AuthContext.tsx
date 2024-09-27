@@ -1,7 +1,8 @@
 // src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { auth } from "../firebase/firebaseConfig";
+import { auth } from "../lib/firebase/firebaseConfig";
 import { signOut, onAuthStateChanged, User } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   currentUser: User | null;
@@ -12,11 +13,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   const logout = async () => {
     try {
       await signOut(auth);
       setCurrentUser(null);
+      navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }
