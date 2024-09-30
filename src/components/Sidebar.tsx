@@ -20,31 +20,31 @@ const routes = [
   {
     label: "Calories Burnt",
     icon: FlameIcon,
-    href: "/caloriesburnt",
+    href: "/CaloriesBurnt",
     color: "text-red-500",
   },
   {
     label: "Calories Consumed",
     icon: PizzaIcon,
-    href: "/image",
+    href: "/CaloriesConsumed",
     color: "text-pink-700",
   },
   {
     label: "Daily Target",
     icon: Target,
-    href: "/video",
+    href: "/DailyTarget",
     color: "text-orange-700",
   },
   {
     label: "Weekly Target",
     icon: CalendarRange,
-    href: "/music",
+    href: "/WeeklyTarget",
     color: "text-emerald-500",
   },
   {
     label: "Progress Tracker",
     icon: Dumbbell,
-    href: "/code",
+    href: "/ProgressTracker",
     color: "text-green-700",
   },
   {
