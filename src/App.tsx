@@ -8,6 +8,11 @@ import Home from "../src/pages/Home"
 import Navigation from "./components/Navigation";
 import Signup from "./Auth/Signup";
 import Footer from "./components/Footer";
+import CaloriesBurnt from "./components/CaloriesBurnt";
+import CaloriesConsumed from "./components/CaloriesConsumed";
+import DailyTarget from "./components/DailyTarget";
+import WeeklyTarget from "./components/WeeklyTarget";
+import ProgressTracker from "./components/ProgressTracker";
 
 const App: React.FC = () => {
   return (
@@ -18,6 +23,11 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/CaloriesBurnt" element={<CaloriesBurnt />} />
+          <Route path="/CaloriesConsumed" element={<CaloriesConsumed />} />
+          <Route path="/DailyTarget" element={<DailyTarget />} />
+          <Route path="/WeeklyTarget" element={<WeeklyTarget />} />
+          <Route path="/ProgressTracker" element={<ProgressTracker />} />
           <Route
             path="/dashboard"
             element={
