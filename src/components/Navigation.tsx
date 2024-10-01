@@ -23,7 +23,7 @@ const Navigation = () => {
                 {/* Protected Links*/}
                 <ul className="flex space-x-4 font-nunito-sans text-gray-500 items-center">
                   <Link to="/dashboard">Dashboard</Link>
-                  <Link to="/calorie-calculator">Calorie Calculator</Link>
+                  <Link to="/CalorieCalculator">Calorie Calculator</Link>
                   <Link to="/calculators">Calculators</Link>
                   
                   {/* Avatar and Logout */}

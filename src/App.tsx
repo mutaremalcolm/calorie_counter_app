@@ -13,6 +13,7 @@ import CaloriesConsumed from "./components/CaloriesConsumed";
 import DailyTarget from "./components/DailyTarget";
 import WeeklyTarget from "./components/WeeklyTarget";
 import ProgressTracker from "./components/ProgressTracker";
+import CalorieCalculator from "./pages/calorie-calculator/CalorieCalculator";
 
 const App: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const App: React.FC = () => {
           <Route path="/DailyTarget" element={<DailyTarget />} />
           <Route path="/WeeklyTarget" element={<WeeklyTarget />} />
           <Route path="/ProgressTracker" element={<ProgressTracker />} />
+          <Route path="/CalorieCalculator" element={<CalorieCalculator />} />
           <Route
             path="/dashboard"
             element={
