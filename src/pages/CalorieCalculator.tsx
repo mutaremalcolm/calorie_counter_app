@@ -66,7 +66,7 @@ const CalorieCalculator = () => {
           </div>
           <div className="flex justify-center bg-purple-500">
             <ChevronDown />
-            <span>Modify the values and click the Calculate button to use</span>
+            <span>Modify the values below and click the Calculate button to use</span>
           </div>
         </section>
         <div className="relative w-full max-w-md">
