@@ -5,7 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -14,7 +13,7 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+      <nav className="bg-gray-200 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shadow-sm">
         <main className="container mx-auto px-4 flex justify-between items-center h-16">
           {/* Logo/Button Section */}
           <Link to="./" className="flex items-center">
@@ -28,15 +27,14 @@ const Navigation = () => {
             {currentUser ? (
               <>
                 {/* Protected Links*/}
-                <ul className="flex space-x-4 font-nunito-sans text-gray-500 items-center">
-                  <Link to="/dashboard" className="hover:text-purple-500">Dashboard</Link>
-                  <Link to="/CalorieCalculator" className="hover:text-purple-500">Calorie Calculator</Link>
+                <ul className="flex space-x-4 font-nunito-sans text-purple-500 items-center">
+                  <Link to="/dashboard" className="hover:text-black">Dashboard</Link>
+                  <Link to="/CalorieCalculator" className="hover:text-black">Calorie Calculator</Link>
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="hover:text-purple-500">Calculators</DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuSeparator />
+                    <DropdownMenuTrigger>Calculators</DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-purple-400 text-white">
                       <Link to="/BmiCalculator">
-                        <DropdownMenuItem className="hover:text-purple-500">BMI Calculator</DropdownMenuItem>
+                        <DropdownMenuItem >BMI Calculator</DropdownMenuItem>
                       </Link>
                       <Link to="/CaloriesBurntCalculator">
                         <DropdownMenuItem>
@@ -45,13 +43,14 @@ const Navigation = () => {
                       </Link>
                       <Link to="/IdealWeightCalculator">
                       <DropdownMenuItem>
-                        Ideal Body Weight Calculator
+                        Ideal Weight Calculator
                       </DropdownMenuItem>
                       </Link>
                     </DropdownMenuContent>
                   </DropdownMenu>
+                  
 
-                  {/* Avatar and Logout */}
+                  {/* TODO: Add Dynamic User Avatar*/}
                   <div className="flex items-center space-x-4">
                     {currentUser.photoURL ? (
                       <img
@@ -60,13 +59,13 @@ const Navigation = () => {
                         className="w-10 h-10 rounded-full"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-gray-500 flex items-center justify-center text-white">
+                      <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white">
                         {currentUser.displayName?.charAt(0) || "U"}
                       </div>
                     )}
                     <button
                       onClick={logout}
-                      className="text-gray-500 hover:text-purple-500"
+                      className="text-purple-500 hover:text-black"
                     >
                       Logout
                     </button>

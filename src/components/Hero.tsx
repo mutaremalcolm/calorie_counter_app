@@ -3,7 +3,7 @@ import HeroImage from "../assets/Hero-Image.jpg";
 
 const Hero = () => {
   return (
-    <section className="hero flex items-center justify-between px-6 py-5 mt-2">
+    <section className="hero flex items-center justify-between px-6 py-2 mt-2">
       {/* Hero Image */}
       <div className="w-full lg:w-1/2">
         <img
@@ -36,14 +36,15 @@ const Hero = () => {
         <div className="mt-8 flex space-x-4">
           <Link
             to="/login/"
-            className="uppercase py-2 px-4 rounded-lg bg-purple-600 border-2 border-transparent text-white text-md hover:bg-purple-300"
+            className="uppercase py-2 px-4 rounded-lg bg-purple-600 border-2 border-transparent
+             text-white text-md hover:bg-purple-300"
           >
             Log In
           </Link>
           <Link
-            to="signup"
-            target="_blank"
-            className="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-purple-600 text-purple-600 hover:bg-purple-400 hover:text-white text-md"
+            to="/signup/"
+            className="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-purple-600
+             text-purple-600 hover:bg-purple-400 hover:text-white text-md"
           >
             Sign Up
           </Link>

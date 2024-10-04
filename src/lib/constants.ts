@@ -47,8 +47,9 @@ export const footerContactInfo = {
 export const socials = {
   title: "Follow Us",
   links: [
+    // Fix links
     { title: "Instagram", url: "/github", icon: "/src/assets/footer/instagram.svg"},
     { title: "Instagram", url: "/instagram", icon: "/src/assets/footer/instagram.svg" },
-    { title: "Twitter", url: "/linkedin", icon: "/src/assets/footer/twitter.svg" },
+    { title: "Twitter", url: "/twitter", icon: "/src/assets/footer/twitter.svg" },
   ],
 };

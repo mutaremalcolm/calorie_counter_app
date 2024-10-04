@@ -39,8 +39,8 @@ const DailyTarget: React.FC = ()=> {
   return (
     <Card className="mt-4">
       <CardHeader>
-        <CardTitle>Daily Calorie Target</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle className="text-purple-500">Daily Calorie Target</CardTitle>
+        <CardDescription className="text-purple-500">January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -67,10 +67,10 @@ const DailyTarget: React.FC = ()=> {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
+        <div className="flex gap-2 font-medium leading-none text-purple-500">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="leading-none text-muted-foreground text-purple-500">
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>

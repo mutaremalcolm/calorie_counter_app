@@ -41,10 +41,10 @@ const IdealWeightCalculator = () => {
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
-          <h1 className="font-nunito-sans font-extrabold text-purple-500">
+          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
             Ideal Weight Calculator
           </h1>
-          <div>
+          <div className="bg-gray-200 p-2">
             <span>
               The Ideal Weight Calculator computes ideal body weight (IBW)
               ranges based on height, gender, and age. The idea of finding the
@@ -54,7 +54,7 @@ const IdealWeightCalculator = () => {
               side-to-side comparisons.
             </span>
           </div>
-          <div className="flex justify-center bg-purple-500">
+          <div className="flex justify-center bg-purple-500 text-white">
             <ChevronDown />
             <span>
               Modify the values below and click the Calculate button to use
@@ -160,12 +160,43 @@ const IdealWeightCalculator = () => {
             </Form>
           </Card>
         </div>
+        {/* TODO: Customise additional calculator buttons */}
+        <section className="relative w-full mt-5">
+        <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+            <button
+              className={`px-4 py-2 rounded ${
+                unitType === "US" ? "bg-gray-200 text-purple-500" : "bg-transparent"
+              }`}
+              onClick={() => setUnitType("US")}
+            >
+              Related
+            </button>
+          </div>
+          <div className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              BMI Calculator
+            </Button>
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              Other Calculators
+            </Button>
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              Other Calculators
+            </Button>
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              Other Calculators
+            </Button>
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              Other Calculators
+            </Button>
+          </div>
+          </section>
         <section>
-          {/* TODO Format text */}
           <div className="mt-5">
-            <h5 className="font-bold text-purple-500">
+            <h5 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
               How much should i weigh?
             </h5>
+          </div>
+            <div className="bg-gray-200 p-4">
             <span>
               Most everyone has at some point tried to lose weight, or at least
               known somebody who has. This is largely due to the perception of
@@ -199,7 +230,11 @@ const IdealWeightCalculator = () => {
               listed below. Other factors include health conditions, fat
               distribution, progeny, etc.
             </span>
-            <h4 className="font-bold text-purple-500 mt-5">Age</h4>
+            </div>
+            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+              Age
+            </h4>
+            <div className="bg-gray-200 p-4">
             <span>
               In theory, age shouldn't be a large determinant of an IBW past the
               ages of 14-15 for girls and 16-17 for boys, after which most
@@ -211,7 +246,11 @@ const IdealWeightCalculator = () => {
               aging by adopting various habits such as monitoring diet,
               exercise, stress, and sleep.
             </span>
-            <h4 className="font-bold text-purple-500 mt-5">Gender</h4>
+            </div>
+            <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+              Gender
+            </h1>
+            <div className="bg-gray-200 p-4">
             <span>
               Generally, females weigh less than males even though they
               naturally have a higher percentage of body fat. This is because
@@ -220,15 +259,21 @@ const IdealWeightCalculator = () => {
               bone density. Last but not least, males tend to be taller than
               females.
             </span>
-            <h4 className="font-bold text-purple-500 mt-5">Height</h4>
+            </div>
+            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+              Height
+            </h4>
+            <div className="bg-gray-200 p-4">
             <span>
               The taller the person, the more muscle mass and body fat they
               have, which results in more weight. A male at a similar height to
               a female should weigh about 10-20% heavier.
             </span>
-            <h4 className="font-bold text-purple-500 mt-5">
+            </div>
+            <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
               Limitations of our IBW calculator
-            </h4>
+            </h1>
+            <div className="bg-gray-200 p-4">
             <span>
               There are limitations to all the formulas and methods. Because the
               formulas are designed to be as applicable to as wide a range of

@@ -41,10 +41,10 @@ const CaloriesBurntCalculator = () => {
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
-          <h1 className="font-nunito-sans font-extrabold text-purple-500">
+          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
             Calories Burnt Calculator
           </h1>
-          <div>
+          <div className="bg-gray-200">
             <span>
               The Body Mass Index (BMI) Calculator can be used to calculate BMI
               value and corresponding weight status while taking age into
@@ -55,7 +55,7 @@ const CaloriesBurntCalculator = () => {
               below in detail.
             </span>
           </div>
-          <div className="flex justify-center bg-purple-500">
+          <div className="flex justify-center bg-purple-500 text-white">
             <ChevronDown />
             <span>
               Modify the values below and click the Calculate button to use
@@ -175,7 +175,7 @@ const CaloriesBurntCalculator = () => {
             </Form>
           </Card>
         </div>
-        <section className="ml-2 text-sm">
+        <section className="ml-2 text-sm bg-gray-200 mt-2 p-2">
           <ul>
             <li>
               <strong>Healthy BMI Range:</strong> 18.5 kg/m - 25 kg/m
@@ -191,9 +191,38 @@ const CaloriesBurntCalculator = () => {
             </li>
           </ul>
         </section>
+        {/* TODO: Customise additional calculator buttons */}
+        <section className="relative w-full mt-5">
+        <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+            <button
+              className={`px-4 py-2 rounded ${
+                unitType === "US" ? "bg-gray-200 text-purple-500" : "bg-transparent"
+              }`}
+              onClick={() => setUnitType("US")}
+            >
+              Related
+            </button>
+          </div>
+          <div className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              BMI Calculator
+            </Button>
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              Other Calculators
+            </Button>
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              Other Calculators
+            </Button>
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              Other Calculators
+            </Button>
+            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+              Other Calculators
+            </Button>
+          </div>
+          </section>
         <section>
-          {/* TODO Format text */}
-          <div className="mt-5">
+          <div className="mt-5 bg-gray-200 p-2">
             The Body Mass Index (BMI) Calculator can be used to calculate BMI
             value and corresponding weight status while taking age into
             consideration. Use the "Metric Units" tab for the International
@@ -203,72 +232,85 @@ const CaloriesBurntCalculator = () => {
             below in detail.
           </div>
           <div className="mt-5">
-            <h5 className="font-bold text-purple-500">BMI table for adults</h5>
-            <span>
-              This is the World Health Organization's (WHO) recommended body
-              weight based on BMI values for adults. It is used for both men and
-              women, age 20 or older.
-            </span>
-            <h4 className="font-bold text-purple-500 mt-5">
+            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
+              BMI table for adults
+            </h4>
+            <div className="bg-gray-200 p-2">
+              <span>
+                This is the World Health Organization's (WHO) recommended body
+                weight based on BMI values for adults. It is used for both men
+                and women, age 20 or older.
+              </span>
+            </div>
+            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
               BMI chart for adults
             </h4>
-            <span>
-              This is a graph of BMI categories based on the World Health
-              Organization data. The dashed lines represent subdivisions within
-              a major categorization.
-            </span>
-            <h4 className="font-bold text-purple-500 mt-5">
+            <div className="bg-gray-200">
+              <span>
+                This is a graph of BMI categories based on the World Health
+                Organization data. The dashed lines represent subdivisions
+                within a major categorization.
+              </span>
+            </div>
+            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
               BMI table for children and teens, age 2-20
             </h4>
-            <span>
-              The Centers for Disease Control and Prevention (CDC) recommends
-              BMI categorization for children and teens between age 2 and 20.
-            </span>
-            <h4 className="font-bold text-purple-500 mt-5">
+            <div className="bg-gray-200">
+              <span>
+                The Centers for Disease Control and Prevention (CDC) recommends
+                BMI categorization for children and teens between age 2 and 20.
+              </span>
+            </div>
+            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
               Risks assosciated with being overweight
             </h4>
-            <span>
-              Being overweight increases the risk of a number of serious
-              diseases and health conditions. Below is a list of said risks,
-              according to the Centers for Disease Control and Prevention (CDC):
-              High blood pressure Higher levels of LDL cholesterol, which is
-              widely considered "bad cholesterol," lower levels of HDL
-              cholesterol, considered to be good cholesterol in moderation, and
-              high levels of triglycerides Type II diabetes Coronary heart
-              disease Stroke Gallbladder disease Osteoarthritis, a type of joint
-              disease caused by breakdown of joint cartilage Sleep apnea and
-              breathing problems Certain cancers (endometrial, breast, colon,
-              kidney, gallbladder, liver) Low quality of life Mental illnesses
-              such as clinical depression, anxiety, and others Body pains and
-              difficulty with certain physical functions Generally, an increased
-              risk of mortality compared to those with a healthy BMI As can be
-              seen from the list above, there are numerous negative, in some
-              cases fatal, outcomes that may result from being overweight.
-              Generally, a person should try to maintain a BMI below 25 kg/m2,
-              but ideally should consult their doctor to determine whether or
-              not they need to make any changes to their lifestyle in order to
-              be healthier.
-            </span>
-            <h4 className="font-bold text-purple-500 mt-5">
+            <div className="bg-gray-200">
+              <span>
+                Being overweight increases the risk of a number of serious
+                diseases and health conditions. Below is a list of said risks,
+                according to the Centers for Disease Control and Prevention
+                (CDC): High blood pressure Higher levels of LDL cholesterol,
+                which is widely considered "bad cholesterol," lower levels of
+                HDL cholesterol, considered to be good cholesterol in
+                moderation, and high levels of triglycerides Type II diabetes
+                Coronary heart disease Stroke Gallbladder disease
+                Osteoarthritis, a type of joint disease caused by breakdown of
+                joint cartilage Sleep apnea and breathing problems Certain
+                cancers (endometrial, breast, colon, kidney, gallbladder, liver)
+                Low quality of life Mental illnesses such as clinical
+                depression, anxiety, and others Body pains and difficulty with
+                certain physical functions Generally, an increased risk of
+                mortality compared to those with a healthy BMI As can be seen
+                from the list above, there are numerous negative, in some cases
+                fatal, outcomes that may result from being overweight.
+                Generally, a person should try to maintain a BMI below 25 kg/m2,
+                but ideally should consult their doctor to determine whether or
+                not they need to make any changes to their lifestyle in order to
+                be healthier.
+              </span>
+            </div>
+            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
               Risks assosciated with being underweight
             </h4>
-            <span>
-              Being underweight has its own associated risks, listed below:
-              Malnutrition, vitamin deficiencies, anemia (lowered ability to
-              carry blood vessels) Osteoporosis, a disease that causes bone
-              weakness, increasing the risk of breaking a bone A decrease in
-              immune function Growth and development issues, particularly in
-              children and teenagers Possible reproductive issues for women due
-              to hormonal imbalances that can disrupt the menstrual cycle.
-              Underweight women also have a higher chance of miscarriage in the
-              first trimester Potential complications as a result of surgery
-              Generally, an increased risk of mortality compared to those with a
-              healthy BMI In some cases, being underweight can be a sign of some
-              underlying condition or disease such as anorexia nervosa, which
-              has its own risks. Consult your doctor if you think you or someone
-              you know is underweight, particularly if the reason for being
-              underweight does not seem obvious.
-            </span>
+            <div className="bg-gray-200">
+              <span>
+                Being underweight has its own associated risks, listed below:
+                Malnutrition, vitamin deficiencies, anemia (lowered ability to
+                carry blood vessels) Osteoporosis, a disease that causes bone
+                weakness, increasing the risk of breaking a bone A decrease in
+                immune function Growth and development issues, particularly in
+                children and teenagers Possible reproductive issues for women
+                due to hormonal imbalances that can disrupt the menstrual cycle.
+                Underweight women also have a higher chance of miscarriage in
+                the first trimester Potential complications as a result of
+                surgery Generally, an increased risk of mortality compared to
+                those with a healthy BMI In some cases, being underweight can be
+                a sign of some underlying condition or disease such as anorexia
+                nervosa, which has its own risks. Consult your doctor if you
+                think you or someone you know is underweight, particularly if
+                the reason for being underweight does not seem obvious.
+              </span>
+            </div>
           </div>
         </section>
       </main>

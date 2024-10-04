@@ -58,7 +58,7 @@ const Signup: React.FC = () => {
     <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-center mb-5">
+          <CardTitle className="text-center mb-5 text-purple-500">
             Welcome to the Calorie Application
           </CardTitle>
           <section className="text-center mb-5">
@@ -68,7 +68,7 @@ const Signup: React.FC = () => {
           </section>
           <section className="text-center mt-5">
             <CardDescription>
-              <section className="mt-5 text-black dark:text-white">
+              <section className="mt-5 text-purple-500 dark:text-white">
                 To create an account, please enter your details below.
               </section>
             </CardDescription>
@@ -79,7 +79,7 @@ const Signup: React.FC = () => {
             {/* Email Input */}
             <section className="flex flex-col items-center mb-4 w-full">
               <div className="flex items-center w-full md:w-3/4 bg-gray-100 rounded-md p-2">
-                <Mail className="mr-2 text-gray-500" />
+                <Mail className="mr-2 text-purple-500" />
                 <Input
                   className="w-full border-none bg-transparent outline-none"
                   placeholder="Enter your email"
@@ -95,7 +95,7 @@ const Signup: React.FC = () => {
             {/* Password Input */}
             <section className="flex flex-col items-center mb-4 w-full">
               <div className="flex items-center w-full md:w-3/4 bg-gray-100 rounded-md p-2">
-                <Lock className="mr-2 text-gray-500" />
+                <Lock className="mr-2 text-purple-500" />
                 <Input
                   className="w-full border-none bg-transparent outline-none"
                   type="password"
