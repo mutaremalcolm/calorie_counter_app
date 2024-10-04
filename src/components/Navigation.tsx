@@ -29,14 +29,14 @@ const Navigation = () => {
               <>
                 {/* Protected Links*/}
                 <ul className="flex space-x-4 font-nunito-sans text-gray-500 items-center">
-                  <Link to="/dashboard">Dashboard</Link>
-                  <Link to="/CalorieCalculator">Calorie Calculator</Link>
+                  <Link to="/dashboard" className="hover:text-purple-500">Dashboard</Link>
+                  <Link to="/CalorieCalculator" className="hover:text-purple-500">Calorie Calculator</Link>
                   <DropdownMenu>
-                    <DropdownMenuTrigger>Calculators</DropdownMenuTrigger>
+                    <DropdownMenuTrigger className="hover:text-purple-500">Calculators</DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuSeparator />
                       <Link to="/BmiCalculator">
-                        <DropdownMenuItem>BMI Calculator</DropdownMenuItem>
+                        <DropdownMenuItem className="hover:text-purple-500">BMI Calculator</DropdownMenuItem>
                       </Link>
                       <Link to="/CaloriesBurntCalculator">
                         <DropdownMenuItem>
@@ -66,7 +66,7 @@ const Navigation = () => {
                     )}
                     <button
                       onClick={logout}
-                      className="text-gray-500 hover:text-gray-700"
+                      className="text-gray-500 hover:text-purple-500"
                     >
                       Logout
                     </button>
