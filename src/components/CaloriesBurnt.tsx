@@ -63,8 +63,8 @@ const CaloriesBurnt: React.FC = () => {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Calories Burned</CardTitle>
-        <CardDescription>Monday 24th - Tuesday 25th 2024</CardDescription>
+        <CardTitle className="text-purple-500">Calories Burned</CardTitle>
+        <CardDescription className="text-purple-500">Monday 24th - Tuesday 25th 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -96,14 +96,14 @@ const CaloriesBurnt: React.FC = () => {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-purple-500 text-3xl font-bold"
                         >
                           {totalVisitors.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
+                          className="fill-purple-500"
                         >
                           Calories
                         </tspan>
@@ -117,10 +117,10 @@ const CaloriesBurnt: React.FC = () => {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
+        <div className="flex items-center gap-2 font-medium leading-none text-purple-500">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="leading-none text-purple-500">
           Showing total calories burnt for the last 24 Hours
         </div>
       </CardFooter>

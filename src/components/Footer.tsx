@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="padding-container max-container flex w-full flex-col gap-14">
         <div className="flex flex-col items-start justify-center gap-[10%] md:flex-row">
           <Link to="/" className="mb-10 hidden lg:flex">
-            <Button className="bg-purple-500">Calorie</Button>
+            <Button className="bg-purple-500 font-semibold">Calorie</Button>
           </Link>
 
           <div className="flex flex-wrap gap-10 sm:justify-between md:flex-1">
