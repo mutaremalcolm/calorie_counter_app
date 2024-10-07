@@ -18,18 +18,44 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
 
+
 const BmiCalculator = () => {
   const [unitType, setUnitType] = React.useState("US");
 
+  //Form Schema
   const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    age: z
+      .number({
+        required_error: "Age is required", 
+        invalid_type_error: "Age is required" 
+      })
+      .min(15, "Age must be at least 15")
+      .max(80, "Age must be under 80"),
+    gender: z.enum(["male", "female"], {
+        required_error: "Please select a gender",
+      }),
+    height: z
+      .number({ 
+        required_error: "Height is required",
+        invalid_type_error: "Height must be a number" })
+      .positive("Height must be positive")
+      .min(100, "Height must be at least 100 cm")
+      .max(250, "Height must be under 250 cm"),
+    weight: z
+      .number({ invalid_type_error: "Weight is required" })
+      .positive("Weight must be positive")
+      .min(30, "Weight must be at least 30 kg")
+      .max(300, "Weight must be under 300 kg"),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-    },
+      age: 0,
+      gender: "male",
+      height: 0,
+      weight: 30
+    }
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -41,6 +67,7 @@ const BmiCalculator = () => {
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
+          {/* Title */}
           <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
             BMI Calculator
           </h1>
@@ -85,6 +112,7 @@ const BmiCalculator = () => {
               Metric Units
             </button>
           </div>
+          {/* Input Card */}
           <Card className="w-full p-4 mt-8">
             <Form {...form}>
               <form
@@ -93,7 +121,7 @@ const BmiCalculator = () => {
               >
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="age"
                   render={({ field }) => (
                     <>
                       <FormItem className="flex items-center">
@@ -102,59 +130,91 @@ const BmiCalculator = () => {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="25"
+                            autoFocus
                             {...field}
+                            type="number"
+                            onChange={(e) => field.onChange(Number(e.target.value))}
                             className="w-20 px-2 py-1 text-end"
                           />
                         </FormControl>
+                        <FormMessage />
                         <FormDescription className="ml-2">
                           ages 15 - 80
                         </FormDescription>
-                        <FormMessage />
                       </FormItem>
 
-                      <RadioGroup
-                        defaultValue="option-one"
-                        className="flex flex-row items-center w-full"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <span className="ml-4">Gender</span>
-                          <RadioGroupItem value="option-one" id="option-one" />
-                          <Label htmlFor="option-one">Male</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="option-two" id="option-two" />
-                          <Label htmlFor="option-two">Female</Label>
-                        </div>
-                      </RadioGroup>
+                      <FormField
+                        control={form.control}
+                        name="gender"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="ml-4">Gender</FormLabel>
+                            <FormControl>
+                              <RadioGroup
+                                onValueChange={field.onChange}
+                                className="flex flex-row items-center w-full ml-4"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  <RadioGroupItem value="male" id="male" />
+                                  <Label htmlFor="male">Male</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <RadioGroupItem value="female" id="female" />
+                                  <Label htmlFor="female">Female</Label>
+                                </div>
+                              </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="height"
+                        render={({ field }) => (
+                          <FormItem className="flex items-center">
+                            <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                              Height
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                className="w-20 px-2 py-1 text-end"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                            <FormDescription className="ml-2">
+                              min height 100cm
+                            </FormDescription>
+                          </FormItem>
+                        )}
+                      />
 
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Height
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="cm"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Weight
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="kg"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                      <FormField
+                        control={form.control}
+                        name="weight"
+                        render={({ field }) => (
+                          <FormItem className="flex items-center">
+                            <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                              Weight
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                className="w-20 px-2 py-1 text-end"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                            <FormDescription className="ml-2">
+                              min weight 30kgs
+                            </FormDescription>
+                          </FormItem>
+                        )}
+                      />
                     </>
                   )}
                 />
@@ -192,11 +252,14 @@ const BmiCalculator = () => {
           </ul>
         </section>
         {/* TODO: Customise additional calculator buttons */}
+        {/* Related Calculators */}
         <section className="relative w-full mt-5">
-        <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
-                unitType === "US" ? "bg-gray-200 text-purple-500" : "bg-transparent"
+                unitType === "US"
+                  ? "bg-gray-200 text-purple-500"
+                  : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
             >
@@ -220,7 +283,8 @@ const BmiCalculator = () => {
               Other Calculators
             </Button>
           </div>
-          </section>
+        </section>
+        {/* Additional Information */}
         <section>
           <div className="mt-5 bg-gray-200 rounded-sm p-4">
             The Body Mass Index (BMI) Calculator can be used to calculate BMI
@@ -231,39 +295,39 @@ const BmiCalculator = () => {
             the Ponderal Index in addition to BMI, both of which are discussed
             below in detail.
           </div>
-            <h5 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              BMI table for adults
-            </h5>
-            <div className="bg-gray-200 rounded-sm p-4">
+          <h5 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            BMI table for adults
+          </h5>
+          <div className="bg-gray-200 rounded-sm p-4">
             <span>
               This is the World Health Organization's (WHO) recommended body
               weight based on BMI values for adults. It is used for both men and
               women, age 20 or older.
             </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              BMI chart for adults
-            </h4>
-            <div className="bg-gray-200 rounded-sm p-4">
+          </div>
+          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            BMI chart for adults
+          </h4>
+          <div className="bg-gray-200 rounded-sm p-4">
             <span>
               This is a graph of BMI categories based on the World Health
               Organization data. The dashed lines represent subdivisions within
               a major categorization.
             </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              BMI table for children and teens, age 2-20
-            </h4>
-            <div className="bg-gray-200 rounded-sm p-4">
+          </div>
+          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            BMI table for children and teens, age 2-20
+          </h4>
+          <div className="bg-gray-200 rounded-sm p-4">
             <span>
               The Centers for Disease Control and Prevention (CDC) recommends
               BMI categorization for children and teens between age 2 and 20.
             </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              Risks assosciated with being overweight
-            </h4>
-            <div className="bg-gray-200 rounded-sm p-4">
+          </div>
+          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            Risks assosciated with being overweight
+          </h4>
+          <div className="bg-gray-200 rounded-sm p-4">
             <span>
               Being overweight increases the risk of a number of serious
               diseases and health conditions. Below is a list of said risks,
@@ -286,11 +350,11 @@ const BmiCalculator = () => {
               not they need to make any changes to their lifestyle in order to
               be healthier.
             </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              Risks assosciated with being underweight
-            </h4>
-            <div className="bg-gray-200 rounded-sm p-4">
+          </div>
+          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            Risks assosciated with being underweight
+          </h4>
+          <div className="bg-gray-200 rounded-sm p-4">
             <span>
               Being underweight has its own associated risks, listed below:
               Malnutrition, vitamin deficiencies, anemia (lowered ability to
@@ -308,7 +372,7 @@ const BmiCalculator = () => {
               you know is underweight, particularly if the reason for being
               underweight does not seem obvious.
             </span>
-            </div>
+          </div>
         </section>
       </main>
     </>

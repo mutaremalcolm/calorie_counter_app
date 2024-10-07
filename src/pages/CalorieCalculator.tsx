@@ -1,3 +1,4 @@
+import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,34 +24,68 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import React from "react";
 import { ChevronDown, Play } from "lucide-react";
 
 const CalorieCalculator = () => {
-  const [selectedActivity, setSelectedActivity] = React.useState(
-    "Moderate: exercise 4-5 times/week"
-  );
   const [unitType, setUnitType] = React.useState("US");
 
+  // Form Schema
   const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    age: z
+      .number({
+        required_error: "Age is required",
+        invalid_type_error: "Age must be a number",
+      })
+      .min(15, "Age must be at least 15")
+      .max(100, "Age must be under 100"),
+    gender: z
+      .enum(["male", "female"], {
+      required_error: "Please select a gender",
+    }),
+    height: z
+      .number({
+        required_error: "Height is required",
+        invalid_type_error: "Height must be a number",
+      })
+      .min(100, "Height must be at least 100cm")
+      .max(250, "Height must be under 250cm"),
+    weight: z
+      .number({
+        required_error: "Weight is required",
+        invalid_type_error: "Weight must be a number",
+      })
+      .min(30, "Weight must be at least 30kg")
+      .max(300, "Weight must be under 300kg"),
+    activity: z.string({
+      required_error: "Please select an activity level",
+    }),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  type FormValues = z.infer<typeof formSchema>;
+
+  const defaultValues: FormValues = {
+      age: 0,
+      gender: "male",
+      height: 0,
+      weight: 0,
+      activity: "Moderate: exercise 4-5 times a week",
+  }
+
+  // form resolver
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
+    defaultValues,
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
     console.log(values);
+    // Perform calorie calculation here
   }
 
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
+        {/* title */}
         <section>
           <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
             Calorie Calculator
@@ -92,6 +127,7 @@ const CalorieCalculator = () => {
               Metric Units
             </button>
           </div>
+          {/* Input Card */}
           <Card className="w-full p-4 mt-8">
             <Form {...form}>
               <form
@@ -100,120 +136,175 @@ const CalorieCalculator = () => {
               >
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="age"
                   render={({ field }) => (
-                    <>
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Age
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="25"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormDescription className="ml-2">
-                          ages 15 - 80
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Age
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormDescription className="ml-2">
+                        ages 15 - 80
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gender</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          className="flex flex-row items-center w-full"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="male" id="male" />
+                            <Label htmlFor="male">Male</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="female" id="female" />
+                            <Label htmlFor="female">Female</Label>
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                      <RadioGroup
-                        defaultValue="option-one"
-                        className="flex flex-row items-center w-full"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <span className="ml-4">Gender</span>
-                          <RadioGroupItem value="option-one" id="option-one" />
-                          <Label htmlFor="option-one">Male</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="option-two" id="option-two" />
-                          <Label htmlFor="option-two">Female</Label>
-                        </div>
-                      </RadioGroup>
+                <FormField
+                  control={form.control}
+                  name="height"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Height
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormDescription className="ml-2">
+                        min height 100cm
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Height
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="cm"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                <FormField
+                  control={form.control}
+                  name="weight"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Weight
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormDescription className="ml-2">
+                        min weight 30kg
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Weight
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="kg"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-
-                      <FormItem className="flex items-center w-full">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Activity
-                        </FormLabel>
-                        <FormControl className="relative">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <div>
-                                <Input
-                                  readOnly
-                                  value={selectedActivity}
-                                  className="cursor-pointer text-start pr-8"
-                                />
-                              </div>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56">
-                              <DropdownMenuLabel>
-                                Select Activity Level
-                              </DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuCheckboxItem
-                                checked={selectedActivity === "Light"}
-                                onCheckedChange={() =>
-                                  setSelectedActivity("Light")
-                                }
-                              >
-                                Light: exercise 1-2 times/week
-                              </DropdownMenuCheckboxItem>
-                              <DropdownMenuCheckboxItem
-                                checked={selectedActivity === "Moderate"}
-                                onCheckedChange={() =>
-                                  setSelectedActivity("Moderate")
-                                }
-                              >
-                                Moderate: exercise 4-5 times/week
-                              </DropdownMenuCheckboxItem>
-                              <DropdownMenuCheckboxItem
-                                checked={selectedActivity === "Heavy"}
-                                onCheckedChange={() =>
-                                  setSelectedActivity("Heavy")
-                                }
-                              >
-                                Heavy: daily exercise or intense exercise 6-7
-                                times/week
-                              </DropdownMenuCheckboxItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    </>
+                <FormField
+                  control={form.control}
+                  name="activity"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center w-full">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2 required">
+                        Activity
+                      </FormLabel>
+                      <FormControl>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <div>
+                              <Input
+                                readOnly
+                                value={field.value}
+                                className="cursor-pointer text-start pr-8"
+                              />
+                            </div>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="w-56">
+                            <DropdownMenuLabel>
+                              Select Activity Level
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuCheckboxItem
+                              checked={
+                                field.value === "Light: exercise 1-2 times/week"
+                              }
+                              onCheckedChange={() => {
+                                field.onChange(
+                                  "Light: exercise 1-2 times/week"
+                                );
+                              }}
+                            >
+                              Light: exercise 1-2 times/week
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem
+                              checked={
+                                field.value ===
+                                "Moderate: exercise 4-5 times/week"
+                              }
+                              onCheckedChange={() => {
+                                field.onChange(
+                                  "Moderate: exercise 4-5 times/week"
+                                );
+                              }}
+                            >
+                              Moderate: exercise 4-5 times/week
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem
+                              checked={
+                                field.value ===
+                                "Heavy: daily exercise or intense exercise 6-7 times/week"
+                              }
+                              onCheckedChange={() => {
+                                field.onChange(
+                                  "Heavy: daily exercise or intense exercise 6-7 times/week"
+                                );
+                              }}
+                            >
+                              Heavy: daily exercise or intense exercise 6-7
+                              times/week
+                            </DropdownMenuCheckboxItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
                 <section className="ml-10 underline">+ Settings</section>
@@ -225,7 +316,7 @@ const CalorieCalculator = () => {
                   <Button
                     type="button"
                     className="ml-2 bg-purple-500"
-                    onClick={() => form.reset()}
+                    onClick={() =>  form.reset()}
                   >
                     Clear
                   </Button>
@@ -234,6 +325,7 @@ const CalorieCalculator = () => {
             </Form>
           </Card>
         </div>
+        {/* settings */}
         <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-4">
           <ul>
             <li>
@@ -250,12 +342,14 @@ const CalorieCalculator = () => {
             </li>
           </ul>
         </section>
-        {/* TODO: Customise additional calculator buttons */}
+        {/* related calculators */}
         <section className="relative w-full mt-5">
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
-                unitType === "US" ? "bg-gray-200 text-purple-500" : "bg-transparent"
+                unitType === "US"
+                  ? "bg-gray-200 text-purple-500"
+                  : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
             >
@@ -279,6 +373,8 @@ const CalorieCalculator = () => {
               Other Calculators
             </Button>
           </div>
+          {/* Additional Information Section */}
+          {/* TODO: Refactor export content to constants and map over it */}
           <div className="mt-5 bg-gray-200 rounded-sm p-4">
             This Calorie Calculator uses three key equations to estimate basal
             metabolic rate (BMR) based on averages. The Harris-Benedict

@@ -21,19 +21,42 @@ import { ChevronDown, Play } from "lucide-react";
 const IdealWeightCalculator = () => {
   const [unitType, setUnitType] = React.useState("US");
 
+  // Form Schema
   const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    age: z
+      .number({
+        required_error: "Age is required",
+        invalid_type_error: "Age must be a number",
+      })
+      .min(15, "Age must be at least 15") 
+      .max(100, "Age must be under 100"),
+    gender: z.enum(["male", "female"], {
+      required_error: "Please select a gender",
+    }),
+    height: z
+      .number({
+        invalid_type_error: "Height must be a number",
+        required_error: "Height is required",
+      })
+      .min(100, "Height must be at least 100cm")
+      .max(250, "Height must be under 250cm"),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  type FormValues = z.infer<typeof formSchema>;
+
+  const defaultValues: FormValues = {
+      age: 0,
+      gender: "male",
+      height: 0,
+    }
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
+    defaultValues,
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
+    // Perform calculations here
     console.log(values);
   }
 
@@ -41,6 +64,7 @@ const IdealWeightCalculator = () => {
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
+          {/* Title Section */}
           <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
             Ideal Weight Calculator
           </h1>
@@ -84,6 +108,7 @@ const IdealWeightCalculator = () => {
               Metric Units
             </button>
           </div>
+          {/* Input Card */}
           <Card className="w-full p-4 mt-8">
             <Form {...form}>
               <form
@@ -92,55 +117,79 @@ const IdealWeightCalculator = () => {
               >
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="age"
                   render={({ field }) => (
-                    <>
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Age
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="25"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormDescription className="ml-2">
-                          ages 2 - 80
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Age
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormDescription className="ml-2">
+                        ages 15 - 80
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                      <RadioGroup
-                        defaultValue="option-one"
-                        className="flex flex-row items-center w-full"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <span className="ml-4">Gender</span>
-                          <RadioGroupItem value="option-one" id="option-one" />
-                          <Label htmlFor="option-one">Male</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="option-two" id="option-two" />
-                          <Label htmlFor="option-two">Female</Label>
-                        </div>
-                      </RadioGroup>
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gender</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          className="flex flex-row items-center w-full"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="male" id="male" />
+                            <Label htmlFor="male">Male</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="female" id="female" />
+                            <Label htmlFor="female">Female</Label>
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Height
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="cm"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    </>
+                <FormField
+                  control={form.control}
+                  name="height"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Height
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormDescription className="ml-2">
+                        min height 100cm
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
                 <section className="pb-4">
@@ -151,7 +200,7 @@ const IdealWeightCalculator = () => {
                   <Button
                     type="button"
                     className="ml-2 bg-purple-500"
-                    onClick={() => form.reset()}
+                    onClick={() => form.reset(defaultValues)}
                   >
                     Clear
                   </Button>
@@ -161,11 +210,14 @@ const IdealWeightCalculator = () => {
           </Card>
         </div>
         {/* TODO: Customise additional calculator buttons */}
+        {/* Related calculators */}
         <section className="relative w-full mt-5">
-        <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
-                unitType === "US" ? "bg-gray-200 text-purple-500" : "bg-transparent"
+                unitType === "US"
+                  ? "bg-gray-200 text-purple-500"
+                  : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
             >
@@ -189,14 +241,15 @@ const IdealWeightCalculator = () => {
               Other Calculators
             </Button>
           </div>
-          </section>
+        </section>
+        {/* Additional Information */}
         <section>
           <div className="mt-5">
             <h5 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
               How much should i weigh?
             </h5>
           </div>
-            <div className="bg-gray-200 p-4">
+          <div className="bg-gray-200 p-4">
             <span>
               Most everyone has at some point tried to lose weight, or at least
               known somebody who has. This is largely due to the perception of
@@ -230,11 +283,11 @@ const IdealWeightCalculator = () => {
               listed below. Other factors include health conditions, fat
               distribution, progeny, etc.
             </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              Age
-            </h4>
-            <div className="bg-gray-200 p-4">
+          </div>
+          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            Age
+          </h4>
+          <div className="bg-gray-200 p-4">
             <span>
               In theory, age shouldn't be a large determinant of an IBW past the
               ages of 14-15 for girls and 16-17 for boys, after which most
@@ -246,11 +299,11 @@ const IdealWeightCalculator = () => {
               aging by adopting various habits such as monitoring diet,
               exercise, stress, and sleep.
             </span>
-            </div>
-            <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              Gender
-            </h1>
-            <div className="bg-gray-200 p-4">
+          </div>
+          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            Gender
+          </h1>
+          <div className="bg-gray-200 p-4">
             <span>
               Generally, females weigh less than males even though they
               naturally have a higher percentage of body fat. This is because
@@ -259,21 +312,21 @@ const IdealWeightCalculator = () => {
               bone density. Last but not least, males tend to be taller than
               females.
             </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              Height
-            </h4>
-            <div className="bg-gray-200 p-4">
+          </div>
+          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            Height
+          </h4>
+          <div className="bg-gray-200 p-4">
             <span>
               The taller the person, the more muscle mass and body fat they
               have, which results in more weight. A male at a similar height to
               a female should weigh about 10-20% heavier.
             </span>
-            </div>
-            <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              Limitations of our IBW calculator
-            </h1>
-            <div className="bg-gray-200 p-4">
+          </div>
+          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+            Limitations of our IBW calculator
+          </h1>
+          <div className="bg-gray-200 p-4">
             <span>
               There are limitations to all the formulas and methods. Because the
               formulas are designed to be as applicable to as wide a range of
