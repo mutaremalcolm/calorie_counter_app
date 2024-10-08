@@ -18,11 +18,19 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
 
+const calculateBMI = (_age: number, _gender: string, height: number, weight: number) => {
+  // Convert height from cm to meters
+  const heightInMeters = height / 100;
+  // Calculate BMI
+  const bmi = weight / (heightInMeters * heightInMeters);
+  return Math.round(bmi * 10) / 10; // Round to one decimal place
+};
 
 const BmiCalculator = () => {
+  const [bmiResult, setBmiResult] = React.useState<number | null>(null);
   const [unitType, setUnitType] = React.useState("US");
 
-  //Form Schema
+  // Form Schema
   const formSchema = z.object({
     age: z
       .number({
@@ -32,17 +40,21 @@ const BmiCalculator = () => {
       .min(15, "Age must be at least 15")
       .max(80, "Age must be under 80"),
     gender: z.enum(["male", "female"], {
-        required_error: "Please select a gender",
-      }),
+      required_error: "Please select a gender",
+    }),
     height: z
       .number({ 
         required_error: "Height is required",
-        invalid_type_error: "Height must be a number" })
+        invalid_type_error: "Height must be a number" 
+      })
       .positive("Height must be positive")
       .min(100, "Height must be at least 100 cm")
       .max(250, "Height must be under 250 cm"),
     weight: z
-      .number({ invalid_type_error: "Weight is required" })
+      .number({ 
+        required_error: "Weight is required",
+        invalid_type_error: "Weight must be a number" 
+      })
       .positive("Weight must be positive")
       .min(30, "Weight must be at least 30 kg")
       .max(300, "Weight must be under 300 kg"),
@@ -50,18 +62,19 @@ const BmiCalculator = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      age: 0,
-      gender: "male",
-      height: 0,
-      weight: 30
-    }
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
+    const bmiResults = calculateBMI(
+      values.age,
+      values.gender,
+      values.height,
+      values.weight
+    );
+    setBmiResult(bmiResults); 
     console.log(values);
   }
+
 
   return (
     <>
@@ -234,6 +247,11 @@ const BmiCalculator = () => {
               </form>
             </Form>
           </Card>
+          <Card>
+    
+      {/* BMI results */}
+      {bmiResult !== null && <p>Your BMI is: {bmiResult}</p>}
+    </Card>
         </div>
         <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-2">
           <ul>

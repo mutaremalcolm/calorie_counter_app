@@ -26,8 +26,45 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Play } from "lucide-react";
 
+// Activity Levels
+const activityLevels = {
+  "Light: exercise 1-2 times/week": 1.375,
+  "Moderate: exercise 4-5 times/week": 1.55,
+  "Heavy: daily exercise or intense 6-7 times/week": 1.725
+};
+
+type ActivityLevel = keyof typeof activityLevels;
+
+// Calculate Calories (using Harris-Benedict formula)
+const calculateCalories = (
+  age: number,
+  gender: "male" | "female",
+  height: number,
+  weight: number,
+  activity: ActivityLevel
+) => {
+  let bmr;
+  if (gender === "male") {
+    bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+  }else {
+    bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age)
+  }
+  
+  const maintainanceCalories = bmr * activityLevels[activity];
+  const loseHalfKgCalories = maintainanceCalories - 500;
+  const loseOneKgCalories = maintainanceCalories - 1000;
+
+  return {
+    maintenance: Math.round(maintainanceCalories),
+    loseHalfKg: Math.round(loseHalfKgCalories),
+    loseOneKg: Math.round(loseOneKgCalories)
+  };
+};
+
 const CalorieCalculator = () => {
+  const [selectedActivity, setSelectedActivity] = React.useState<ActivityLevel>("Moderate: exercise 4-5 times/week")
   const [unitType, setUnitType] = React.useState("US");
+  const [calorieResults, setCalorieResults] = React.useState<ReturnType<typeof calculateCalories> | null>(null);
 
   // Form Schema
   const formSchema = z.object({
@@ -56,30 +93,41 @@ const CalorieCalculator = () => {
       })
       .min(30, "Weight must be at least 30kg")
       .max(300, "Weight must be under 300kg"),
-    activity: z.string({
+    activity: z.enum([
+      "Light: exercise 1-2 times/week", 
+      "Moderate: exercise 4-5 times/week", 
+      "Heavy: daily exercise or intense exercise 6-7 times/week"
+    ] as const, {
       required_error: "Please select an activity level",
     }),
   });
 
   type FormValues = z.infer<typeof formSchema>;
 
-  const defaultValues: FormValues = {
-      age: 0,
-      gender: "male",
-      height: 0,
-      weight: 0,
-      activity: "Moderate: exercise 4-5 times a week",
-  }
+  // const defaultValues: FormValues = {
+  //     age: 15,
+  //     gender: "male",
+  //     height: 100,
+  //     weight: 30,
+  //     activity: "Light: exercise 1-2 times/week",
+  // };
 
   // form resolver
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    // defaultValues,
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Perform calorie calculation here
+  function onSubmit(values: FormValues) {
+    const results = calculateCalories(
+      values.age,
+      values.gender,
+      values.height,
+      values.weight,
+      // TODO: Fix bug
+      values.activity
+    );
+    setCalorieResults(results);
   }
 
   return (
@@ -146,6 +194,7 @@ const CalorieCalculator = () => {
                         <Input
                           type="number"
                           {...field}
+                          onFocus={()=> field.onChange()}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
                           }
@@ -197,6 +246,7 @@ const CalorieCalculator = () => {
                         <Input
                           type="number"
                           {...field}
+                          onFocus={() => field.onChange(undefined)}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
                           }
@@ -223,6 +273,7 @@ const CalorieCalculator = () => {
                         <Input
                           type="number"
                           {...field}
+                          onFocus={() => field.onChange(undefined)}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
                           }
@@ -263,7 +314,8 @@ const CalorieCalculator = () => {
                             <DropdownMenuSeparator />
                             <DropdownMenuCheckboxItem
                               checked={
-                                field.value === "Light: exercise 1-2 times/week"
+                                  field.value === 
+                                  "Light: exercise 1-2 times/week"
                               }
                               onCheckedChange={() => {
                                 field.onChange(
@@ -280,7 +332,7 @@ const CalorieCalculator = () => {
                               }
                               onCheckedChange={() => {
                                 field.onChange(
-                                  "Moderate: exercise 4-5 times/week"
+                                "Moderate: exercise 4-5 times/week"
                                 );
                               }}
                             >
@@ -293,7 +345,7 @@ const CalorieCalculator = () => {
                               }
                               onCheckedChange={() => {
                                 field.onChange(
-                                  "Heavy: daily exercise or intense exercise 6-7 times/week"
+                                "Heavy: daily exercise or intense exercise 6-7 times/week"
                                 );
                               }}
                             >
@@ -316,7 +368,11 @@ const CalorieCalculator = () => {
                   <Button
                     type="button"
                     className="ml-2 bg-purple-500"
-                    onClick={() =>  form.reset()}
+                    onClick={() => {
+                     form.reset();
+                    setSelectedActivity("Moderate: exercise 4-5 times/week")
+                    setCalorieResults(null);
+                    }}
                   >
                     Clear
                   </Button>
@@ -325,6 +381,17 @@ const CalorieCalculator = () => {
             </Form>
           </Card>
         </div>
+
+        {calorieResults && (
+          <Card className="w-full p-4 mt-8">
+            <h2 className="text-xl font-bold mb-4">Your Calorie Needs:</h2>
+            <ul>
+              <li>Maintaince: {calorieResults.maintenance} calories/day</li>
+              <li>To Lose 0.5kg/week: {calorieResults.loseHalfKg} calories/day</li>
+              <li>To lose 1kg/week: {calorieResults.loseOneKg} calories/day</li>
+            </ul>
+          </Card>
+        )}
         {/* settings */}
         <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-4">
           <ul>

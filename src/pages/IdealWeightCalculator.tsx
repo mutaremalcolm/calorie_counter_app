@@ -18,17 +18,34 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
 
-const IdealWeightCalculator = () => {
-  const [unitType, setUnitType] = React.useState("US");
+// IBW Calculation using Devine Formula
+const calculateIBW = (gender: "male" | "female", heightCm: number): number => {
+  const heightInInches = heightCm / 2.54;
+  const inchesOver60 = heightInInches - 60;
 
-  // Form Schema
+  if (inchesOver60 <= 0) {
+    return gender === "male" ? 50 : 45.5;
+  }
+
+  const ibw = gender === "male"
+    ? 50 + 2.3 * inchesOver60
+    : 45.5 + 2.3 * inchesOver60;
+
+  return Math.round(ibw * 10) / 10;
+};
+
+const IdealWeightCalculator = () => {
+  const [unitType, setUnitType] = React.useState<"US" | "Metric">("Metric");
+  const [ibwResult, setIbwResult] = React.useState<number | null>(null);
+
+  // Form Schema using Zod
   const formSchema = z.object({
     age: z
       .number({
         required_error: "Age is required",
         invalid_type_error: "Age must be a number",
       })
-      .min(15, "Age must be at least 15") 
+      .min(15, "Age must be at least 15")
       .max(100, "Age must be under 100"),
     gender: z.enum(["male", "female"], {
       required_error: "Please select a gender",
@@ -38,27 +55,28 @@ const IdealWeightCalculator = () => {
         invalid_type_error: "Height must be a number",
         required_error: "Height is required",
       })
-      .min(100, "Height must be at least 100cm")
-      .max(250, "Height must be under 250cm"),
+      .min(100, "Height must be at least 100 cm")
+      .max(250, "Height must be under 250 cm"),
   });
 
   type FormValues = z.infer<typeof formSchema>;
 
-  const defaultValues: FormValues = {
-      age: 0,
-      gender: "male",
-      height: 0,
-    }
-
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues,
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Perform calculations here
-    console.log(values);
+  function onSubmit(values: FormValues) {
+    const ibw = calculateIBW(values.gender, values.height);
+    setIbwResult(ibw);
+    console.log("Form Values:", values);
+    console.log("Calculated IBW:", ibw, "kg");
   }
+
+  // TODO: Handle unit changes (US vs Metric)
+  const handleUnitChange = (type: "US" | "Metric") => {
+    setUnitType(type);
+    // unit switching logic
+  };
 
   return (
     <>
@@ -68,14 +86,14 @@ const IdealWeightCalculator = () => {
           <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
             Ideal Weight Calculator
           </h1>
-          <div className="bg-gray-200 p-2">
+          <div className="bg-gray-200 rounded-sm p-4">
             <span>
               The Ideal Weight Calculator computes ideal body weight (IBW)
               ranges based on height, gender, and age. The idea of finding the
               IBW using a formula has been sought after by many experts for a
-              long time. Currently, there persist several popular formulas, and
+              long time. Currently, there exist several popular formulas, and
               our Ideal Weight Calculator provides their results for
-              side-to-side comparisons.
+              side-by-side comparisons.
             </span>
           </div>
           <div className="flex justify-center bg-purple-500 text-white">
@@ -86,14 +104,15 @@ const IdealWeightCalculator = () => {
           </div>
         </section>
         <div className="relative w-full max-w-md">
+          {/* Unit Toggle Buttons */}
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
                 unitType === "US"
                   ? "bg-purple-500 text-white"
-                  : "bg-transparent"
+                  : "bg-transparent text-purple-500"
               }`}
-              onClick={() => setUnitType("US")}
+              onClick={() => handleUnitChange("US")}
             >
               US Units
             </button>
@@ -101,9 +120,9 @@ const IdealWeightCalculator = () => {
               className={`px-4 py-2 rounded ${
                 unitType === "Metric"
                   ? "bg-purple-500 text-white"
-                  : "bg-gray-200"
+                  : "bg-gray-200 text-purple-500"
               }`}
-              onClick={() => setUnitType("Metric")}
+              onClick={() => handleUnitChange("Metric")}
             >
               Metric Units
             </button>
@@ -111,10 +130,8 @@ const IdealWeightCalculator = () => {
           {/* Input Card */}
           <Card className="w-full p-4 mt-8">
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {/* Age Field */}
                 <FormField
                   control={form.control}
                   name="age"
@@ -131,26 +148,31 @@ const IdealWeightCalculator = () => {
                             field.onChange(Number(e.target.value))
                           }
                           className="w-20 px-2 py-1 text-end"
+                          placeholder="15"
+                          min={15}
+                          max={100}
                         />
                       </FormControl>
                       <FormDescription className="ml-2">
-                        ages 15 - 80
+                        Ages 15 - 100
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
+                {/* Gender Field */}
                 <FormField
                   control={form.control}
                   name="gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Gender</FormLabel>
+                      <FormLabel className="ml-4">Gender</FormLabel>
                       <FormControl>
                         <RadioGroup
+                          value={field.value}
                           onValueChange={field.onChange}
-                          className="flex flex-row items-center w-full"
+                          className="flex flex-row items-center w-full ml-4"
                         >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="male" id="male" />
@@ -167,6 +189,7 @@ const IdealWeightCalculator = () => {
                   )}
                 />
 
+                {/* Height Field */}
                 <FormField
                   control={form.control}
                   name="height"
@@ -183,10 +206,13 @@ const IdealWeightCalculator = () => {
                             field.onChange(Number(e.target.value))
                           }
                           className="w-20 px-2 py-1 text-end"
+                          placeholder="170"
+                          min={100}
+                          max={250}
                         />
                       </FormControl>
                       <FormDescription className="ml-2">
-                        min height 100cm
+                        Height 100cm - 250cm
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -200,7 +226,10 @@ const IdealWeightCalculator = () => {
                   <Button
                     type="button"
                     className="ml-2 bg-purple-500"
-                    onClick={() => form.reset(defaultValues)}
+                    onClick={() => {
+                      form.reset();
+                      setIbwResult(null); 
+                    }}
                   >
                     Clear
                   </Button>
@@ -209,8 +238,30 @@ const IdealWeightCalculator = () => {
             </Form>
           </Card>
         </div>
-        {/* TODO: Customise additional calculator buttons */}
-        {/* Related calculators */}
+        {/* Display IBW Result */}
+        {ibwResult !== null && (
+          <Card className="w-full max-w-md p-4 mt-8 bg-gray-200">
+            <h2 className="text-xl font-bold mb-2">Ideal Body Weight (IBW) Result</h2>
+            <p>
+              Your Ideal Body Weight is: <strong>{ibwResult} kg</strong>
+            </p>
+          </Card>
+        )}
+        {/* Additional Information Sections */}
+        <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-4">
+          <ul>
+            <li>
+              <strong>Ideal Body Weight (IBW):</strong> An estimate of the optimal body weight based on height and gender.
+            </li>
+            <li>
+              <strong>Age Consideration:</strong> While age can influence body composition, IBW primarily focuses on height and gender.
+            </li>
+            <li>
+              <strong>Health Guidance:</strong> Use IBW as a general guideline and consult with healthcare professionals for personalized advice.
+            </li>
+          </ul>
+        </section>
+        {/* Related Calculators */}
         <section className="relative w-full mt-5">
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
@@ -229,117 +280,18 @@ const IdealWeightCalculator = () => {
               BMI Calculator
             </Button>
             <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
+              Calorie Calculator
             </Button>
             <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
+              Calories Burnt Calculator
             </Button>
           </div>
         </section>
+        {/* TODO: export static data and use map method */}
         {/* Additional Information */}
         <section>
-          <div className="mt-5">
-            <h5 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
-              How much should i weigh?
-            </h5>
-          </div>
-          <div className="bg-gray-200 p-4">
-            <span>
-              Most everyone has at some point tried to lose weight, or at least
-              known somebody who has. This is largely due to the perception of
-              an "ideal" body weight, which is often based on what we see
-              promoted through various media such as social media, TV, movies,
-              magazines, etc. Although ideal body weight (IBW) today is
-              sometimes based on perceived visual appeal, IBW was actually
-              introduced to estimate dosages for medical use, and the formulas
-              that calculate it are not at all related to how a person looks at
-              a given weight. It has since been determined that the metabolism
-              of certain drugs is more based on IBW than it is total body
-              weight. Today, IBW is also used widely throughout sports, since
-              many sports classify people based on their body weight. Note that
-              IBW is not a perfect measurement. It does not consider the
-              percentages of body fat and muscle in a person's body. This means
-              that it is possible for highly fit, healthy athletes to be
-              considered overweight based on their IBW. This is why IBW should
-              be considered with the perspective that it is an imperfect measure
-              and not necessarily indicative of health, or a weight that a
-              person should necessarily strive toward; it is possible to be over
-              or under your "IBW" and be perfectly healthy. How much a person
-              should weigh is not an exact science. It is highly dependent on
-              each individual. Thus far, there is no measure, be it IBW, body
-              mass index (BMI), or any other that can definitively state how
-              much a person should weigh to be healthy. They are only
-              references, and it's more important to adhere to making healthy
-              life choices such as regular exercise, eating a variety of
-              unprocessed foods, getting enough sleep, etc. than it is to chase
-              a specific weight based on a generalized formula. That being said,
-              many factors can affect the ideal weight; the major factors are
-              listed below. Other factors include health conditions, fat
-              distribution, progeny, etc.
-            </span>
-          </div>
-          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            Age
-          </h4>
-          <div className="bg-gray-200 p-4">
-            <span>
-              In theory, age shouldn't be a large determinant of an IBW past the
-              ages of 14-15 for girls and 16-17 for boys, after which most
-              people stop growing. It is actually expected that human males and
-              females lose 1.5 and 2 inches in height respectively by age 70. It
-              is important to remember that as people age, lean muscle mass
-              decreases and it is easier to accumulate excess body fat. This is
-              a natural process, though it is possible to lessen the effects of
-              aging by adopting various habits such as monitoring diet,
-              exercise, stress, and sleep.
-            </span>
-          </div>
-          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            Gender
-          </h1>
-          <div className="bg-gray-200 p-4">
-            <span>
-              Generally, females weigh less than males even though they
-              naturally have a higher percentage of body fat. This is because
-              the male body generally has higher muscle mass, and muscle is
-              heavier than fat. Not only that, but women generally have lower
-              bone density. Last but not least, males tend to be taller than
-              females.
-            </span>
-          </div>
-          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            Height
-          </h4>
-          <div className="bg-gray-200 p-4">
-            <span>
-              The taller the person, the more muscle mass and body fat they
-              have, which results in more weight. A male at a similar height to
-              a female should weigh about 10-20% heavier.
-            </span>
-          </div>
-          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            Limitations of our IBW calculator
-          </h1>
-          <div className="bg-gray-200 p-4">
-            <span>
-              There are limitations to all the formulas and methods. Because the
-              formulas are designed to be as applicable to as wide a range of
-              people as possible, they cannot be highly accurate for every
-              single individual. The formulas factor only height and gender, and
-              there are no considerations for physical handicaps, people on the
-              extreme ends of the spectrum, activity levels, or muscle mass to
-              body fat ratios, otherwise known as body composition. Our Ideal
-              Weight Calculator is meant to be used as a general guideline based
-              on popular formulas, and its results are not intended as strict
-              values that a person must achieve to be considered an "ideal
-              weight."
-            </span>
+          <div className="mt-5 bg-gray-200 rounded-sm p-4">
+            The Ideal Weight Calculator can be used to estimate your ideal body weight based on your height and gender. It serves as a general guideline and should be used in conjunction with other health assessments.
           </div>
         </section>
       </main>
