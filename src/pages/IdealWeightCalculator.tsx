@@ -18,6 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
 import { idealWeightTitle } from "@/lib/constants";
+import { Link } from "react-router-dom";
 
 // IBW Calculation using Devine Formula
 const calculateIBW = (gender: "male" | "female", heightCm: number): number => {
@@ -275,17 +276,24 @@ const IdealWeightCalculator = () => {
               Related
             </button>
           </div>
-          <div className="flex justify-center bg-gray-200 mt-10 rounded-sm">
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              BMI Calculator
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Calorie Calculator
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Calories Burnt Calculator
-            </Button>
-          </div>
+          {/* Related Calculators */}
+          <section className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+            <Link to="/CalorieCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Calorie Calculator
+              </Button>
+            </Link>
+            <Link to="/CaloriesBurnt">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Calories Burnt Calculator
+              </Button>
+            </Link>
+            <Link to="/BmiCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                BMI Calculator
+              </Button>
+            </Link>
+          </section>
         </section>
         {/* TODO: export static data and use map method */}
         {/* Additional Information */}

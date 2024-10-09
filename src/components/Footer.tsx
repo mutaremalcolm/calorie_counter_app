@@ -1,17 +1,18 @@
-import { footerLinks, footerContactInfo, socials } from "../lib/constants";
-import { Link } from "react-router-dom";
 import React from "react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
+import { footerLinks, footerContactInfo, socials } from "../lib/constants";
 
 const Footer = () => {
   return (
-    <footer className="flexCenter mb-12 ml-5 mr-5 mt-10">
-      <div className="padding-container max-container flex w-full flex-col gap-14">
+    <footer className="flexCenter mb-12 ml-5 mr-5 mt-10 bg-pink-50">
+      <div className="padding-container max-container flex w-full flex-col gap-14 pl-4 pt-4 pr-4 rounded-">
         <div className="flex flex-col items-start justify-center gap-[10%] md:flex-row">
+          {/* Logo */}
           <Link to="/" className="mb-10 hidden lg:flex">
             <Button className="bg-purple-500 font-semibold">Calorie</Button>
           </Link>
-
+          {/* links */}
           <div className="flex flex-wrap gap-10 sm:justify-between md:flex-1">
             {footerLinks.map((columns) => (
               <FooterColumn title={columns.title} key={columns.title}>
@@ -24,7 +25,6 @@ const Footer = () => {
                 </ul>
               </FooterColumn>
             ))}
-
             <div className="flex flex-col gap-5">
               <FooterColumn title={footerContactInfo.title}>
                 {footerContactInfo.links.map((link) => (
@@ -38,7 +38,7 @@ const Footer = () => {
                 ))}
               </FooterColumn>
             </div>
-
+            {/* socials */}
             <div className="flex flex-col gap-5">
               <FooterColumn title={socials.title}>
                 <ul className="regular-14 flex gap-4 text-gray-30">
@@ -46,7 +46,7 @@ const Footer = () => {
                     <Link
                       to={link.url}
                       key={link.title}
-                      className="bg-white p-1 rounded-full text-black font-bold"
+                      className="bg-transparent p-1 rounded-full text-black font-bold"
                     >
                       <img
                         src={link.icon}
@@ -62,8 +62,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border bg-gray-20" />
-        <p className="regular-14 w-full text-center text-gray-30">
+        <div className="border bg-pink-100" />
+        <p className="regular-14 w-full text-center text-gray-30 pb-5">
           @2024 Calorie. Made with Love by Malcolm
         </p>
       </div>

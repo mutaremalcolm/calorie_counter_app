@@ -13,7 +13,7 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="bg-gray-200 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shadow-sm">
+      <nav className="bg-pink-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shadow-sm">
         <main className="container mx-auto px-4 flex justify-between items-center h-16">
           {/* Logo/Button Section */}
           <Link to="./" className="flex items-center">
@@ -81,6 +81,7 @@ const Navigation = () => {
                 </ul>
 
                 {/* Show Sign Up button only if the user is NOT logged in */}
+                {/* TODO: verify sign-up link works in production */}
                 <Link to="/signup"  rel="noopener noreferrer">
                   <Button className="text-white bg-purple-600 text-base font-semibold">
                     Sign Up

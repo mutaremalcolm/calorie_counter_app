@@ -179,14 +179,40 @@ export const caloriesBurntTitle = [
 
 export const idealWeightTitle = [
   {
-    title: "Calories Burnt Calculator",
-    content: `The Body Mass Index (BMI) Calculator can be used to calculate BMI
-              value and corresponding weight status while taking age into
-              consideration. Use the "Metric Units" tab for the International
-              System of Units or the "Other Units" tab to convert units into
-              either US or metric units. Note that the calculator also computes
-              the Ponderal Index in addition to BMI, both of which are discussed
-              below in detail.`,
+    title: "Ideal Weight Calculator",
+    content: `The Ideal Body Weight (IBW) Calculator helps estimate a healthy weight
+              range based on height, gender, and age. You can switch between the 'Metric Units'
+              tab for the International System of Units or the 'Other Units' tab for US measurements. 
+              This tool provides a guideline for ideal weight based on medical recommendations, which 
+              can assist in achieving and maintaining a healthy weight. Additionally, it offers insights 
+              into weight distribution and provides a useful reference for setting fitness goals.`,
+  },
+];
+
+export const testimonials = [
+  {
+    name: "Leslie Alexander",
+    location: "Seoul South Korea April 2019",
+    imageUrl:
+      "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-1.png",
+    quote:
+      "“My new clients are achieving their weight goals much faster. Calorie makes it easier to know how to eat right.“",
+  },
+  {
+    name: "John Doe",
+    location: "Honolulu Hawaii February 2017",
+    imageUrl:
+      "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-2.png",
+    quote:
+      "“Body Recomposition is 75% Food and 25% work in the gym. Calorie is the tool we have been waiting for, it's awesome.”",
+  },
+  {
+    name: "Jane Smith",
+    location: "Berlin Germany April 2019",
+    imageUrl:
+      "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-2.png",
+    quote:
+      "“Eating right with a hectic schedule is a challenge. Calorie simplified it for me by allowing me to prepare in advance.”",
   },
 ];
 
@@ -246,7 +272,7 @@ export const socials = {
     {
       title: "linkedin",
       url: "https://github.com/mutaremalcolm",
-      icon: "/src/assets/footer/linkedin.svg"
+      icon: "/src/assets/footer/linkedin.svg",
     },
     {
       title: "Twitter",

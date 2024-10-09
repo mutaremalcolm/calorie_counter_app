@@ -18,8 +18,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
 import { BMIinfo, BMItitle } from "@/lib/constants";
+import { Link } from "react-router-dom";
 
-const calculateBMI = (_age: number, _gender: string, height: number, weight: number) => {
+const calculateBMI = (
+  _age: number,
+  _gender: string,
+  height: number,
+  weight: number
+) => {
   // Convert height from cm to meters
   const heightInMeters = height / 100;
   // Calculate BMI
@@ -35,8 +41,8 @@ const BmiCalculator = () => {
   const formSchema = z.object({
     age: z
       .number({
-        required_error: "Age is required", 
-        invalid_type_error: "Age is required" 
+        required_error: "Age is required",
+        invalid_type_error: "Age is required",
       })
       .min(15, "Age must be at least 15")
       .max(80, "Age must be under 80"),
@@ -44,17 +50,17 @@ const BmiCalculator = () => {
       required_error: "Please select a gender",
     }),
     height: z
-      .number({ 
+      .number({
         required_error: "Height is required",
-        invalid_type_error: "Height must be a number" 
+        invalid_type_error: "Height must be a number",
       })
       .positive("Height must be positive")
       .min(100, "Height must be at least 100 cm")
       .max(250, "Height must be under 250 cm"),
     weight: z
-      .number({ 
+      .number({
         required_error: "Weight is required",
-        invalid_type_error: "Weight must be a number" 
+        invalid_type_error: "Weight must be a number",
       })
       .positive("Weight must be positive")
       .min(30, "Weight must be at least 30 kg")
@@ -72,16 +78,15 @@ const BmiCalculator = () => {
       values.height,
       values.weight
     );
-    setBmiResult(bmiResults); 
+    setBmiResult(bmiResults);
   }
-
 
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
           {/* Title */}
-          {BMItitle.map((info, index)=> (
+          {BMItitle.map((info, index) => (
             <div key={index} className="mt-5 rounded-sm">
               {info.title && (
                 <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
@@ -89,8 +94,8 @@ const BmiCalculator = () => {
                 </h1>
               )}
               <div className=" bg-gray-200 p-4 rounded-sm">
-                  <p>{info.content}</p>
-                </div>
+                <p>{info.content}</p>
+              </div>
             </div>
           ))}
           <div className="flex justify-center bg-purple-500 text-white">
@@ -135,7 +140,7 @@ const BmiCalculator = () => {
                   name="age"
                   render={({ field }) => (
                     <>
-                    {/* Age Input */}
+                      {/* Age Input */}
                       <FormItem className="flex items-center">
                         <FormLabel className="flex-shrink-0 ml-4 mr-2">
                           Age
@@ -145,7 +150,9 @@ const BmiCalculator = () => {
                             autoFocus
                             {...field}
                             type="number"
-                            onChange={(e) => field.onChange(Number(e.target.value))}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
                             className="w-20 px-2 py-1 text-end"
                           />
                         </FormControl>
@@ -193,7 +200,9 @@ const BmiCalculator = () => {
                               <Input
                                 type="number"
                                 {...field}
-                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
                                 className="w-20 px-2 py-1 text-end"
                               />
                             </FormControl>
@@ -217,7 +226,9 @@ const BmiCalculator = () => {
                               <Input
                                 type="number"
                                 {...field}
-                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
                                 className="w-20 px-2 py-1 text-end"
                               />
                             </FormControl>
@@ -248,9 +259,9 @@ const BmiCalculator = () => {
             </Form>
           </Card>
           <Card>
-      {/* BMI results */}
-      {bmiResult !== null && <p>Your BMI is: {bmiResult}</p>}
-    </Card>
+            {/* BMI results */}
+            {bmiResult !== null && <p>Your BMI is: {bmiResult}</p>}
+          </Card>
         </div>
         <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-2">
           <ul>
@@ -283,27 +294,28 @@ const BmiCalculator = () => {
               Related
             </button>
           </div>
-          <div className="flex justify-center bg-gray-200 mt-10 rounded-sm">
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              BMI Calculator
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-          </div>
+          {/* Links to related calculators */}
+          <section className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+            <Link to="/CalorieCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Calorie Calculator
+              </Button>
+            </Link>
+            <Link to="/IdealWeightCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Ideal Weight Calculators
+              </Button>
+            </Link>
+            <Link to="/CaloriesBurntCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Calories Burnt Calculators
+              </Button>
+            </Link>
+          </section>
         </section>
         {/* Additional Information */}
         <section>
-        <div>
+          <div>
             {BMIinfo.map((info, index) => (
               <div key={index} className="mt-5 rounded-sm p-4">
                 {info.title && (

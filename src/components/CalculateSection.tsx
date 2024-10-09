@@ -14,7 +14,7 @@ import 'react-circular-progressbar/dist/styles.css';
 const CalculateSection = () => {
   return (
     <>
-      <Card className="ml-8 mr-8 bg-purple-400">
+      <Card className="ml-8 mr-8 bg-pink-50">
         <div className="flex justify-between w-full">
           <div className="w-2/4 pr-4"> 
             <CardHeader className="mt-10 text-purple-900 font-extrabold text-4xl">

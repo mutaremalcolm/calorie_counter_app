@@ -20,6 +20,7 @@ import {
 
 export const description = "A bar chart with negative values"
 
+// constants
 const chartData = [
   { month: "January", visitors: 186 },
   { month: "February", visitors: 205 },

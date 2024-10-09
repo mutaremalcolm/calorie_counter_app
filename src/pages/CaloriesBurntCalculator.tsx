@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, Play } from "lucide-react";
 import { caloriesBurntTitle } from "@/lib/constants";
+import { Link } from "react-router-dom";
 
 // Function to calculate the calorie deficit
 const calculateEnergyBalance = (
@@ -206,6 +207,38 @@ const CaloriesBurntCalculator = () => {
             </li>
           </ul>
         </section>
+        {/* Related calculators section */}
+        <section className="relative w-full mt-5">
+          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+            <button
+              className={`px-4 py-2 rounded ${
+                unitType === "US"
+                  ? "bg-gray-200 text-purple-500"
+                  : "bg-transparent"
+              }`}
+              onClick={() => setUnitType("US")}
+            >
+              Related
+            </button>
+          </div>
+        <section className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+            <Link to="/CalorieCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Calorie Calculator
+              </Button>
+            </Link>
+            <Link to="/IdealWeightCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Ideal Weight Calculators
+              </Button>
+            </Link>
+            <Link to="/BmiCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                BMI Calculator
+              </Button>
+            </Link>
+          </section>
+          </section>
         <section>
           <div className="mt-5 bg-gray-200 rounded-sm p-4">
             {energyBalance !== null && (
