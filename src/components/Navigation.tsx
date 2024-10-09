@@ -81,7 +81,7 @@ const Navigation = () => {
                 </ul>
 
                 {/* Show Sign Up button only if the user is NOT logged in */}
-                <Link to="/signup" target="_blank" rel="noopener noreferrer">
+                <Link to="/signup"  rel="noopener noreferrer">
                   <Button className="text-white bg-purple-600 text-base font-semibold">
                     Sign Up
                   </Button>

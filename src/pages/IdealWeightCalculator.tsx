@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
+import { idealWeightTitle } from "@/lib/constants";
 
 // IBW Calculation using Devine Formula
 const calculateIBW = (gender: "male" | "female", heightCm: number): number => {
@@ -83,19 +84,18 @@ const IdealWeightCalculator = () => {
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
           {/* Title Section */}
-          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
-            Ideal Weight Calculator
-          </h1>
-          <div className="bg-gray-200 rounded-sm p-4">
-            <span>
-              The Ideal Weight Calculator computes ideal body weight (IBW)
-              ranges based on height, gender, and age. The idea of finding the
-              IBW using a formula has been sought after by many experts for a
-              long time. Currently, there exist several popular formulas, and
-              our Ideal Weight Calculator provides their results for
-              side-by-side comparisons.
-            </span>
-          </div>
+        {idealWeightTitle.map((info, index) => (
+            <div key={index} className="mt-5 rounded-sm">
+              {info.title && (
+                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                  {info.title}
+                </h1>
+              )}
+              <div className=" bg-gray-200 p-4 rounded-sm">
+                <p>{info.content}</p>
+              </div>
+            </div>
+          ))}
           <div className="flex justify-center bg-purple-500 text-white">
             <ChevronDown />
             <span>

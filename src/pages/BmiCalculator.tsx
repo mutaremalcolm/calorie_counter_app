@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
+import { BMIinfo, BMItitle } from "@/lib/constants";
 
 const calculateBMI = (_age: number, _gender: string, height: number, weight: number) => {
   // Convert height from cm to meters
@@ -72,7 +73,6 @@ const BmiCalculator = () => {
       values.weight
     );
     setBmiResult(bmiResults); 
-    console.log(values);
   }
 
 
@@ -81,20 +81,18 @@ const BmiCalculator = () => {
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
           {/* Title */}
-          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
-            BMI Calculator
-          </h1>
-          <div className="bg-gray-200 rounded-sm p-4">
-            <span>
-              The Body Mass Index (BMI) Calculator can be used to calculate BMI
-              value and corresponding weight status while taking age into
-              consideration. Use the "Metric Units" tab for the International
-              System of Units or the "Other Units" tab to convert units into
-              either US or metric units. Note that the calculator also computes
-              the Ponderal Index in addition to BMI, both of which are discussed
-              below in detail.
-            </span>
-          </div>
+          {BMItitle.map((info, index)=> (
+            <div key={index} className="mt-5 rounded-sm">
+              {info.title && (
+                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                  {info.title}
+                </h1>
+              )}
+              <div className=" bg-gray-200 p-4 rounded-sm">
+                  <p>{info.content}</p>
+                </div>
+            </div>
+          ))}
           <div className="flex justify-center bg-purple-500 text-white">
             <ChevronDown />
             <span>
@@ -137,6 +135,7 @@ const BmiCalculator = () => {
                   name="age"
                   render={({ field }) => (
                     <>
+                    {/* Age Input */}
                       <FormItem className="flex items-center">
                         <FormLabel className="flex-shrink-0 ml-4 mr-2">
                           Age
@@ -155,7 +154,7 @@ const BmiCalculator = () => {
                           ages 15 - 80
                         </FormDescription>
                       </FormItem>
-
+                      {/* Gender Section */}
                       <FormField
                         control={form.control}
                         name="gender"
@@ -181,6 +180,7 @@ const BmiCalculator = () => {
                           </FormItem>
                         )}
                       />
+                      {/* Height section */}
                       <FormField
                         control={form.control}
                         name="height"
@@ -204,7 +204,7 @@ const BmiCalculator = () => {
                           </FormItem>
                         )}
                       />
-
+                      {/* Weight Section */}
                       <FormField
                         control={form.control}
                         name="weight"
@@ -248,7 +248,6 @@ const BmiCalculator = () => {
             </Form>
           </Card>
           <Card>
-    
       {/* BMI results */}
       {bmiResult !== null && <p>Your BMI is: {bmiResult}</p>}
     </Card>
@@ -271,7 +270,7 @@ const BmiCalculator = () => {
         </section>
         {/* TODO: Customise additional calculator buttons */}
         {/* Related Calculators */}
-        <section className="relative w-full mt-5">
+        <section className="relative w-full mt-5 md: ml-2">
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
@@ -304,92 +303,20 @@ const BmiCalculator = () => {
         </section>
         {/* Additional Information */}
         <section>
-          <div className="mt-5 bg-gray-200 rounded-sm p-4">
-            The Body Mass Index (BMI) Calculator can be used to calculate BMI
-            value and corresponding weight status while taking age into
-            consideration. Use the "Metric Units" tab for the International
-            System of Units or the "Other Units" tab to convert units into
-            either US or metric units. Note that the calculator also computes
-            the Ponderal Index in addition to BMI, both of which are discussed
-            below in detail.
-          </div>
-          <h5 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            BMI table for adults
-          </h5>
-          <div className="bg-gray-200 rounded-sm p-4">
-            <span>
-              This is the World Health Organization's (WHO) recommended body
-              weight based on BMI values for adults. It is used for both men and
-              women, age 20 or older.
-            </span>
-          </div>
-          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            BMI chart for adults
-          </h4>
-          <div className="bg-gray-200 rounded-sm p-4">
-            <span>
-              This is a graph of BMI categories based on the World Health
-              Organization data. The dashed lines represent subdivisions within
-              a major categorization.
-            </span>
-          </div>
-          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            BMI table for children and teens, age 2-20
-          </h4>
-          <div className="bg-gray-200 rounded-sm p-4">
-            <span>
-              The Centers for Disease Control and Prevention (CDC) recommends
-              BMI categorization for children and teens between age 2 and 20.
-            </span>
-          </div>
-          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            Risks assosciated with being overweight
-          </h4>
-          <div className="bg-gray-200 rounded-sm p-4">
-            <span>
-              Being overweight increases the risk of a number of serious
-              diseases and health conditions. Below is a list of said risks,
-              according to the Centers for Disease Control and Prevention (CDC):
-              High blood pressure Higher levels of LDL cholesterol, which is
-              widely considered "bad cholesterol," lower levels of HDL
-              cholesterol, considered to be good cholesterol in moderation, and
-              high levels of triglycerides Type II diabetes Coronary heart
-              disease Stroke Gallbladder disease Osteoarthritis, a type of joint
-              disease caused by breakdown of joint cartilage Sleep apnea and
-              breathing problems Certain cancers (endometrial, breast, colon,
-              kidney, gallbladder, liver) Low quality of life Mental illnesses
-              such as clinical depression, anxiety, and others Body pains and
-              difficulty with certain physical functions Generally, an increased
-              risk of mortality compared to those with a healthy BMI As can be
-              seen from the list above, there are numerous negative, in some
-              cases fatal, outcomes that may result from being overweight.
-              Generally, a person should try to maintain a BMI below 25 kg/m2,
-              but ideally should consult their doctor to determine whether or
-              not they need to make any changes to their lifestyle in order to
-              be healthier.
-            </span>
-          </div>
-          <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-            Risks assosciated with being underweight
-          </h4>
-          <div className="bg-gray-200 rounded-sm p-4">
-            <span>
-              Being underweight has its own associated risks, listed below:
-              Malnutrition, vitamin deficiencies, anemia (lowered ability to
-              carry blood vessels) Osteoporosis, a disease that causes bone
-              weakness, increasing the risk of breaking a bone A decrease in
-              immune function Growth and development issues, particularly in
-              children and teenagers Possible reproductive issues for women due
-              to hormonal imbalances that can disrupt the menstrual cycle.
-              Underweight women also have a higher chance of miscarriage in the
-              first trimester Potential complications as a result of surgery
-              Generally, an increased risk of mortality compared to those with a
-              healthy BMI In some cases, being underweight can be a sign of some
-              underlying condition or disease such as anorexia nervosa, which
-              has its own risks. Consult your doctor if you think you or someone
-              you know is underweight, particularly if the reason for being
-              underweight does not seem obvious.
-            </span>
+        <div>
+            {BMIinfo.map((info, index) => (
+              <div key={index} className="mt-5 rounded-sm p-4">
+                {info.title && (
+                  <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                    {info.title}
+                  </h4>
+                )}
+                <div className=" bg-gray-200 p-4 rounded-sm">
+                  <p>{info.content}</p>
+                  {info.equation && <p>{info.equation}</p>}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       </main>

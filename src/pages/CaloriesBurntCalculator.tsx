@@ -15,9 +15,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, Play } from "lucide-react";
+import { caloriesBurntTitle } from "@/lib/constants";
 
 // Function to calculate the calorie deficit
-const calculateEnergyBalance = (caloriesConsumed: number, caloriesBurnt: number) => {
+const calculateEnergyBalance = (
+  caloriesConsumed: number,
+  caloriesBurnt: number
+) => {
   return caloriesConsumed - caloriesBurnt;
 };
 
@@ -62,24 +66,32 @@ const CaloriesBurntCalculator = () => {
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
-          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
-            Calories Burnt Calculator
-          </h1>
-          <div className="bg-gray-200 rounded-sm p-4">
-            <span>
-              The Calories Burnt Calculator estimates the number of calories you burn during various activities. Enter the calories you've consumed and burnt to track your energy balance.
-            </span>
-          </div>
+          {caloriesBurntTitle.map((info, index) => (
+            <div key={index} className="mt-5 rounded-sm">
+              {info.title && (
+                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                  {info.title}
+                </h1>
+              )}
+              <div className=" bg-gray-200 p-4 rounded-sm">
+                <p>{info.content}</p>
+              </div>
+            </div>
+          ))}
           <div className="flex justify-center bg-purple-500 text-white">
             <ChevronDown />
-            <span>Modify the values below and click the Calculate button to use</span>
+            <span>
+              Modify the values below and click the Calculate button to use
+            </span>
           </div>
         </section>
         <div className="relative w-full max-w-md">
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
-                unitType === "US" ? "bg-purple-500 text-white" : "bg-transparent"
+                unitType === "US"
+                  ? "bg-purple-500 text-white"
+                  : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
             >
@@ -87,7 +99,9 @@ const CaloriesBurntCalculator = () => {
             </button>
             <button
               className={`px-4 py-2 rounded ${
-                unitType === "Metric" ? "bg-purple-500 text-white" : "bg-gray-200"
+                unitType === "Metric"
+                  ? "bg-purple-500 text-white"
+                  : "bg-gray-200"
               }`}
               onClick={() => setUnitType("Metric")}
             >
@@ -96,24 +110,33 @@ const CaloriesBurntCalculator = () => {
           </div>
           <Card className="w-full p-4 mt-8">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 {/* Calories Consumed Field */}
                 <FormField
                   control={form.control}
                   name="caloriesConsumed"
                   render={({ field }) => (
                     <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">Calories Consumed</FormLabel>
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Calories Consumed
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           placeholder="500"
                           {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                           className="w-20 px-2 py-1 text-end"
                         />
                       </FormControl>
-                      <FormDescription className="ml-2">Calories 500 - 3500</FormDescription>
+                      <FormDescription className="ml-2">
+                        Calories 500 - 3500
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -125,17 +148,23 @@ const CaloriesBurntCalculator = () => {
                   name="caloriesBurnt"
                   render={({ field }) => (
                     <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">Calories Burnt</FormLabel>
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Calories Burnt
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           placeholder="300"
                           {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                           className="w-20 px-2 py-1 text-end"
                         />
                       </FormControl>
-                      <FormDescription className="ml-2">Calories 0 - 5000</FormDescription>
+                      <FormDescription className="ml-2">
+                        Calories 0 - 5000
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -151,7 +180,7 @@ const CaloriesBurntCalculator = () => {
                     className="ml-2 bg-purple-500"
                     onClick={() => {
                       form.reset();
-                      setEnergyBalance(null); 
+                      setEnergyBalance(null);
                     }}
                   >
                     Clear
@@ -163,9 +192,18 @@ const CaloriesBurntCalculator = () => {
         </div>
         <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-4">
           <ul>
-            <li><strong>Calories Burnt:</strong> Track the calories you've burned through various activities.</li>
-            <li><strong>Calories Consumed:</strong> Monitor your daily calorie intake.</li>
-            <li><strong>Energy Balance:</strong> Understand the balance between calories consumed and burnt.</li>
+            <li>
+              <strong>Calories Burnt:</strong> Track the calories you've burned
+              through various activities.
+            </li>
+            <li>
+              <strong>Calories Consumed:</strong> Monitor your daily calorie
+              intake.
+            </li>
+            <li>
+              <strong>Energy Balance:</strong> Understand the balance between
+              calories consumed and burnt.
+            </li>
           </ul>
         </section>
         <section>
@@ -175,7 +213,9 @@ const CaloriesBurntCalculator = () => {
                 <strong>Energy Balance:</strong> {energyBalance}
               </p>
             )}
-            The Calories Burnt Calculator can be used to estimate the number of calories you burn during various activities. It helps you understand your energy expenditure and manage your weight effectively.
+            The Calories Burnt Calculator can be used to estimate the number of
+            calories you burn during various activities. It helps you understand
+            your energy expenditure and manage your weight effectively.
           </div>
         </section>
       </main>
