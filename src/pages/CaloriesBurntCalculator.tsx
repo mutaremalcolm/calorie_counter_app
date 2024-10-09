@@ -74,7 +74,7 @@ const CaloriesBurntCalculator = () => {
                   {info.title}
                 </h1>
               )}
-              <div className=" bg-gray-200 p-4 rounded-sm">
+              <div className=" bg-pink-40 p-4 rounded-sm">
                 <p>{info.content}</p>
               </div>
             </div>
@@ -191,7 +191,7 @@ const CaloriesBurntCalculator = () => {
             </Form>
           </Card>
         </div>
-        <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-4">
+        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-4">
           <ul>
             <li>
               <strong>Calories Burnt:</strong> Track the calories you've burned
@@ -213,7 +213,7 @@ const CaloriesBurntCalculator = () => {
             <button
               className={`px-4 py-2 rounded ${
                 unitType === "US"
-                  ? "bg-gray-200 text-purple-500"
+                  ? "bg-pink-50 text-purple-500"
                   : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
@@ -221,7 +221,7 @@ const CaloriesBurntCalculator = () => {
               Related
             </button>
           </div>
-        <section className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+        <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
             <Link to="/CalorieCalculator">
               <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
                 Calorie Calculator
@@ -240,7 +240,7 @@ const CaloriesBurntCalculator = () => {
           </section>
           </section>
         <section>
-          <div className="mt-5 bg-gray-200 rounded-sm p-4">
+          <div className="mt-5 bg-pink-50 rounded-sm p-4">
             {energyBalance !== null && (
               <p>
                 <strong>Energy Balance:</strong> {energyBalance}

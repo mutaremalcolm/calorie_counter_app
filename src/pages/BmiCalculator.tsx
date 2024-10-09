@@ -93,7 +93,7 @@ const BmiCalculator = () => {
                   {info.title}
                 </h1>
               )}
-              <div className=" bg-gray-200 p-4 rounded-sm">
+              <div className=" bg-pink-40 p-4 rounded-sm">
                 <p>{info.content}</p>
               </div>
             </div>
@@ -263,7 +263,7 @@ const BmiCalculator = () => {
             {bmiResult !== null && <p>Your BMI is: {bmiResult}</p>}
           </Card>
         </div>
-        <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-2">
+        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-2">
           <ul>
             <li>
               <strong>Healthy BMI Range:</strong> 18.5 kg/m - 25 kg/m
@@ -286,7 +286,7 @@ const BmiCalculator = () => {
             <button
               className={`px-4 py-2 rounded ${
                 unitType === "US"
-                  ? "bg-gray-200 text-purple-500"
+                  ? "bg-pink-200 text-purple-500"
                   : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
@@ -295,7 +295,7 @@ const BmiCalculator = () => {
             </button>
           </div>
           {/* Links to related calculators */}
-          <section className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+          <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
             <Link to="/CalorieCalculator">
               <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
                 Calorie Calculator
@@ -323,7 +323,7 @@ const BmiCalculator = () => {
                     {info.title}
                   </h4>
                 )}
-                <div className=" bg-gray-200 p-4 rounded-sm">
+                <div className=" bg-pink-50 p-4 rounded-sm">
                   <p>{info.content}</p>
                   {info.equation && <p>{info.equation}</p>}
                 </div>

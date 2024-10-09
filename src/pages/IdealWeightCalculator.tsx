@@ -92,7 +92,7 @@ const IdealWeightCalculator = () => {
                   {info.title}
                 </h1>
               )}
-              <div className=" bg-gray-200 p-4 rounded-sm">
+              <div className=" bg-pink-40 p-4 rounded-sm">
                 <p>{info.content}</p>
               </div>
             </div>
@@ -241,15 +241,15 @@ const IdealWeightCalculator = () => {
         </div>
         {/* Display IBW Result */}
         {ibwResult !== null && (
-          <Card className="w-full max-w-md p-4 mt-8 bg-gray-200">
+          <Card className="w-full max-w-md p-4 mt-8 bg-pink-50">
             <h2 className="text-xl font-bold mb-2">Ideal Body Weight (IBW) Result</h2>
             <p>
               Your Ideal Body Weight is: <strong>{ibwResult} kg</strong>
             </p>
           </Card>
         )}
-        {/* Additional Information Sections */}
-        <section className="ml-2 text-sm bg-gray-200 rounded-sm p-4 mt-4">
+        {/* Additional Information Section */}
+        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-4">
           <ul>
             <li>
               <strong>Ideal Body Weight (IBW):</strong> An estimate of the optimal body weight based on height and gender.
@@ -264,7 +264,7 @@ const IdealWeightCalculator = () => {
         </section>
         {/* Related Calculators */}
         <section className="relative w-full mt-5">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-pink-50 rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
                 unitType === "US"
@@ -277,7 +277,7 @@ const IdealWeightCalculator = () => {
             </button>
           </div>
           {/* Related Calculators */}
-          <section className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+          <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
             <Link to="/CalorieCalculator">
               <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
                 Calorie Calculator
@@ -298,7 +298,7 @@ const IdealWeightCalculator = () => {
         {/* TODO: export static data and use map method */}
         {/* Additional Information */}
         <section>
-          <div className="mt-5 bg-gray-200 rounded-sm p-4">
+          <div className="mt-5 bg-pink-50 rounded-sm p-4">
             The Ideal Weight Calculator can be used to estimate your ideal body weight based on your height and gender. It serves as a general guideline and should be used in conjunction with other health assessments.
           </div>
         </section>

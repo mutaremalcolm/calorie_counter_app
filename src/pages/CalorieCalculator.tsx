@@ -16,13 +16,13 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { DropdownMenuCheckboxItem } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Play } from "lucide-react";
 import { calorieInfo, calorieTitle } from "@/lib/constants";
@@ -35,15 +35,13 @@ const activityLevels = {
   "Heavy: daily exercise or intense exercise 6-7 times/week": 1.725,
 };
 
-type ActivityLevel = keyof typeof activityLevels;
-
 // Calculate Calories (using Harris-Benedict formula)
 const calculateCalories = (
   age: number,
   gender: "male" | "female",
   height: number,
   weight: number,
-  activity: ActivityLevel
+  activity: keyof typeof activityLevels
 ) => {
   let bmr;
   if (gender === "male") {
@@ -52,27 +50,20 @@ const calculateCalories = (
     bmr = 447.593 + 9.247 * weight + 3.098 * height - 4.33 * age;
   }
 
-  const maintainanceCalories = bmr * activityLevels[activity];
-  const loseHalfKgCalories = maintainanceCalories - 500;
-  const loseOneKgCalories = maintainanceCalories - 1000;
+  const maintenanceCalories = bmr * activityLevels[activity];
+  const loseHalfKgCalories = maintenanceCalories - 500;
+  const loseOneKgCalories = maintenanceCalories - 1000;
 
   return {
-    maintenance: Math.round(maintainanceCalories),
+    maintenance: Math.round(maintenanceCalories),
     loseHalfKg: Math.round(loseHalfKgCalories),
     loseOneKg: Math.round(loseOneKgCalories),
   };
 };
 
 const CalorieCalculator = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activity, setActivity] = React.useState<ActivityLevel>(
-    "Moderate: exercise 4-5 times/week"
-  );
   const [unitType, setUnitType] = React.useState("US");
-  const [calorieResults, setCalorieResults] = React.useState<ReturnType<
-    typeof calculateCalories
-  > | null>(null);
-
+  const [calorieResults, setCalorieResults] = React.useState<ReturnType<typeof calculateCalories> | null>(null);
 
   // Form Schema
   const formSchema = z.object({
@@ -101,11 +92,7 @@ const CalorieCalculator = () => {
       .min(30, "Weight must be at least 30kg")
       .max(300, "Weight must be under 300kg"),
     activity: z.enum(
-      [
-        "Light: exercise 1-2 times/week",
-        "Moderate: exercise 4-5 times/week",
-        "Heavy: daily exercise or intense exercise 6-7 times/week",
-      ] as const,
+      Object.keys(activityLevels) as [keyof typeof activityLevels],
       {
         required_error: "Please select an activity level",
       }
@@ -135,7 +122,7 @@ const CalorieCalculator = () => {
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         {/* title */}
         <section>
-        {calorieTitle.map((info, index)=> (
+          {calorieTitle.map((info, index) => (
             <div key={index} className="mt-5 rounded-sm">
               {info.title && (
                 <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
@@ -143,8 +130,8 @@ const CalorieCalculator = () => {
                 </h1>
               )}
               <div className=" bg-pink-40 p-4 rounded-sm">
-                  <p>{info.content}</p>
-                </div>
+                <p>{info.content}</p>
+              </div>
             </div>
           ))}
           <div className="flex justify-center bg-purple-500 text-white">
@@ -290,102 +277,88 @@ const CalorieCalculator = () => {
                     </FormItem>
                   )}
                 />
-                {/* Activity Section */}
+                {/* Activity Drop Down Selection */}
                 <FormField
-  control={form.control}
-  name="activity"
-  render={({ field }) => (
-    <FormItem className="flex items-center w-full">
-      <FormLabel className="flex-shrink-0 ml-4 mr-2 required">
-        Activity
-      </FormLabel>
-      <FormControl>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div>
-              <Input
-                readOnly
-                value={field.value}
-                className="cursor-pointer text-start pr-8"
-              />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>
-              Select Activity Level
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem
-              checked={field.value === "Light: exercise 1-2 times/week"}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  field.onChange("Light: exercise 1-2 times/week");
-                }
-              }}
-            >
-              Light: exercise 1-2 times/week
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={field.value === "Moderate: exercise 4-5 times/week"}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  field.onChange("Moderate: exercise 4-5 times/week");
-                }
-              }}
-            >
-              Moderate: exercise 4-5 times/week
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={field.value === "Heavy: daily exercise or intense exercise 6-7 times/week"}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  field.onChange("Heavy: daily exercise or intense exercise 6-7 times/week");
-                }
-              }}
-            >
-              Heavy: daily exercise or intense exercise 6-7 times/week
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-                {/* Settings Section */}
-                <section className="ml-10 underline">+ Settings</section>
-                <div className="pb-4">
-                  <Button type="submit" className="ml-10 bg-purple-500">
-                    Calculate
-                    <Play className="w-4 h-4 ml-2 fill-light" />
-                  </Button>
-                  <Button
-                    type="button"
-                    className="ml-2 bg-purple-500"
-                    onClick={() => {
-                      form.reset();
-                      setActivity("Moderate: exercise 4-5 times/week");
-                      setCalorieResults(null);
-                    }}
-                  >
-                    Clear
-                  </Button>
-                </div>
+                  control={form.control}
+                  name="activity"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center w-full">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2 required">
+                        Activity Level
+                      </FormLabel>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <div>
+                            <Input
+                              readOnly
+                              value={field.value}
+                              className="cursor-pointer text-start pr-8"
+                            />
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuLabel>
+                            Select an activity level
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {Object.keys(activityLevels).map((level) => (
+                            <DropdownMenuCheckboxItem
+                              key={level}
+                              checked={field.value === level}
+                              onCheckedChange={() => {
+                                field.onChange(
+                                  level as keyof typeof activityLevels
+                                );
+                              }}
+                            >
+                              {level}
+                            </DropdownMenuCheckboxItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <section>
+                  <div className="ml-10 underline">+ Settings</div>
+                  <div className="pb-4">
+                    {/* TODO: fix form reset */}
+                    <Button type="submit" className="ml-10 bg-purple-500">
+                      Calculate
+                      <Play className="w-4 h-4 ml-2 fill-light" />
+                    </Button>
+                    <Button
+                      type="button"
+                      className="ml-2 bg-purple-500"
+                      onClick={() => {
+                        form.reset();
+                        setCalorieResults(null);
+                      }}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </section>
               </form>
             </Form>
           </Card>
         </div>
-        {/* Results */}
+        {/* Result Section */}
         {calorieResults && (
-          <Card className="w-full p-4 mt-8">
-            <h2 className="text-xl font-bold mb-4">Your Calorie Needs:</h2>
-            <ul>
-              <li>Maintaince: {calorieResults.maintenance} calories/day</li>
-              <li>
-                To Lose 0.5kg/week: {calorieResults.loseHalfKg} calories/day
-              </li>
-              <li>To lose 1kg/week: {calorieResults.loseOneKg} calories/day</li>
-            </ul>
+          <Card className="w-full max-w-md p-4 mt-8">
+            <h2 className="text-lg font-semibold">Calorie Results</h2>
+            <p>
+              Maintenance: <strong>{calorieResults.maintenance}</strong> kcal
+            </p>
+            <p>
+              To Lose 0.5 kg/week: <strong>{calorieResults.loseHalfKg}</strong>{" "}
+              kcal
+            </p>
+            <p>
+              To Lose 1 kg/week: <strong>{calorieResults.loseOneKg}</strong>{" "}
+              kcal
+            </p>
           </Card>
         )}
         {/* Activity Levels */}
@@ -420,7 +393,7 @@ const CalorieCalculator = () => {
             </button>
           </div>
           {/*TODO: Optimise for mobile */}
-          <section className="flex justify-center bg-gray-200 mt-10 rounded-sm">
+          <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
             <Link to="/BmiCalculator">
               <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
                 BMI Calculator
@@ -455,7 +428,7 @@ const CalorieCalculator = () => {
                         <li key={idx}>{item}</li>
                       ))}
                     </ul>
-                  )}
+                  )} 
                 </div>
               </div>
             ))}
