@@ -12,8 +12,8 @@ const Hero = () => {
           className="w-full h-auto object-cover"
         />
       </div>
-
       {/* Hero Text */}
+      {/* TODO: Clean up - export constants */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-start pl-2">
         <h1 className="font-open-sans text-4xl sm:text-5xl font-black leading-tight text-purple-600 mb-6">
           Calculate Calories

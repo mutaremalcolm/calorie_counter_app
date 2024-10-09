@@ -29,6 +29,7 @@ const chartData = [
   { browser: "other", visitors: 190, fill: "var(--color-other)" },
 ]
 
+// constants
 const chartConfig = {
   visitors: {
     label: "Protein",

@@ -1,3 +1,4 @@
+import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,27 +14,52 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import React from "react";
 import { ChevronDown, Play } from "lucide-react";
+import { caloriesBurntTitle } from "@/lib/constants";
+import { Link } from "react-router-dom";
+
+// Function to calculate the calorie deficit
+const calculateEnergyBalance = (
+  caloriesConsumed: number,
+  caloriesBurnt: number
+) => {
+  return caloriesConsumed - caloriesBurnt;
+};
 
 const CaloriesBurntCalculator = () => {
   const [unitType, setUnitType] = React.useState("US");
+  const [energyBalance, setEnergyBalance] = React.useState<number | null>(null);
 
+  // Form schema
   const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    caloriesConsumed: z
+      .number({
+        required_error: "Calories Consumed is required",
+        invalid_type_error: "Calories Consumed must be a number",
+      })
+      .min(500, "Calories Consumed must be at least 500")
+      .max(3500, "Calories Consumed must be under 3500"),
+    caloriesBurnt: z
+      .number({
+        required_error: "Calories Burnt is required",
+        invalid_type_error: "Calories Burnt must be a number",
+      })
+      .min(0, "Calories Burnt cannot be negative")
+      .max(5000, "Calories Burnt must be under 5000"),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  type FormValues = z.infer<typeof formSchema>;
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
+  function onSubmit(values: FormValues) {
+    const result = calculateEnergyBalance(
+      values.caloriesConsumed,
+      values.caloriesBurnt
+    );
+    setEnergyBalance(result);
     console.log(values);
   }
 
@@ -41,20 +67,18 @@ const CaloriesBurntCalculator = () => {
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
-          <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
-            Calories Burnt Calculator
-          </h1>
-          <div className="bg-gray-200">
-            <span>
-              The Body Mass Index (BMI) Calculator can be used to calculate BMI
-              value and corresponding weight status while taking age into
-              consideration. Use the "Metric Units" tab for the International
-              System of Units or the "Other Units" tab to convert units into
-              either US or metric units. Note that the calculator also computes
-              the Ponderal Index in addition to BMI, both of which are discussed
-              below in detail.
-            </span>
-          </div>
+          {caloriesBurntTitle.map((info, index) => (
+            <div key={index} className="mt-5 rounded-sm">
+              {info.title && (
+                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                  {info.title}
+                </h1>
+              )}
+              <div className=" bg-pink-40 p-4 rounded-sm">
+                <p>{info.content}</p>
+              </div>
+            </div>
+          ))}
           <div className="flex justify-center bg-purple-500 text-white">
             <ChevronDown />
             <span>
@@ -91,73 +115,62 @@ const CaloriesBurntCalculator = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-4"
               >
+                {/* Calories Consumed Field */}
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="caloriesConsumed"
                   render={({ field }) => (
-                    <>
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Age
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="25"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormDescription className="ml-2">
-                          ages 15 - 80
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-
-                      <RadioGroup
-                        defaultValue="option-one"
-                        className="flex flex-row items-center w-full"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <span className="ml-4">Gender</span>
-                          <RadioGroupItem value="option-one" id="option-one" />
-                          <Label htmlFor="option-one">Male</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="option-two" id="option-two" />
-                          <Label htmlFor="option-two">Female</Label>
-                        </div>
-                      </RadioGroup>
-
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Height
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="cm"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Weight
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="kg"
-                            {...field}
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    </>
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Calories Consumed
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="500"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormDescription className="ml-2">
+                        Calories 500 - 3500
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
+
+                {/* Calories Burnt Field */}
+                <FormField
+                  control={form.control}
+                  name="caloriesBurnt"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Calories Burnt
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="300"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormDescription className="ml-2">
+                        Calories 0 - 5000
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <section className="ml-10 underline">+ Settings</section>
                 <section className="pb-4">
                   <Button type="submit" className="ml-10 bg-purple-500">
                     Calculate
@@ -166,7 +179,10 @@ const CaloriesBurntCalculator = () => {
                   <Button
                     type="button"
                     className="ml-2 bg-purple-500"
-                    onClick={() => form.reset()}
+                    onClick={() => {
+                      form.reset();
+                      setEnergyBalance(null);
+                    }}
                   >
                     Clear
                   </Button>
@@ -175,142 +191,64 @@ const CaloriesBurntCalculator = () => {
             </Form>
           </Card>
         </div>
-        <section className="ml-2 text-sm bg-gray-200 mt-2 p-2">
+        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-4">
           <ul>
             <li>
-              <strong>Healthy BMI Range:</strong> 18.5 kg/m - 25 kg/m
+              <strong>Calories Burnt:</strong> Track the calories you've burned
+              through various activities.
             </li>
             <li>
-              <strong>Healthy weight for the weight:</strong> 59.9kg - 81 kg
+              <strong>Calories Consumed:</strong> Monitor your daily calorie
+              intake.
             </li>
             <li>
-              <strong>BMI Prime:</strong> 0.8
-            </li>
-            <li>
-              <strong>Ponderal Index:</strong> 11.1 kg/m
+              <strong>Energy Balance:</strong> Understand the balance between
+              calories consumed and burnt.
             </li>
           </ul>
         </section>
-        {/* TODO: Customise additional calculator buttons */}
+        {/* Related calculators section */}
         <section className="relative w-full mt-5">
-        <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
-                unitType === "US" ? "bg-gray-200 text-purple-500" : "bg-transparent"
+                unitType === "US"
+                  ? "bg-pink-50 text-purple-500"
+                  : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
             >
               Related
             </button>
           </div>
-          <div className="flex justify-center bg-gray-200 mt-10 rounded-sm">
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              BMI Calculator
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-            <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-              Other Calculators
-            </Button>
-          </div>
+        <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
+            <Link to="/CalorieCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Calorie Calculator
+              </Button>
+            </Link>
+            <Link to="/IdealWeightCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                Ideal Weight Calculators
+              </Button>
+            </Link>
+            <Link to="/BmiCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                BMI Calculator
+              </Button>
+            </Link>
+          </section>
           </section>
         <section>
-          <div className="mt-5 bg-gray-200 p-2">
-            The Body Mass Index (BMI) Calculator can be used to calculate BMI
-            value and corresponding weight status while taking age into
-            consideration. Use the "Metric Units" tab for the International
-            System of Units or the "Other Units" tab to convert units into
-            either US or metric units. Note that the calculator also computes
-            the Ponderal Index in addition to BMI, both of which are discussed
-            below in detail.
-          </div>
-          <div className="mt-5">
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1">
-              BMI table for adults
-            </h4>
-            <div className="bg-gray-200 p-2">
-              <span>
-                This is the World Health Organization's (WHO) recommended body
-                weight based on BMI values for adults. It is used for both men
-                and women, age 20 or older.
-              </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              BMI chart for adults
-            </h4>
-            <div className="bg-gray-200">
-              <span>
-                This is a graph of BMI categories based on the World Health
-                Organization data. The dashed lines represent subdivisions
-                within a major categorization.
-              </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              BMI table for children and teens, age 2-20
-            </h4>
-            <div className="bg-gray-200">
-              <span>
-                The Centers for Disease Control and Prevention (CDC) recommends
-                BMI categorization for children and teens between age 2 and 20.
-              </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              Risks assosciated with being overweight
-            </h4>
-            <div className="bg-gray-200">
-              <span>
-                Being overweight increases the risk of a number of serious
-                diseases and health conditions. Below is a list of said risks,
-                according to the Centers for Disease Control and Prevention
-                (CDC): High blood pressure Higher levels of LDL cholesterol,
-                which is widely considered "bad cholesterol," lower levels of
-                HDL cholesterol, considered to be good cholesterol in
-                moderation, and high levels of triglycerides Type II diabetes
-                Coronary heart disease Stroke Gallbladder disease
-                Osteoarthritis, a type of joint disease caused by breakdown of
-                joint cartilage Sleep apnea and breathing problems Certain
-                cancers (endometrial, breast, colon, kidney, gallbladder, liver)
-                Low quality of life Mental illnesses such as clinical
-                depression, anxiety, and others Body pains and difficulty with
-                certain physical functions Generally, an increased risk of
-                mortality compared to those with a healthy BMI As can be seen
-                from the list above, there are numerous negative, in some cases
-                fatal, outcomes that may result from being overweight.
-                Generally, a person should try to maintain a BMI below 25 kg/m2,
-                but ideally should consult their doctor to determine whether or
-                not they need to make any changes to their lifestyle in order to
-                be healthier.
-              </span>
-            </div>
-            <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-              Risks assosciated with being underweight
-            </h4>
-            <div className="bg-gray-200">
-              <span>
-                Being underweight has its own associated risks, listed below:
-                Malnutrition, vitamin deficiencies, anemia (lowered ability to
-                carry blood vessels) Osteoporosis, a disease that causes bone
-                weakness, increasing the risk of breaking a bone A decrease in
-                immune function Growth and development issues, particularly in
-                children and teenagers Possible reproductive issues for women
-                due to hormonal imbalances that can disrupt the menstrual cycle.
-                Underweight women also have a higher chance of miscarriage in
-                the first trimester Potential complications as a result of
-                surgery Generally, an increased risk of mortality compared to
-                those with a healthy BMI In some cases, being underweight can be
-                a sign of some underlying condition or disease such as anorexia
-                nervosa, which has its own risks. Consult your doctor if you
-                think you or someone you know is underweight, particularly if
-                the reason for being underweight does not seem obvious.
-              </span>
-            </div>
+          <div className="mt-5 bg-pink-50 rounded-sm p-4">
+            {energyBalance !== null && (
+              <p>
+                <strong>Energy Balance:</strong> {energyBalance}
+              </p>
+            )}
+            The Calories Burnt Calculator can be used to estimate the number of
+            calories you burn during various activities. It helps you understand
+            your energy expenditure and manage your weight effectively.
           </div>
         </section>
       </main>

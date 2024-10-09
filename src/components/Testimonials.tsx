@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, CardHeader, CardDescription, CardContent } from '@/components/ui/card';
-
+import { testimonials } from '@/lib/constants';
 
 const TestimonialsSection: React.FC = () => {
   return (
-    <section className="py-5 sm:py-16 lg:py-20 bg-purple-400 ml-8 mr-8 rounded-md">
+    <section className="py-5 sm:py-16 lg:py-20 bg-pink-50 ml-8 mr-8 rounded-md">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex flex-col items-center">
           <div className="text-center">
@@ -14,24 +14,12 @@ const TestimonialsSection: React.FC = () => {
             <div className="absolute -inset-x-1 inset-y-16 md:-inset-x-2 md:-inset-y-6">
             </div>
             <div className="relative grid max-w-lg grid-cols-1 gap-6 mx-auto md:max-w-none lg:gap-10 md:grid-cols-3">
-              <TestimonialCard
-                name="Leslie Alexander"
-                location="Seoul South Korea April 2019"
-                imageUrl="https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-1.png"
-                quote="“My new clients are achieving their weight goals much faster. Calorie makes it easier to know how to eat right.“"
-              />
-              <TestimonialCard
-                name="John Doe"
-                location="Honolulu Hawaii February 2017"
-                imageUrl="https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-2.png"
-                quote="“Body Recomposition is 75% Food and 25% work in the gym. Calorie is the tool we have been waiting for, its awesome.”"
-              />
-              <TestimonialCard
-                name="Jane Smith"
-                location="Berlin Germany April 2019"
-                imageUrl="https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-2.png"
-                quote="“Eating right with a hectic schedule is a challenge. Calorie simplified it for me by allowing me to prepare in advance.”"
-              />
+              {testimonials.map((testimonial) => (
+                <TestimonialCard
+                  key={testimonial.name} 
+                  {...testimonial} 
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -49,9 +37,9 @@ interface TestimonialCardProps {
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, location, imageUrl, quote }) => {
   return (
-    <Card className="flex flex-col overflow-hidden shadow-xl bg-purple-400 border-none">
+    <Card className="flex flex-col overflow-hidden shadow-xl bg-white border-none">
       <CardDescription className="flex items-center mt-8">
-        <img className="flex-shrink-0 object-cover rounded-full w-11 h-11" src={imageUrl} alt={name} />
+        <img className="flex-shrink-0 object-cover rounded-full w-11 h-11 pl-2" src={imageUrl} alt={name} />
         <div className="ml-4">
           <p className="text-base font-bold text-gray-900">{name}</p>
           <p className="mt-0.5 text-sm text-gray-600">{location}</p>
@@ -62,7 +50,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, location, image
           {[...Array(5)].map((_, i) => (
             <svg
               key={i}
-              className="w-5 h-5 text-[#4b3892]"
+              className="w-5 h-5 text-[#FFD700]"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -74,7 +62,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, location, image
       </CardHeader>
       <CardContent className="mt-8">
         <blockquote>
-          <p className="text-lg leading-relaxed text-gray-900">{quote}</p>
+          <p className="text-md leading-relaxed text-gray-900">{quote}</p>
         </blockquote>
       </CardContent>
     </Card>

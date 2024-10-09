@@ -20,6 +20,7 @@ import {
 
 export const description = "A multiple bar chart"
 
+// constants
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },

@@ -9,7 +9,7 @@ import { Button } from "../components/ui/button";
 const SearchSection = () => {
   return (
     <main className="flex justify-center items-center min-h-screen bg-white ml-8 mr-8">
-      <Card className="w-full p-8 bg-gray-200">
+      <Card className="w-full p-8 bg-pink-50">
         <div className="max-w-2xl mx-auto">
           <CardHeader className="text-center text-purple-900 font-extrabold text-4xl">
             <h4>What are you searching for?</h4>
