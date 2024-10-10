@@ -29,9 +29,8 @@ const calculateIBW = (gender: "male" | "female", heightCm: number): number => {
     return gender === "male" ? 50 : 45.5;
   }
 
-  const ibw = gender === "male"
-    ? 50 + 2.3 * inchesOver60
-    : 45.5 + 2.3 * inchesOver60;
+  const ibw =
+    gender === "male" ? 50 + 2.3 * inchesOver60 : 45.5 + 2.3 * inchesOver60;
 
   return Math.round(ibw * 10) / 10;
 };
@@ -85,7 +84,7 @@ const IdealWeightCalculator = () => {
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
           {/* Title Section */}
-        {idealWeightTitle.map((info, index) => (
+          {idealWeightTitle.map((info, index) => (
             <div key={index} className="mt-5 rounded-sm">
               {info.title && (
                 <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
@@ -111,7 +110,7 @@ const IdealWeightCalculator = () => {
               className={`px-4 py-2 rounded ${
                 unitType === "US"
                   ? "bg-purple-500 text-white"
-                  : "bg-transparent text-purple-500"
+                  : "bg-gray-200 text-purple-500"
               }`}
               onClick={() => handleUnitChange("US")}
             >
@@ -131,7 +130,10 @@ const IdealWeightCalculator = () => {
           {/* Input Card */}
           <Card className="w-full p-4 mt-8">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 {/* Age Field */}
                 <FormField
                   control={form.control}
@@ -161,7 +163,6 @@ const IdealWeightCalculator = () => {
                     </FormItem>
                   )}
                 />
-
                 {/* Gender Field */}
                 <FormField
                   control={form.control}
@@ -189,7 +190,6 @@ const IdealWeightCalculator = () => {
                     </FormItem>
                   )}
                 />
-
                 {/* Height Field */}
                 <FormField
                   control={form.control}
@@ -229,7 +229,7 @@ const IdealWeightCalculator = () => {
                     className="ml-2 bg-purple-500"
                     onClick={() => {
                       form.reset();
-                      setIbwResult(null); 
+                      setIbwResult(null);
                     }}
                   >
                     Clear
@@ -241,24 +241,59 @@ const IdealWeightCalculator = () => {
         </div>
         {/* Display IBW Result */}
         {ibwResult !== null && (
-          <Card className="w-full max-w-md p-4 mt-8 bg-pink-50">
-            <h2 className="text-xl font-bold mb-2">Ideal Body Weight (IBW) Result</h2>
-            <p>
-              Your Ideal Body Weight is: <strong>{ibwResult} kg</strong>
-            </p>
+          <Card className="w-full max-w-md p-6 mt-8 shadow-lg rounded-lg bg-white">
+            <h2 className="text-2xl font-bold mb-4 text-purple-500">
+              Ideal Body Weight (IBW) Result
+            </h2>
+
+            <div className="p-4 bg-white rounded-md space-y-4">
+              <div className="p-4 bg-purple-100 rounded-md">
+                <h3 className="text-xl font-semibold">Your IBW</h3>
+                <p className="text-lg">
+                  Based on your inputs, your Ideal Body Weight is:{" "}
+                  <strong>{ibwResult} kg</strong>.
+                </p>
+              </div>
+
+              <div className="p-4 bg-purple-100 rounded-md">
+                <h3 className="text-lg font-semibold">What does IBW mean?</h3>
+                <p className="text-sm text-gray-600">
+                  Ideal Body Weight (IBW) is a guide for determining the weight
+                  that is considered optimal for your height, gender, and age.
+                  It provides a baseline for maintaining good health and
+                  avoiding the risks associated with being underweight or
+                  overweight.
+                </p>
+              </div>
+
+              <div className="p-4 bg-purple-100 rounded-md">
+                <h3 className="text-lg font-semibold">
+                  Tips for maintaining your IBW
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Regular exercise and a balanced diet rich in nutrients can
+                  help you achieve and maintain your IBW. Remember that this is
+                  just a guide, and your overall health is determined by various
+                  factors.
+                </p>
+              </div>
+            </div>
           </Card>
         )}
         {/* Additional Information Section */}
         <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-4">
           <ul>
             <li>
-              <strong>Ideal Body Weight (IBW):</strong> An estimate of the optimal body weight based on height and gender.
+              <strong>Ideal Body Weight (IBW):</strong> An estimate of the
+              optimal body weight based on height and gender.
             </li>
             <li>
-              <strong>Age Consideration:</strong> While age can influence body composition, IBW primarily focuses on height and gender.
+              <strong>Age Consideration:</strong> While age can influence body
+              composition, IBW primarily focuses on height and gender.
             </li>
             <li>
-              <strong>Health Guidance:</strong> Use IBW as a general guideline and consult with healthcare professionals for personalized advice.
+              <strong>Health Guidance:</strong> Use IBW as a general guideline
+              and consult with healthcare professionals for personalized advice.
             </li>
           </ul>
         </section>
@@ -276,7 +311,6 @@ const IdealWeightCalculator = () => {
               Related
             </button>
           </div>
-          {/* Related Calculators */}
           <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
             <Link to="/CalorieCalculator">
               <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
@@ -295,11 +329,14 @@ const IdealWeightCalculator = () => {
             </Link>
           </section>
         </section>
-        {/* TODO: export static data and use map method */}
+        {/* TODO: export static data and use map method & add additional content */}
         {/* Additional Information */}
         <section>
           <div className="mt-5 bg-pink-50 rounded-sm p-4">
-            The Ideal Weight Calculator can be used to estimate your ideal body weight based on your height and gender. It serves as a general guideline and should be used in conjunction with other health assessments.
+            The Ideal Weight Calculator can be used to estimate your ideal body
+            weight based on your height and gender. It serves as a general
+            guideline and should be used in conjunction with other health
+            assessments.
           </div>
         </section>
       </main>

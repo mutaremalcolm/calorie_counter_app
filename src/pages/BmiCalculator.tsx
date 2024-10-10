@@ -258,9 +258,46 @@ const BmiCalculator = () => {
               </form>
             </Form>
           </Card>
-          <Card>
-            {/* BMI results */}
-            {bmiResult !== null && <p>Your BMI is: {bmiResult}</p>}
+          {/* Results section */}
+          <Card className="w-full max-w-md p-6 mt-8 shadow-lg rounded-lg bg-white">
+            <h2 className="text-2xl font-bold mb-4 text-purple-500">
+              BMI Results
+            </h2>
+
+            {/* Display the BMI result */}
+            {bmiResult !== null && (
+              <div className="p-4 bg-purple-100 rounded-md">
+                <h3 className="text-xl font-semibold mb-2">Your BMI</h3>
+                <p className="text-lg">
+                  Based on your inputs, your BMI is:{" "}
+                  <strong>{bmiResult.toFixed(1)}</strong>.
+                </p>
+              </div>
+            )}
+            {bmiResult !== null && (
+              <div className="mt-4 p-4 bg-purple-100 rounded-md">
+                <h3 className="text-lg font-semibold">BMI Interpretation</h3>
+                <p className="text-sm text-gray-600">
+                  {bmiResult < 18.5 && "You are considered underweight."}
+                  {bmiResult >= 18.5 &&
+                    bmiResult < 24.9 &&
+                    "You have a normal weight."}
+                  {bmiResult >= 25 &&
+                    bmiResult < 29.9 &&
+                    "You are considered overweight."}
+                  {bmiResult >= 30 && "You are considered obese."}
+                </p>
+              </div>
+            )}
+            {/* Tips for a healthy BMI */}
+            <div className="mt-4 p-4 bg-purple-100 rounded-md">
+              <h3 className="text-lg font-semibold">Tips for a Healthy BMI</h3>
+              <p className="text-sm text-gray-600">
+                Maintaining a healthy BMI involves a balanced diet, regular
+                exercise, and consistent health monitoring. Consider consulting
+                a healthcare provider for personalized advice.
+              </p>
+            </div>
           </Card>
         </div>
         <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-2">

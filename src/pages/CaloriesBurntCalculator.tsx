@@ -191,22 +191,48 @@ const CaloriesBurntCalculator = () => {
             </Form>
           </Card>
         </div>
-        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-4">
-          <ul>
-            <li>
-              <strong>Calories Burnt:</strong> Track the calories you've burned
-              through various activities.
-            </li>
-            <li>
-              <strong>Calories Consumed:</strong> Monitor your daily calorie
-              intake.
-            </li>
-            <li>
-              <strong>Energy Balance:</strong> Understand the balance between
-              calories consumed and burnt.
-            </li>
-          </ul>
-        </section>
+
+        {/* Results Section */}
+        {energyBalance !== null && (
+          <Card className="w-full max-w-md p-6 mt-8 shadow-lg rounded-lg bg-white">
+            <h2 className="text-2xl font-bold mb-4 text-purple-500">
+              Energy Balance Result
+            </h2>
+
+            <div className="p-4 bg-white rounded-md space-y-4">
+              <div className="p-4 bg-purple-100 rounded-md">
+                <h3 className="text-xl font-semibold">Your Energy Balance</h3>
+                <p className="text-lg">
+                  Based on your inputs, your energy balance is:{" "}
+                  <strong>{energyBalance} kcal</strong>.
+                </p>
+              </div>
+
+              <div className="p-4 bg-purple-100 rounded-md">
+                <h3 className="text-lg font-semibold">
+                  What does Energy Balance mean?
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Energy balance is the difference between the calories you
+                  consume and the calories you burn. A positive balance means
+                  weight gain, and a negative balance means weight loss.
+                </p>
+              </div>
+
+              <div className="p-4 bg-purple-100 rounded-md">
+                <h3 className="text-lg font-semibold">
+                  Tips for Managing Energy Balance
+                </h3>
+                <p className="text-sm text-gray-600">
+                  To maintain a healthy weight, aim for a balance between
+                  calories consumed and burnt. Regular physical activity and
+                  mindful eating can help you achieve this.
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
+
         {/* Related calculators section */}
         <section className="relative w-full mt-5">
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
@@ -221,7 +247,12 @@ const CaloriesBurntCalculator = () => {
               Related
             </button>
           </div>
-        <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
+          <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
+          <Link to="/BmiCalculator">
+              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
+                BMI Calculator
+              </Button>
+            </Link>
             <Link to="/CalorieCalculator">
               <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
                 Calorie Calculator
@@ -232,24 +263,15 @@ const CaloriesBurntCalculator = () => {
                 Ideal Weight Calculators
               </Button>
             </Link>
-            <Link to="/BmiCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                BMI Calculator
-              </Button>
-            </Link>
           </section>
-          </section>
-        <section>
+          {/* TODO: Export constants and add more useful information */}
+          <section>
           <div className="mt-5 bg-pink-50 rounded-sm p-4">
-            {energyBalance !== null && (
-              <p>
-                <strong>Energy Balance:</strong> {energyBalance}
-              </p>
-            )}
             The Calories Burnt Calculator can be used to estimate the number of
             calories you burn during various activities. It helps you understand
             your energy expenditure and manage your weight effectively.
           </div>
+        </section>
         </section>
       </main>
     </>
