@@ -15,7 +15,7 @@ const Hero = () => {
       {/* Hero Text */}
       {/* TODO: Clean up - export constants */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-start pl-2">
-        <h1 className="font-open-sans text-4xl sm:text-5xl font-black leading-tight text-purple-600 mb-6">
+        <h1 className="font-open-sans text-4xl sm:text-5xl font-black leading-tight text-black mb-6">
           Calculate Calories
           <br /> Track Consumption<br />
           Achieve Weight Goals
@@ -36,15 +36,15 @@ const Hero = () => {
         <div className="mt-8 flex space-x-4">
           <Link
             to="/login/"
-            className="uppercase py-2 px-4 rounded-lg bg-purple-600 border-2 border-transparent
-             text-white text-md hover:bg-purple-300"
+            className="uppercase py-2 px-4 rounded-lg bg-black border-2 border-transparent
+             text-white text-md hover:bg-gray-700"
           >
             Log In
           </Link>
           <Link
             to="/signup/"
-            className="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-purple-600
-             text-purple-600 hover:bg-purple-400 hover:text-white text-md"
+            className="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-black
+             text-black hover:bg-gray-700 hover:text-white text-md"
           >
             Sign Up
           </Link>

@@ -13,11 +13,11 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="bg-pink-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shadow-sm">
+      <nav className="bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shadow-sm">
         <main className="container mx-auto px-4 flex justify-between items-center h-16">
           {/* Logo/Button Section */}
           <Link to="./" className="flex items-center">
-            <Button className="text-white bg-purple-600 text-base font-semibold">
+            <Button className="text-white bg-black text-base font-semibold">
               Calorie
             </Button>
           </Link>
@@ -27,12 +27,12 @@ const Navigation = () => {
             {currentUser ? (
               <>
                 {/* Protected Links*/}
-                <ul className="flex space-x-4 font-nunito-sans text-purple-500 items-center">
+                <ul className="flex space-x-4 font-nunito-sans text-black items-center">
                   <Link to="/dashboard" className="hover:text-black">Dashboard</Link>
                   <Link to="/CalorieCalculator" className="hover:text-black">Calorie Calculator</Link>
                   <DropdownMenu>
                     <DropdownMenuTrigger>Calculators</DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-purple-400 text-white">
+                    <DropdownMenuContent className="bg-black text-white">
                       <Link to="/BmiCalculator">
                         <DropdownMenuItem >BMI Calculator</DropdownMenuItem>
                       </Link>
@@ -59,13 +59,13 @@ const Navigation = () => {
                         className="w-10 h-10 rounded-full"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white">
+                      <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white">
                         {currentUser.displayName?.charAt(0) || "U"}
                       </div>
                     )}
                     <button
                       onClick={logout}
-                      className="text-purple-500 hover:text-black"
+                      className="text-black hover:text-black"
                     >
                       Logout
                     </button>
@@ -74,7 +74,7 @@ const Navigation = () => {
               </>
             ) : (
               <>
-                <ul className="flex space-x-4 font-nunito-sans text-gray-500">
+                <ul className="flex space-x-4 font-nunito-sans text-black">
                   <li>
                     <Link to="/login">Sign in</Link>
                   </li>
@@ -83,7 +83,7 @@ const Navigation = () => {
                 {/* Show Sign Up button only if the user is NOT logged in */}
                 {/* TODO: verify sign-up link works in production */}
                 <Link to="/signup"  rel="noopener noreferrer">
-                  <Button className="text-white bg-purple-600 text-base font-semibold">
+                  <Button className="text-white bg-black text-base font-semibold">
                     Sign Up
                   </Button>
                 </Link>
