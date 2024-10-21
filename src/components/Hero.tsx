@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import HeroImage from "../assets/Hero-Image.jpg";
+import HeroImage from "../assets/Hero-Image.png";
 
 const Hero = () => {
   return (
@@ -15,7 +15,7 @@ const Hero = () => {
       {/* Hero Text */}
       {/* TODO: Clean up - export constants */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-start pl-2">
-        <h1 className="font-open-sans text-4xl sm:text-5xl font-black leading-tight text-black mb-6">
+        <h1 className="font-open-sans text-4xl sm:text-5xl font-black leading-tight text-black mb-6 dark:text-white">
           Calculate Calories
           <br /> Track Consumption<br />
           Achieve Weight Goals
@@ -37,7 +37,7 @@ const Hero = () => {
           <Link
             to="/login/"
             className="uppercase py-2 px-4 rounded-lg bg-black border-2 border-transparent
-             text-white text-md hover:bg-gray-700"
+             text-white text-md hover:bg-gray-700 dark:bg-white"
           >
             Log In
           </Link>

@@ -1,8 +1,15 @@
-import React from "react";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ChevronDown, Play } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -12,10 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,49 +28,16 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Play } from "lucide-react";
-import { calorieInfo, calorieTitle } from "@/lib/constants";
-import { Link } from "react-router-dom";
 
-// Activity Levels
-const activityLevels = {
-  "Light: exercise 1-2 times/week": 1.375,
-  "Moderate: exercise 4-5 times/week": 1.55,
-  "Heavy: daily exercise or intense exercise 6-7 times/week": 1.725,
-};
-
-// Calculate Calories (using Harris-Benedict formula)
-const calculateCalories = (
-  age: number,
-  gender: "male" | "female",
-  height: number,
-  weight: number,
-  activity: keyof typeof activityLevels
-) => {
-  let bmr;
-  if (gender === "male") {
-    bmr = 88.362 + 13.397 * weight + 4.799 * height - 5.677 * age;
-  } else {
-    bmr = 447.593 + 9.247 * weight + 3.098 * height - 4.33 * age;
-  }
-
-  const maintenanceCalories = bmr * activityLevels[activity];
-  const loseHalfKgCalories = maintenanceCalories - 500;
-  const loseOneKgCalories = maintenanceCalories - 1000;
-
-  return {
-    maintenance: Math.round(maintenanceCalories),
-    loseHalfKg: Math.round(loseHalfKgCalories),
-    loseOneKg: Math.round(loseOneKgCalories),
-  };
-};
+import { calorieTitle } from "@/lib/constants";
+import { activityLevels } from "@/lib/calculators";
+import { calculateCalories }  from "@/lib/calculators";
 
 const CalorieCalculator = () => {
-  const [unitType, setUnitType] = React.useState("US");
-  const [calorieResults, setCalorieResults] = React.useState<ReturnType<
-    typeof calculateCalories
-  > | null>(null);
-
+  const navigate = useNavigate();
+  const [unitType, setUnitType] = useState("US");
+  const { handleSubmit } = useForm<FormValues>();
+ 
   // Form Schema
   const formSchema = z.object({
     age: z
@@ -116,7 +87,7 @@ const CalorieCalculator = () => {
       values.weight,
       values.activity
     );
-    setCalorieResults(results);
+    navigate("/results", { state: { results }})
   }
 
   return (
@@ -127,7 +98,7 @@ const CalorieCalculator = () => {
           {calorieTitle.map((info, index) => (
             <div key={index} className="mt-5 rounded-sm">
               {info.title && (
-                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                <h1 className="font-nunito-sans font-extrabold text-white bg-black p-1 mt-4">
                   {info.title}
                 </h1>
               )}
@@ -136,7 +107,7 @@ const CalorieCalculator = () => {
               </div>
             </div>
           ))}
-          <div className="flex justify-center bg-purple-500 text-white">
+          <div className="flex justify-center bg-black text-white">
             <ChevronDown />
             <span>
               Modify the values below and click the Calculate button to use
@@ -148,7 +119,7 @@ const CalorieCalculator = () => {
             <button
               className={`px-4 py-2 rounded ${
                 unitType === "US"
-                  ? "bg-purple-500 text-white"
+                  ? "bg-black text-white"
                   : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
@@ -158,7 +129,7 @@ const CalorieCalculator = () => {
             <button
               className={`px-4 py-2 rounded ${
                 unitType === "Metric"
-                  ? "bg-purple-500 text-white"
+                  ? "bg-black text-white"
                   : "bg-gray-200"
               }`}
               onClick={() => setUnitType("Metric")}
@@ -170,7 +141,7 @@ const CalorieCalculator = () => {
           <Card className="w-full p-4 mt-8 bg-pink-40">
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit)}
                 className="space-y-4"
               >
                 <FormField
@@ -183,7 +154,6 @@ const CalorieCalculator = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
                           {...field}
                           onFocus={() => field.onChange()}
                           onChange={(e) =>
@@ -236,7 +206,6 @@ const CalorieCalculator = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
                           {...field}
                           onFocus={() => field.onChange(undefined)}
                           onChange={(e) =>
@@ -263,7 +232,6 @@ const CalorieCalculator = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
                           {...field}
                           onFocus={() => field.onChange(undefined)}
                           onChange={(e) =>
@@ -323,19 +291,17 @@ const CalorieCalculator = () => {
                   )}
                 />
                 <section>
-                  <div className="ml-10 underline">+ Settings</div>
                   <div className="pb-4">
                     {/* TODO: fix form reset */}
-                    <Button type="submit" className="ml-10 bg-purple-500">
+                    <Button type="submit" className="ml-10 bg-black">
                       Calculate
                       <Play className="w-4 h-4 ml-2 fill-light" />
                     </Button>
                     <Button
                       type="button"
-                      className="ml-2 bg-purple-500"
+                      className="ml-2 bg-black"
                       onClick={() => {
                         form.reset();
-                        setCalorieResults(null);
                       }}
                     >
                       Clear
@@ -346,58 +312,8 @@ const CalorieCalculator = () => {
             </Form>
           </Card>
         </div>
-        {/* Result Section */}
-        {calorieResults && (
-          <Card className="w-full max-w-md p-6 mt-8 shadow-lg rounded-lg bg-white">
-            <h2 className="text-2xl font-bold mb-4 text-purple-500">
-              Calorie Results
-            </h2>
-
-            <div className="space-y-4">
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-xl font-semibold">Maintenance Calories</h3>
-                <p className="text-lg">
-                  To maintain your current weight, you need around{" "}
-                  <strong>{calorieResults.maintenance}</strong> kcal/day.
-                </p>
-                <p className="text-sm text-gray-600">
-                  These are the calories required to maintain your weight at
-                  your current activity level.
-                </p>
-              </div>
-
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-xl font-semibold text-red-600">
-                  Calorie Deficit (0.5 kg/week)
-                </h3>
-                <p className="text-lg">
-                  To lose 0.5 kg per week, consume around{" "}
-                  <strong>{calorieResults.loseHalfKg}</strong> kcal/day.
-                </p>
-                <p className="text-sm text-gray-600">
-                  A moderate calorie deficit for gradual and sustainable weight
-                  loss.
-                </p>
-              </div>
-
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-xl font-semibold text-red-600">
-                  Calorie Deficit (1 kg/week)
-                </h3>
-                <p className="text-lg">
-                  To lose 1 kg per week, consume around{" "}
-                  <strong>{calorieResults.loseOneKg}</strong> kcal/day.
-                </p>
-                <p className="text-sm text-gray-600">
-                  A more aggressive deficit, suitable for faster weight loss,
-                  but may require closer monitoring.
-                </p>
-              </div>
-            </div>
-          </Card>
-        )}
         {/* Activity Levels */}
-        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-4">
+        <section className="ml-2 text-sm bg-black text-white rounded-sm p-4 mt-4">
           <ul>
             <li>
               <strong>Exercise:</strong> 15-30 minutes of elevated heart rate
@@ -412,62 +328,6 @@ const CalorieCalculator = () => {
               rate activity.
             </li>
           </ul>
-        </section>
-        {/* related calculators */}
-        <section className="relative w-full mt-5">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
-            <button
-              className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-pink-50 text-purple-500"
-                  : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              Related
-            </button>
-          </div>
-          {/*TODO: Optimise for mobile */}
-          <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
-            <Link to="/BmiCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                BMI Calculator
-              </Button>
-            </Link>
-            <Link to="/IdealWeightCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Ideal Weight Calculators
-              </Button>
-            </Link>
-            <Link to="/CaloriesBurntCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Calories Burnt Calculators
-              </Button>
-            </Link>
-          </section>
-          {/* Additional Information Section */}
-          <section>
-            {calorieInfo.map((info, index) => (
-              <div key={index} className="mt-5 rounded-sm p-4">
-                {info.title && (
-                  <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-                    {info.title}
-                  </h4>
-                )}
-                <div className=" bg-pink-50 p-4 rounded-sm">
-                  <p>{info.content}</p>
-                  {info.equation && <p>{info.equation}</p>}
-                  {info.list && (
-                    <ul>
-                      {info.list.map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            ))}
-          </section>
         </section>
       </main>
     </>
