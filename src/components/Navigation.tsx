@@ -10,6 +10,7 @@ import {
 
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import Logo from "../assets/logo.png"
 
 export default function Navigation() {
   const [theme, setTheme] = useState("light");
@@ -47,7 +48,7 @@ export default function Navigation() {
               theme === "light" ? "text-black" : "text-white"
             }`}
           >
-            <span>Calorie</span>
+            <img src={Logo} alt="logo" className="h-20 w-30" />
           </a>
 
         {/* User Authentication Section */}

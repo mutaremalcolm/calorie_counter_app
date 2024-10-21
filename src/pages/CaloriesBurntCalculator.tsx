@@ -232,47 +232,11 @@ const CaloriesBurntCalculator = () => {
             </div>
           </Card>
         )}
-
-        {/* Related calculators section */}
-        <section className="relative w-full mt-5">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
-            <button
-              className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-pink-50 text-purple-500"
-                  : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              Related
-            </button>
-          </div>
-          <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
-          <Link to="/BmiCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                BMI Calculator
-              </Button>
-            </Link>
-            <Link to="/CalorieCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Calorie Calculator
-              </Button>
-            </Link>
-            <Link to="/IdealWeightCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Ideal Weight Calculators
-              </Button>
-            </Link>
-          </section>
-          {/* TODO: Export constants and add more useful information */}
-          <section>
           <div className="mt-5 bg-pink-50 rounded-sm p-4">
             The Calories Burnt Calculator can be used to estimate the number of
             calories you burn during various activities. It helps you understand
             your energy expenditure and manage your weight effectively.
           </div>
-        </section>
-        </section>
       </main>
     </>
   );

@@ -19,6 +19,7 @@ import CaloriesBurntCalculator from "./pages/CaloriesBurntCalculator";
 import IdealWeightCalculator from "./pages/IdealWeightCalculator";
 import Settings from "./pages/Settings";
 import CalorieResults from "./pages/CalorieResults";
+import BmiResults from "./pages/BmiResults";
 
 const App: React.FC = () => {
   return (
@@ -44,6 +45,12 @@ const App: React.FC = () => {
             loseHalfKg: 0,
             loseOneKg: 0
           }}/>} />
+          <Route path="/bmiresults" element={<BmiResults results={{
+            age: 0,
+            height: 0,
+            weight: 0,
+            bmi: 0
+          }} />} />
           <Route
             path="/dashboard"
             element={

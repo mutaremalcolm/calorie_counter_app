@@ -18,7 +18,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
 import { idealWeightTitle } from "@/lib/constants";
-import { Link } from "react-router-dom";
 
 // IBW Calculation using Devine Formula
 const calculateIBW = (gender: "male" | "female", heightCm: number): number => {
@@ -87,7 +86,7 @@ const IdealWeightCalculator = () => {
           {idealWeightTitle.map((info, index) => (
             <div key={index} className="mt-5 rounded-sm">
               {info.title && (
-                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                <h1 className="font-nunito-sans font-extrabold text-white bg-black p-1 mt-4">
                   {info.title}
                 </h1>
               )}
@@ -96,35 +95,31 @@ const IdealWeightCalculator = () => {
               </div>
             </div>
           ))}
-          <div className="flex justify-center bg-purple-500 text-white">
+          <div className="flex justify-center bg-black text-white">
             <ChevronDown />
             <span>
               Modify the values below and click the Calculate button to use
             </span>
           </div>
         </section>
+        {/* Unit Toggle Buttons */}
         <div className="relative w-full max-w-md">
-          {/* Unit Toggle Buttons */}
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
-            <button
+          <button
               className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-purple-500 text-white"
-                  : "bg-gray-200 text-purple-500"
+                unitType === "Metric" ? "bg-black text-white" : "bg-gray-200"
               }`}
-              onClick={() => handleUnitChange("US")}
+              onClick={() => setUnitType("Metric")}
             >
-              US Units
+              Metric Units
             </button>
             <button
               className={`px-4 py-2 rounded ${
-                unitType === "Metric"
-                  ? "bg-purple-500 text-white"
-                  : "bg-gray-200 text-purple-500"
+                unitType === "US" ? "bg-black text-white" : "bg-transparent"
               }`}
-              onClick={() => handleUnitChange("Metric")}
+              onClick={() => setUnitType("US")}
             >
-              Metric Units
+              US Units
             </button>
           </div>
           {/* Input Card */}
@@ -220,13 +215,13 @@ const IdealWeightCalculator = () => {
                   )}
                 />
                 <section className="pb-4">
-                  <Button type="submit" className="ml-10 bg-purple-500">
+                  <Button type="submit" className="ml-10 bg-black">
                     Calculate
                     <Play className="w-4 h-4 ml-2 fill-light" />
                   </Button>
                   <Button
                     type="button"
-                    className="ml-2 bg-purple-500"
+                    className="ml-2 bg-black"
                     onClick={() => {
                       form.reset();
                       setIbwResult(null);
@@ -281,7 +276,7 @@ const IdealWeightCalculator = () => {
           </Card>
         )}
         {/* Additional Information Section */}
-        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-4">
+        <section className="ml-2 text-sm bg-black text-white rounded-sm p-4 mt-4">
           <ul>
             <li>
               <strong>Ideal Body Weight (IBW):</strong> An estimate of the
@@ -297,42 +292,9 @@ const IdealWeightCalculator = () => {
             </li>
           </ul>
         </section>
-        {/* Related Calculators */}
-        <section className="relative w-full mt-5">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-pink-50 rounded-tl-lg rounded-tr-lg">
-            <button
-              className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-gray-200 text-purple-500"
-                  : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              Related
-            </button>
-          </div>
-          <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
-            <Link to="/CalorieCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Calorie Calculator
-              </Button>
-            </Link>
-            <Link to="/CaloriesBurnt">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Calories Burnt Calculator
-              </Button>
-            </Link>
-            <Link to="/BmiCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                BMI Calculator
-              </Button>
-            </Link>
-          </section>
-        </section>
-        {/* TODO: export static data and use map method & add additional content */}
         {/* Additional Information */}
         <section>
-          <div className="mt-5 bg-pink-50 rounded-sm p-4">
+          <div className="mt-5 bg-black text-white rounded-sm p-4">
             The Ideal Weight Calculator can be used to estimate your ideal body
             weight based on your height and gender. It serves as a general
             guideline and should be used in conjunction with other health

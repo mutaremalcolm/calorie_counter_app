@@ -31,20 +31,20 @@ import {
 
 import { calorieTitle } from "@/lib/constants";
 import { activityLevels } from "@/lib/calculators";
-import { calculateCalories }  from "@/lib/calculators";
+import { calculateCalories } from "@/lib/calculators";
 
 const CalorieCalculator = () => {
   const navigate = useNavigate();
   const [unitType, setUnitType] = useState("US");
   const { handleSubmit } = useForm<FormValues>();
- 
+
   // Form Schema
   const formSchema = z.object({
     age: z
       .number({
         required_error: "Age is required",
         invalid_type_error: "Age must be a number",
-      })
+      }) 
       .min(15, "Age must be at least 15")
       .max(100, "Age must be under 100"),
     gender: z.enum(["male", "female"], {
@@ -87,7 +87,7 @@ const CalorieCalculator = () => {
       values.weight,
       values.activity
     );
-    navigate("/results", { state: { results }})
+    navigate("/results", { state: { results } });
   }
 
   return (
@@ -116,34 +116,27 @@ const CalorieCalculator = () => {
         </section>
         <div className="relative w-full max-w-md">
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
-            <button
+          <button
               className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-black text-white"
-                  : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              US Units
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                unitType === "Metric"
-                  ? "bg-black text-white"
-                  : "bg-gray-200"
+                unitType === "Metric" ? "bg-black text-white" : "bg-gray-200"
               }`}
               onClick={() => setUnitType("Metric")}
             >
               Metric Units
             </button>
+            <button
+              className={`px-4 py-2 rounded ${
+                unitType === "US" ? "bg-black text-white" : "bg-transparent"
+              }`}
+              onClick={() => setUnitType("US")}
+            >
+              US Units
+            </button>
           </div>
           {/* Input Card */}
           <Card className="w-full p-4 mt-8 bg-pink-40">
             <Form {...form}>
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                   control={form.control}
                   name="age"

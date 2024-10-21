@@ -15,34 +15,23 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import React from "react";
+import { useState } from "react";
 import { ChevronDown, Play } from "lucide-react";
-import { BMIinfo, BMItitle } from "@/lib/constants";
-import { Link } from "react-router-dom";
+import { BMItitle } from "@/lib/constants";
+import { calculateBMI } from "@/lib/calculators";
+import { useNavigate } from "react-router-dom";
 
-const calculateBMI = (
-  _age: number,
-  _gender: string,
-  height: number,
-  weight: number
-) => {
-  // Convert height from cm to meters
-  const heightInMeters = height / 100;
-  // Calculate BMI
-  const bmi = weight / (heightInMeters * heightInMeters);
-  return Math.round(bmi * 10) / 10; // Round to one decimal place
-};
 
 const BmiCalculator = () => {
-  const [bmiResult, setBmiResult] = React.useState<number | null>(null);
-  const [unitType, setUnitType] = React.useState("US");
+  const [unitType, setUnitType] = useState("US");
+  const navigate = useNavigate();
 
   // Form Schema
   const formSchema = z.object({
     age: z
       .number({
         required_error: "Age is required",
-        invalid_type_error: "Age is required",
+        invalid_type_error: "Age must be a number",
       })
       .min(15, "Age must be at least 15")
       .max(80, "Age must be under 80"),
@@ -67,29 +56,38 @@ const BmiCalculator = () => {
       .max(300, "Weight must be under 300 kg"),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  type FormValues = z.infer<typeof formSchema>;
+
+  // Form resolver  
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      age: undefined,  
+      gender: undefined,  
+      height: undefined,  
+      weight: undefined,  
+    },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const bmiResults = calculateBMI(
+  function onSubmit(values: FormValues) {
+    const results = calculateBMI(
       values.age,
       values.gender,
       values.height,
       values.weight
     );
-    setBmiResult(bmiResults);
+    navigate("/bmiresults", { state: { results } });
   }
 
   return (
     <>
+      {/* Main content */}
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
         <section>
-          {/* Title */}
           {BMItitle.map((info, index) => (
             <div key={index} className="mt-5 rounded-sm">
               {info.title && (
-                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                <h1 className="font-nunito-sans font-extrabold text-white bg-black p-1 mt-4">
                   {info.title}
                 </h1>
               )}
@@ -98,7 +96,7 @@ const BmiCalculator = () => {
               </div>
             </div>
           ))}
-          <div className="flex justify-center bg-purple-500 text-white">
+          <div className="flex justify-center bg-black text-white">
             <ChevronDown />
             <span>
               Modify the values below and click the Calculate button to use
@@ -106,150 +104,144 @@ const BmiCalculator = () => {
           </div>
         </section>
         <div className="relative w-full max-w-md">
+          {/* Unit switch buttons */}
           <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
               className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-purple-500 text-white"
-                  : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              US Units
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
                 unitType === "Metric"
-                  ? "bg-purple-500 text-white"
+                  ? "bg-black text-white"
                   : "bg-gray-200"
               }`}
               onClick={() => setUnitType("Metric")}
             >
               Metric Units
             </button>
+            <button
+              className={`px-4 py-2 rounded ${
+                unitType === "US"
+                  ? "bg-black text-white"
+                  : "bg-transparent"
+              }`}
+              onClick={() => setUnitType("US")}
+            >
+              US Units
+            </button>
           </div>
-          {/* Input Card */}
+
+          {/* Input Form */}
           <Card className="w-full p-4 mt-8">
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {/* Age Input */}
                 <FormField
                   control={form.control}
                   name="age"
                   render={({ field }) => (
-                    <>
-                      {/* Age Input */}
-                      <FormItem className="flex items-center">
-                        <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                          Age
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            autoFocus
-                            {...field}
-                            type="number"
-                            onChange={(e) =>
-                              field.onChange(Number(e.target.value))
-                            }
-                            className="w-20 px-2 py-1 text-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                        <FormDescription className="ml-2">
-                          ages 15 - 80
-                        </FormDescription>
-                      </FormItem>
-                      {/* Gender Section */}
-                      <FormField
-                        control={form.control}
-                        name="gender"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="ml-4">Gender</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                className="flex flex-row items-center w-full ml-4"
-                              >
-                                <div className="flex items-center space-x-2">
-                                  <RadioGroupItem value="male" id="male" />
-                                  <Label htmlFor="male">Male</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                  <RadioGroupItem value="female" id="female" />
-                                  <Label htmlFor="female">Female</Label>
-                                </div>
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      {/* Height section */}
-                      <FormField
-                        control={form.control}
-                        name="height"
-                        render={({ field }) => (
-                          <FormItem className="flex items-center">
-                            <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                              Height
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                {...field}
-                                onChange={(e) =>
-                                  field.onChange(Number(e.target.value))
-                                }
-                                className="w-20 px-2 py-1 text-end"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                            <FormDescription className="ml-2">
-                              min height 100cm
-                            </FormDescription>
-                          </FormItem>
-                        )}
-                      />
-                      {/* Weight Section */}
-                      <FormField
-                        control={form.control}
-                        name="weight"
-                        render={({ field }) => (
-                          <FormItem className="flex items-center">
-                            <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                              Weight
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                {...field}
-                                onChange={(e) =>
-                                  field.onChange(Number(e.target.value))
-                                }
-                                className="w-20 px-2 py-1 text-end"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                            <FormDescription className="ml-2">
-                              min weight 30kgs
-                            </FormDescription>
-                          </FormItem>
-                        )}
-                      />
-                    </>
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Age
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ""}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <FormDescription className="ml-2">
+                        ages 15 - 80
+                      </FormDescription>
+                    </FormItem>
                   )}
                 />
+
+                {/* Gender Radio Group */}
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="ml-4">Gender</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          value={field.value ?? ""}
+                          className="flex flex-row items-center w-full ml-4"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="male" id="male" />
+                            <Label htmlFor="male">Male</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="female" id="female" />
+                            <Label htmlFor="female">Female</Label>
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Height Input */}
+                <FormField
+                  control={form.control}
+                  name="height"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Height
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ""}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <FormDescription className="ml-2">
+                        min height 100 cm
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                {/* Weight Input */}
+                <FormField
+                  control={form.control}
+                  name="weight"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                        Weight
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ""}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          className="w-20 px-2 py-1 text-end"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <FormDescription className="ml-2">
+                        min weight 30 kg
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+
                 <section className="pb-4">
-                  <Button type="submit" className="ml-10 bg-purple-500">
+                  <Button type="submit" className="ml-10 bg-black">
                     Calculate
                     <Play className="w-4 h-4 ml-2 fill-light" />
                   </Button>
                   <Button
                     type="button"
-                    className="ml-2 bg-purple-500"
+                    className="ml-2 bg-black"
                     onClick={() => form.reset()}
                   >
                     Clear
@@ -258,119 +250,11 @@ const BmiCalculator = () => {
               </form>
             </Form>
           </Card>
-          {/* Results section */}
-          <Card className="w-full max-w-md p-6 mt-8 shadow-lg rounded-lg bg-white">
-            <h2 className="text-2xl font-bold mb-4 text-purple-500">
-              BMI Results
-            </h2>
-
-            {/* Display the BMI result */}
-            {bmiResult !== null && (
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-xl font-semibold mb-2">Your BMI</h3>
-                <p className="text-lg">
-                  Based on your inputs, your BMI is:{" "}
-                  <strong>{bmiResult.toFixed(1)}</strong>.
-                </p>
-              </div>
-            )}
-            {bmiResult !== null && (
-              <div className="mt-4 p-4 bg-purple-100 rounded-md">
-                <h3 className="text-lg font-semibold">BMI Interpretation</h3>
-                <p className="text-sm text-gray-600">
-                  {bmiResult < 18.5 && "You are considered underweight."}
-                  {bmiResult >= 18.5 &&
-                    bmiResult < 24.9 &&
-                    "You have a normal weight."}
-                  {bmiResult >= 25 &&
-                    bmiResult < 29.9 &&
-                    "You are considered overweight."}
-                  {bmiResult >= 30 && "You are considered obese."}
-                </p>
-              </div>
-            )}
-            {/* Tips for a healthy BMI */}
-            <div className="mt-4 p-4 bg-purple-100 rounded-md">
-              <h3 className="text-lg font-semibold">Tips for a Healthy BMI</h3>
-              <p className="text-sm text-gray-600">
-                Maintaining a healthy BMI involves a balanced diet, regular
-                exercise, and consistent health monitoring. Consider consulting
-                a healthcare provider for personalized advice.
-              </p>
-            </div>
-          </Card>
         </div>
-        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-2">
-          <ul>
-            <li>
-              <strong>Healthy BMI Range:</strong> 18.5 kg/m - 25 kg/m
-            </li>
-            <li>
-              <strong>Healthy weight for the weight:</strong> 59.9kg - 81 kg
-            </li>
-            <li>
-              <strong>BMI Prime:</strong> 0.8
-            </li>
-            <li>
-              <strong>Ponderal Index:</strong> 11.1 kg/m
-            </li>
-          </ul>
-        </section>
-        {/* TODO: Customise additional calculator buttons */}
-        {/* Related Calculators */}
-        <section className="relative w-full mt-5 md: ml-2">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
-            <button
-              className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-pink-200 text-purple-500"
-                  : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              Related
-            </button>
-          </div>
-          {/* Links to related calculators */}
-          <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
-            <Link to="/CalorieCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Calorie Calculator
-              </Button>
-            </Link>
-            <Link to="/IdealWeightCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Ideal Weight Calculators
-              </Button>
-            </Link>
-            <Link to="/CaloriesBurntCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Calories Burnt Calculators
-              </Button>
-            </Link>
-          </section>
-        </section>
-        {/* Additional Information */}
-        <section>
-          <div>
-            {BMIinfo.map((info, index) => (
-              <div key={index} className="mt-5 rounded-sm p-4">
-                {info.title && (
-                  <h4 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-                    {info.title}
-                  </h4>
-                )}
-                <div className=" bg-pink-50 p-4 rounded-sm">
-                  <p>{info.content}</p>
-                  {info.equation && <p>{info.equation}</p>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
       </main>
     </>
   );
 };
 
 export default BmiCalculator;
+

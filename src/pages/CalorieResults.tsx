@@ -14,7 +14,7 @@ const CalorieResults: React.FC<CalorieResultsProps> = () => {
   const results = location.state?.results;
 
   if (!results) {
-    return <p>No results found. Please go back and submit the form.</p>; //implement toast message here
+    return <p>No results found. Please go back and submit the form.</p>; 
   }
   return (
     <>
