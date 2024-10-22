@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { useLocation } from 'react-router-dom';
-
+import  { calculateBMI }  from "@/lib/calculators";
 
 interface BmiResultsProps {
     results: {
@@ -21,6 +21,8 @@ const BmiResults: React.FC<BmiResultsProps> = () => {
         return <p>No results found. Please go back and submit the form.</p>; 
     }
 
+    const bmi = calculateBMI(results.age, 'male', results.height, results.weight);
+
   return (
     <>
       <div className="flex flex-col items-center justify-center mb-4">
@@ -34,7 +36,7 @@ const BmiResults: React.FC<BmiResultsProps> = () => {
                 <h3 className="text-xl font-semibold mb-2">Your BMI</h3>
                 <p className="text-lg">
                   Based on your inputs, your BMI is:{" "}
-                  <strong>{results.bmi}</strong>.
+                  <strong>{bmi}</strong>.
                 </p>
               </div>
             )}

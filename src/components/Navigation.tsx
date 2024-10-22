@@ -7,17 +7,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import Logo from "../assets/logo.png"
+import Logo from "../assets/logo.png";
 
 export default function Navigation() {
   const [theme, setTheme] = useState("light");
   const { currentUser, logout } = useAuth();
 
   useEffect(() => {
-    // Get the stored theme from local storage
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       setTheme(savedTheme);
@@ -29,105 +27,127 @@ export default function Navigation() {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-
-    // Update the document class to switch between light and dark
     document.documentElement.classList.remove(theme);
     document.documentElement.classList.add(newTheme);
   };
 
   return (
-    <header
-      className={`${
-        theme === "light" ? "bg-white" : "bg-[#232e3d]"
-      } border-b-2 border-[#545b63] text-white shadow-lg`}
-    >
-      <nav className="container px-4 flex justify-between items-center py-2 min-w-full">
-          <a
-            href="/"
-            className={`flex items-center space-x-2 text-xl font-bold ${
-              theme === "light" ? "text-black" : "text-white"
-            }`}
+    <header className={`sticky top-0 z-50 w-full border-b ${
+      theme === "light" ? "bg-white border-gray-200" : "bg-gray-900 border-gray-800"
+    }`}>
+      <nav className="container mx-auto px-4 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo Section */}
+          <Link
+            to="/"
+            className="flex items-center space-x-2"
           >
-            <img src={Logo} alt="logo" className="h-20 w-30" />
-          </a>
+            <img src={Logo} alt="logo" className="h-12 w-auto" />
+          </Link>
 
-        {/* User Authentication Section */}
-        <div className="flex-grow flex justify-end items-center space-x-6">
-          {currentUser ? (
-            <>
-            
-              {/* Protected Links*/}
-              <ul className="flex space-x-4 font-nunito-sans text-black items-center">
-                <Link to="/dashboard" className="hover:text-black">
+          {/* Navigation Links and Auth Section */}
+          <div className="flex items-center space-x-8">
+            {currentUser ? (
+              <div className="flex items-center space-x-6">
+                {/* Protected Links */}
+                <Link 
+                  to="/dashboard" 
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
+                  }`}
+                >
                   Dashboard
                 </Link>
-                <Link to="/CalorieCalculator" className="hover:text-black">
+                
+                <Link 
+                  to="/CalorieCalculator"
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
+                  }`}
+                >
                   Calorie Calculator
                 </Link>
+
                 <DropdownMenu>
-                  <DropdownMenuTrigger>Calculators</DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-black text-white">
+                  <DropdownMenuTrigger className={`text-sm font-medium transition-colors ${
+                    theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
+                  }`}>
+                    Calculators
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className={theme === "light" ? "bg-white" : "bg-gray-900"}>
                     <Link to="/BmiCalculator">
-                      <DropdownMenuItem>BMI Calculator</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">BMI Calculator</DropdownMenuItem>
                     </Link>
                     <Link to="/CaloriesBurntCalculator">
-                      <DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">
                         Calories Burnt Calculator
                       </DropdownMenuItem>
                     </Link>
                     <Link to="/IdealWeightCalculator">
-                      <DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">
                         Ideal Weight Calculator
                       </DropdownMenuItem>
                     </Link>
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* TODO: Add Dynamic User Avatar*/}
+                {/* User Profile Section */}
                 <div className="flex items-center space-x-4">
                   {currentUser.photoURL ? (
                     <img
                       src={currentUser.photoURL}
                       alt="User Avatar"
-                      className="w-10 h-10 rounded-full"
+                      className="h-8 w-8 rounded-full ring-2 ring-offset-2 ring-gray-200 dark:ring-gray-700"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white">
+                    <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
+                      theme === "light" ? "bg-gray-200 text-gray-700" : "bg-gray-700 text-gray-200"
+                    }`}>
                       {currentUser.displayName?.charAt(0) || "U"}
                     </div>
                   )}
-                  <button
+                  <Button
                     onClick={logout}
-                    className="text-black hover:text-black"
+                    variant="ghost"
+                    className={`text-sm font-medium ${
+                      theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
+                    }`}
                   >
                     Logout
-                  </button>
+                  </Button>
                 </div>
-              </ul>
-            </>
-          ) : (
-            <>
-              <ul className="flex space-x-4 font-nunito-sans text-black">
-                <li>
-                  <Link to="/login">Sign in</Link>
-                </li>
-              </ul>
-              <Link to="/signup" rel="noopener noreferrer">
-                <Button className="text-white bg-black text-base font-semibold">
-                  Sign Up
-                </Button>
-              </Link>
-            </>
-          )}
-        </div>
-        <div className="flex space-x-4 items-center">
-          <button
-            onClick={toggleTheme}
-            className="ml-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 focus:outline-none"
-            aria-label="Toggle Dark Mode"
-          >
-            {theme === "light" ? <FaMoon /> : <FaSun />}
-          </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Link 
+                  to="/login"
+                  className={`text-sm font-medium transition-colors ${
+                    theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
+                  }`}
+                >
+                  Sign in
+                </Link>
+                <Link to="/signup">
+                  <Button className="bg-black text-white hover:bg-gray-800">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            )}
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className={`p-2 rounded-md transition-colors ${
+                theme === "light" 
+                  ? "bg-gray-100 text-gray-700 hover:bg-gray-200" 
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+              }`}
+              aria-label="Toggle theme"
+            >
+              {theme === "light" ? <FaMoon className="h-4 w-4" /> : <FaSun className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
       </nav>
     </header>

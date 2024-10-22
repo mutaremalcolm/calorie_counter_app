@@ -1,13 +1,12 @@
-import { z } from "zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, Play } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { Card } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ChevronDown, Play } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,7 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,15 +26,19 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
+import { useState } from "react";
 
-import { calorieTitle } from "@/lib/constants";
-import { activityLevels } from "@/lib/calculators";
-import { calculateCalories } from "@/lib/calculators";
+const activityLevels = {
+  "Sedentary": 1.2,
+  "Light Exercise": 1.375,
+  "Moderate Exercise": 1.55,
+  "Heavy Exercise": 1.725,
+  "Athlete": 1.9
+};
 
 const CalorieCalculator = () => {
   const navigate = useNavigate();
   const [unitType, setUnitType] = useState("US");
-  const { handleSubmit } = useForm<FormValues>();
 
   // Form Schema
   const formSchema = z.object({
@@ -80,250 +82,216 @@ const CalorieCalculator = () => {
   });
 
   function onSubmit(values: FormValues) {
-    const results = calculateCalories(
-      values.age,
-      values.gender,
-      values.height,
-      values.weight,
-      values.activity
-    );
+    const bmr = calculateBMR(values);
+    const tdee = bmr * activityLevels[values.activity];
+    const results = {
+      bmr: Math.round(bmr),
+      tdee: Math.round(tdee),
+      maintenance: Math.round(tdee),
+      weightLoss: Math.round(tdee - 500),
+      weightGain: Math.round(tdee + 500)
+    };
     navigate("/results", { state: { results } });
   }
 
+  const calculateBMR = (values: FormValues) => {
+    const { age, gender, height, weight } = values;
+    if (gender === 'male') {
+      return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+    } else {
+      return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+    }
+  };
+
   return (
-    <>
-      <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
-        {/* title */}
-        <section>
-          {calorieTitle.map((info, index) => (
-            <div key={index} className="mt-5 rounded-sm">
-              {info.title && (
-                <h1 className="font-nunito-sans font-extrabold text-white bg-black p-1 mt-4">
-                  {info.title}
-                </h1>
-              )}
-              <div className=" bg-pink-40 p-4 rounded-sm">
-                <p>{info.content}</p>
-              </div>
-            </div>
-          ))}
-          <div className="flex justify-center bg-black text-white">
-            <ChevronDown />
-            <span>
-              Modify the values below and click the Calculate button to use
-            </span>
+    <div className="flex min-h-screen flex-col items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl font-bold mb-2">Calorie Calculator</h1>
+          <div className="flex justify-center bg-black text-white p-2">
+            <ChevronDown className="mr-2" />
+            <span>Modify the values below and click Calculate</span>
           </div>
-        </section>
-        <div className="relative w-full max-w-md">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+        </div>
+
+        <div className="flex justify-center mb-4">
           <button
-              className={`px-4 py-2 rounded ${
-                unitType === "Metric" ? "bg-black text-white" : "bg-gray-200"
-              }`}
-              onClick={() => setUnitType("Metric")}
-            >
-              Metric Units
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                unitType === "US" ? "bg-black text-white" : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              US Units
-            </button>
-          </div>
-          {/* Input Card */}
-          <Card className="w-full p-4 mt-8 bg-pink-40">
-            <Form {...form}>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="age"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                        Age
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          onFocus={() => field.onChange()}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                          className="w-20 px-2 py-1 text-end"
-                        />
-                      </FormControl>
-                      <FormDescription className="ml-2">
-                        ages 15 - 80
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* Gender Section */}
-                <FormField
-                  control={form.control}
-                  name="gender"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Gender</FormLabel>
+            className={`px-4 py-2 rounded-l ${unitType === "Metric" ? "bg-black text-white" : "bg-gray-200"}`}
+            onClick={() => setUnitType("Metric")}
+          >
+            Metric Units
+          </button>
+          <button
+            className={`px-4 py-2 rounded-r ${unitType === "US" ? "bg-black text-white" : "bg-gray-200"}`}
+            onClick={() => setUnitType("US")}
+          >
+            US Units
+          </button>
+        </div>
+
+        <Card className="p-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Age Input */}
+              <FormField
+                control={form.control}
+                name="age"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormLabel className="w-24">Age:</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="w-20 text-right"
+                        onFocus={() => field.onChange()}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormDescription className="ml-2">years (15-100)</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Gender Section */}
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center">
+                      <FormLabel className="w-24">Gender:</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
-                          className="flex flex-row items-center w-full"
+                          className="flex gap-4"
                         >
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center">
                             <RadioGroupItem value="male" id="male" />
-                            <Label htmlFor="male">Male</Label>
+                            <Label htmlFor="male" className="ml-2">Male</Label>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center">
                             <RadioGroupItem value="female" id="female" />
-                            <Label htmlFor="female">Female</Label>
+                            <Label htmlFor="female" className="ml-2">Female</Label>
                           </div>
                         </RadioGroup>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* Height Section */}
-                <FormField
-                  control={form.control}
-                  name="height"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                        Height
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          onFocus={() => field.onChange(undefined)}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                          className="w-20 px-2 py-1 text-end"
-                        />
-                      </FormControl>
-                      <FormDescription className="ml-2">
-                        min height 100cm
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* Weight Section */}
-                <FormField
-                  control={form.control}
-                  name="weight"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                        Weight
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          onFocus={() => field.onChange(undefined)}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                          className="w-20 px-2 py-1 text-end"
-                        />
-                      </FormControl>
-                      <FormDescription className="ml-2">
-                        min weight 30kg
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* Activity Drop Down Selection */}
-                <FormField
-                  control={form.control}
-                  name="activity"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center w-full">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2 required">
-                        Activity Level
-                      </FormLabel>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <div>
-                            <Input
-                              readOnly
-                              value={field.value}
-                              className="cursor-pointer text-start pr-8"
-                            />
-                          </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuLabel>
-                            Select an activity level
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          {Object.keys(activityLevels).map((level) => (
-                            <DropdownMenuCheckboxItem
-                              key={level}
-                              checked={field.value === level}
-                              onCheckedChange={() => {
-                                field.onChange(
-                                  level as keyof typeof activityLevels
-                                );
-                              }}
-                            >
-                              {level}
-                            </DropdownMenuCheckboxItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <section>
-                  <div className="pb-4">
-                    {/* TODO: fix form reset */}
-                    <Button type="submit" className="ml-10 bg-black">
-                      Calculate
-                      <Play className="w-4 h-4 ml-2 fill-light" />
-                    </Button>
-                    <Button
-                      type="button"
-                      className="ml-2 bg-black"
-                      onClick={() => {
-                        form.reset();
-                      }}
-                    >
-                      Clear
-                    </Button>
-                  </div>
-                </section>
-              </form>
-            </Form>
-          </Card>
-        </div>
-        {/* Activity Levels */}
-        <section className="ml-2 text-sm bg-black text-white rounded-sm p-4 mt-4">
-          <ul>
-            <li>
-              <strong>Exercise:</strong> 15-30 minutes of elevated heart rate
-              activity.
-            </li>
-            <li>
-              <strong>Intense exercise:</strong> 25-120 minutes of elevated
-              heart rate activity.
-            </li>
-            <li>
-              <strong>Very intense exercise:</strong> 2+ hours of elevated heart
-              rate activity.
-            </li>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Height Input */}
+              <FormField
+                control={form.control}
+                name="height"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormLabel className="w-24">Height:</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="w-20 text-right"
+                        onFocus={() => field.onChange()}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormDescription className="ml-2">cm</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Weight Input */}
+              <FormField
+                control={form.control}
+                name="weight"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormLabel className="w-24">Weight:</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+
+                        className="w-20 text-right"
+                        onFocus={() => field.onChange()}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormDescription className="ml-2">kg</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Activity Level */}
+              <FormField
+                control={form.control}
+                name="activity"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormLabel className="w-24">Activity:</FormLabel>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <div className="flex-1">
+                          <Input
+                            readOnly
+                            value={field.value || "Select activity level"}
+                            className="cursor-pointer"
+                          />
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-full">
+                        <DropdownMenuLabel>Select activity level</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        {Object.keys(activityLevels).map((level) => (
+                          <DropdownMenuCheckboxItem
+                            key={level}
+                            checked={field.value === level}
+                            onCheckedChange={() => field.onChange(level)}
+                          >
+                            {level}
+                          </DropdownMenuCheckboxItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Buttons */}
+              <div className="flex gap-4 mt-6">
+                <Button type="submit" className="bg-black">
+                  Calculate
+                  <Play className="w-4 h-4 ml-2" />
+                </Button>
+                <Button
+                  type="button"
+                  className="bg-black"
+                  onClick={() => form.reset()}
+                >
+                  Clear
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </Card>
+
+        {/* Activity Level Guide */}
+        <div className="items-center mt-6 bg-black text-white p-4 rounded">
+          <h3 className="font-bold mb-2">Activity Level Guide</h3>
+          <ul className="space-y-2 text-sm">
+            <li><strong>Sedentary:</strong> Little or no exercise</li>
+            <li><strong>Light Exercise:</strong> 1-3 days/week</li>
+            <li><strong>Moderate Exercise:</strong> 3-5 days/week</li>
+            <li><strong>Heavy Exercise:</strong> 6-7 days/week</li>
+            <li><strong>Athlete:</strong> 2x training per day</li>
           </ul>
-        </section>
-      </main>
-    </>
+        </div>
+      </div>
+    </div>
   );
 };
 

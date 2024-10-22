@@ -11,11 +11,23 @@ interface CalorieResultsProps {
 
 const CalorieResults: React.FC<CalorieResultsProps> = () => {
   const location = useLocation();
+
+  // Retrieve results from the location state
   const results = location.state?.results;
 
   if (!results) {
-    return <p>No results found. Please go back and submit the form.</p>; 
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Card className="p-4">
+          <h1>No Results Found</h1>
+          <p>
+            Please go back to the calculator and enter your details to calculate your calories.
+          </p>
+        </Card>
+      </div>
+    );
   }
+
   return (
     <>
       <div className="flex items-center justify-center">

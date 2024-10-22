@@ -16,20 +16,14 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, Play } from "lucide-react";
 import { caloriesBurntTitle } from "@/lib/constants";
-import { Link } from "react-router-dom";
+import { calculateEnergyBalance } from "@/lib/calculators";
+import { useNavigate } from "react-router-dom";
 
-// Function to calculate the calorie deficit
-const calculateEnergyBalance = (
-  caloriesConsumed: number,
-  caloriesBurnt: number
-) => {
-  return caloriesConsumed - caloriesBurnt;
-};
 
 const CaloriesBurntCalculator = () => {
   const [unitType, setUnitType] = React.useState("US");
-  const [energyBalance, setEnergyBalance] = React.useState<number | null>(null);
-
+  const navigate = useNavigate()
+  
   // Form schema
   const formSchema = z.object({
     caloriesConsumed: z
@@ -55,12 +49,11 @@ const CaloriesBurntCalculator = () => {
   });
 
   function onSubmit(values: FormValues) {
-    const result = calculateEnergyBalance(
+    const results = calculateEnergyBalance(
       values.caloriesConsumed,
       values.caloriesBurnt
     );
-    setEnergyBalance(result);
-    console.log(values);
+    navigate("/caloriesBurntResults", {state: {results} });
   }
 
   return (
@@ -70,7 +63,7 @@ const CaloriesBurntCalculator = () => {
           {caloriesBurntTitle.map((info, index) => (
             <div key={index} className="mt-5 rounded-sm">
               {info.title && (
-                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
+                <h1 className="font-nunito-sans font-extrabold text-white bg-black p-1 mt-4">
                   {info.title}
                 </h1>
               )}
@@ -79,7 +72,7 @@ const CaloriesBurntCalculator = () => {
               </div>
             </div>
           ))}
-          <div className="flex justify-center bg-purple-500 text-white">
+          <div className="flex justify-center bg-black text-white">
             <ChevronDown />
             <span>
               Modify the values below and click the Calculate button to use
@@ -91,7 +84,7 @@ const CaloriesBurntCalculator = () => {
             <button
               className={`px-4 py-2 rounded ${
                 unitType === "US"
-                  ? "bg-purple-500 text-white"
+                  ? "bg-black text-white"
                   : "bg-transparent"
               }`}
               onClick={() => setUnitType("US")}
@@ -101,8 +94,8 @@ const CaloriesBurntCalculator = () => {
             <button
               className={`px-4 py-2 rounded ${
                 unitType === "Metric"
-                  ? "bg-purple-500 text-white"
-                  : "bg-gray-200"
+                  ? "bg-black text-white"
+                  : "bg-gray-100"
               }`}
               onClick={() => setUnitType("Metric")}
             >
@@ -126,8 +119,6 @@ const CaloriesBurntCalculator = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
-                          placeholder="500"
                           {...field}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
@@ -154,8 +145,6 @@ const CaloriesBurntCalculator = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
-                          placeholder="300"
                           {...field}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
@@ -170,18 +159,16 @@ const CaloriesBurntCalculator = () => {
                     </FormItem>
                   )}
                 />
-                <section className="ml-10 underline">+ Settings</section>
                 <section className="pb-4">
-                  <Button type="submit" className="ml-10 bg-purple-500">
+                  <Button type="submit" className="ml-10 bg-black text-white">
                     Calculate
                     <Play className="w-4 h-4 ml-2 fill-light" />
                   </Button>
                   <Button
                     type="button"
-                    className="ml-2 bg-purple-500"
+                    className="ml-2 bg-black text-white"
                     onClick={() => {
                       form.reset();
-                      setEnergyBalance(null);
                     }}
                   >
                     Clear
@@ -191,48 +178,7 @@ const CaloriesBurntCalculator = () => {
             </Form>
           </Card>
         </div>
-
-        {/* Results Section */}
-        {energyBalance !== null && (
-          <Card className="w-full max-w-md p-6 mt-8 shadow-lg rounded-lg bg-white">
-            <h2 className="text-2xl font-bold mb-4 text-purple-500">
-              Energy Balance Result
-            </h2>
-
-            <div className="p-4 bg-white rounded-md space-y-4">
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-xl font-semibold">Your Energy Balance</h3>
-                <p className="text-lg">
-                  Based on your inputs, your energy balance is:{" "}
-                  <strong>{energyBalance} kcal</strong>.
-                </p>
-              </div>
-
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-lg font-semibold">
-                  What does Energy Balance mean?
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Energy balance is the difference between the calories you
-                  consume and the calories you burn. A positive balance means
-                  weight gain, and a negative balance means weight loss.
-                </p>
-              </div>
-
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-lg font-semibold">
-                  Tips for Managing Energy Balance
-                </h3>
-                <p className="text-sm text-gray-600">
-                  To maintain a healthy weight, aim for a balance between
-                  calories consumed and burnt. Regular physical activity and
-                  mindful eating can help you achieve this.
-                </p>
-              </div>
-            </div>
-          </Card>
-        )}
-          <div className="mt-5 bg-pink-50 rounded-sm p-4">
+          <div className="mt-5 bg-black text-white rounded-sm p-4">
             The Calories Burnt Calculator can be used to estimate the number of
             calories you burn during various activities. It helps you understand
             your energy expenditure and manage your weight effectively.

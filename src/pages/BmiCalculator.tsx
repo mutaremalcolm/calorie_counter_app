@@ -82,54 +82,32 @@ const BmiCalculator = () => {
   return (
     <>
       {/* Main content */}
-      <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
-        <section>
-          {BMItitle.map((info, index) => (
-            <div key={index} className="mt-5 rounded-sm">
-              {info.title && (
-                <h1 className="font-nunito-sans font-extrabold text-white bg-black p-1 mt-4">
-                  {info.title}
-                </h1>
-              )}
-              <div className=" bg-pink-40 p-4 rounded-sm">
-                <p>{info.content}</p>
-              </div>
-            </div>
-          ))}
-          <div className="flex justify-center bg-black text-white">
-            <ChevronDown />
-            <span>
-              Modify the values below and click the Calculate button to use
-            </span>
+      <div className="flex min-h-screen flex-col items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl font-bold mb-2">BMI Calculator</h1>
+          <div className="flex justify-center bg-black text-white p-2">
+            <ChevronDown className="mr-2" />
+            <span>Modify the values below and click Calculate</span>
           </div>
-        </section>
-        <div className="relative w-full max-w-md">
-          {/* Unit switch buttons */}
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
-            <button
-              className={`px-4 py-2 rounded ${
-                unitType === "Metric"
-                  ? "bg-black text-white"
-                  : "bg-gray-200"
-              }`}
-              onClick={() => setUnitType("Metric")}
-            >
-              Metric Units
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-black text-white"
-                  : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              US Units
-            </button>
-          </div>
-
+        </div>
+        <div className="flex justify-center mb-4">
+          <button
+            className={`px-4 py-2 rounded-l ${unitType === "Metric" ? "bg-black text-white" : "bg-gray-200"}`}
+            onClick={() => setUnitType("Metric")}
+          >
+            Metric Units
+          </button>
+          <button
+            className={`px-4 py-2 rounded-r ${unitType === "US" ? "bg-black text-white" : "bg-gray-200"}`}
+            onClick={() => setUnitType("US")}
+          >
+            US Units
+          </button>
+        </div>
+        </div>
           {/* Input Form */}
-          <Card className="w-full p-4 mt-8">
+          <Card className="p-6">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 {/* Age Input */}
@@ -250,8 +228,7 @@ const BmiCalculator = () => {
               </form>
             </Form>
           </Card>
-        </div>
-      </main>
+      </div>
     </>
   );
 };
