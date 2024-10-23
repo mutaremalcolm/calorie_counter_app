@@ -62,15 +62,15 @@ const CaloriesBurnt: React.FC = () => {
   }, [])
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col dark:bg-gray-800 dark:border-gray-700">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="text-black">Calories Burned</CardTitle>
-        <CardDescription className="text-black">Monday 24th - Tuesday 25th 2024</CardDescription>
+        <CardTitle className="text-black dark:text-white">Calories Burned</CardTitle>
+        <CardDescription className="text-black dark:text-white">Monday 24th - Tuesday 25th 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[250px] dark:fill-white"
         >
           <PieChart>
             <ChartTooltip
@@ -97,14 +97,14 @@ const CaloriesBurnt: React.FC = () => {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-green-400 text-3xl font-bold"
+                          className="fill-green-400 text-3xl font-bold dark:fill-white"
                         >
                           {totalVisitors.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
-                          className="fill-green-400"
+                          className="fill-green-400 dark:fill-white"
                         >
                           Calories
                         </tspan>
@@ -118,10 +118,10 @@ const CaloriesBurnt: React.FC = () => {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none text-black">
+        <div className="flex items-center gap-2 font-medium leading-none text-black dark:text-white">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-black">
+        <div className="leading-none text-black dark:text-white">
           Showing total calories burnt for the last 24 Hours
         </div>
       </CardFooter>

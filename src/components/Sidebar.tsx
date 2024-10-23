@@ -60,7 +60,7 @@ const Sidebar = () => {
   const pathname = location.pathname;
 
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full bg-white dark:bg-gray-950 text-zinc-500 dark:text-zinc-400 border-r border-gray-200 dark:border-gray-800 transition-colors duration-300">
+    <div className="space-y-4 py-4 flex flex-col h-full bg-white dark:bg-gray-800 dark:border-gray-700">
       <div className="px-3 py-2 flex-1">
         <Link to="/" className="flex items-center pl-3 mb-8">
           <h1 className="text-xl font-bold text-black dark:text-white">

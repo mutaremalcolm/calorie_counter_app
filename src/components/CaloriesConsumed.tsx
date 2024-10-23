@@ -43,10 +43,10 @@ const chartConfig = {
 
 const CaloriesConsumed: React.FC = () => {
   return (
-    <Card className="mt-4">
+    <Card className="mt-4 dark:bg-gray-800 dark:border-gray-700">
       <CardHeader>
-        <CardTitle className="text-black">Calories Consumed</CardTitle>
-        <CardDescription className="text-black">January - June 2024</CardDescription>
+        <CardTitle className="text-white">Calories Consumed</CardTitle>
+        <CardDescription className="text-white">January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -69,10 +69,10 @@ const CaloriesConsumed: React.FC = () => {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none text-black">
+        <div className="flex gap-2 font-medium leading-none text-white">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground text-black">
+        <div className="leading-none text-muted-foreground text-white">
           Showing total calorie consumption for the last 6 months
         </div>
       </CardFooter>

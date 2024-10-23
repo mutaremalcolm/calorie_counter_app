@@ -7,10 +7,10 @@ interface CalorieResults {
   loseHalfKg: number;
   loseOneKg: number;
 }
-
+ 
 interface LocationState {
   results: CalorieResults;
-}
+} 
 
 const CalorieResults: React.FC = () => {
   const location = useLocation();

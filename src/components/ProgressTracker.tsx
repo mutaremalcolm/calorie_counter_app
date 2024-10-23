@@ -42,10 +42,10 @@ const chartConfig = {
 
  const ProgressTracker: React.FC = () => {
   return (
-    <Card className="mt-4">
+    <Card className="mt-4 dark:bg-gray-800 dark:border-gray-700">
       <CardHeader>
-        <CardTitle className="text-purple-500">Progress Tracker</CardTitle>
-        <CardDescription className="text-purple-500">January - June 2024</CardDescription>
+        <CardTitle className="text-white">Progress Tracker</CardTitle>
+        <CardDescription className="text-white">January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -86,10 +86,10 @@ const chartConfig = {
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none text-purple-500">
+            <div className="flex items-center gap-2 font-medium leading-none text-white">
               Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
             </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground text-purple-500">
+            <div className="flex items-center gap-2 leading-none text-muted-foreground text-white">
               Showing total visitors for the last 6 months
             </div>
           </div>

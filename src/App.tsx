@@ -41,11 +41,7 @@ const App: React.FC = () => {
           <Route path="/CaloriesBurntCalculator" element={<CaloriesBurntCalculator/>} />
           <Route path="/IdealWeightCalculator" element={<IdealWeightCalculator/>} />
           <Route path="/settings" element={<Settings/>} />
-          <Route path="/results" element={<CalorieResults results={{
-            maintenance: 0,
-            loseHalfKg: 0,
-            loseOneKg: 0
-          }}/>} />
+          <Route path="/results" element={<CalorieResults />} />
           <Route path="/bmiresults" element={<BmiResults results={{
             age: 0,
             height: 0,
