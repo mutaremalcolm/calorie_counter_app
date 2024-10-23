@@ -1,16 +1,15 @@
-import { useState } from "react";
-import CaloriesBurnt from "@/components/CaloriesBurnt";
+// import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { calculateEnergyBalance } from "@/lib/calculators";
+// import { calculateEnergyBalance } from "@/lib/calculators";
 
 const CaloriesBurntResults = () => {
-  const [caloriesConsumed, setCaloriesConsumed] = useState<number>(0); // Example state
-  const [caloriesBurnt, setCaloriesBurnt] = useState<number>(0); // Example state
+  // const [caloriesConsumed, setCaloriesConsumed] = useState<number>(0); // Example state
+  // const [caloriesBurnt, setCaloriesBurnt] = useState<number>(0); // Example state
 
   // Assuming that CaloriesBurnt component provides the burnt calories value
   // You can replace this with the actual mechanism of getting the values from CaloriesBurnt
 
-  const energyBalance = calculateEnergyBalance(caloriesConsumed, caloriesBurnt);
+  // const energyBalance = calculateEnergyBalance(caloriesConsumed, caloriesBurnt);
 
   return (
     <>
@@ -25,7 +24,7 @@ const CaloriesBurntResults = () => {
               <h3 className="text-xl font-semibold">Your Energy Balance</h3>
               <p className="text-lg">
                 Based on your inputs, your energy balance is:{" "}
-                <strong>{energyBalance} kcal</strong>.
+                {/* <strong>{energyBalance} kcal</strong>. */}
               </p>
             </div>
 

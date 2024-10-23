@@ -72,10 +72,10 @@ const IdealWeightCalculator = () => {
   }
 
   // TODO: Handle unit changes (US vs Metric)
-  const handleUnitChange = (type: "US" | "Metric") => {
-    setUnitType(type);
-    // unit switching logic
-  };
+  // const handleUnitChange = (type: "US" | "Metric") => {
+  //   setUnitType(type);
+  //   unit switching logic
+  // };
 
   return (
     <>
