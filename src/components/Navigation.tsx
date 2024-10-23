@@ -113,7 +113,7 @@ export default function Navigation() {
                       theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
                     }`}
                   >
-                    Logout
+                    Logout 
                   </Button>
                 </div>
               </div>

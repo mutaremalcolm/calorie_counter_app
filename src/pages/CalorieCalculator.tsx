@@ -81,13 +81,15 @@ const CalorieCalculator = () => {
     resolver: zodResolver(formSchema),
   });
 
+  // BMR = Basic metabolic rate (the minimum number of calories your body needs to 
+  //       perform basic functions while resting)
   function onSubmit(values: FormValues) {
     const bmr = calculateBMR(values);
     const tdee = bmr * activityLevels[values.activity];
     const results = {
       bmr: Math.round(bmr),
-      tdee: Math.round(tdee),
-      maintenance: Math.round(tdee),
+      tdee: Math.round(tdee), // tdee = total daily energy expendetiture
+       maintenance: Math.round(tdee), 
       weightLoss: Math.round(tdee - 500),
       weightGain: Math.round(tdee + 500)
     };
@@ -152,7 +154,6 @@ const CalorieCalculator = () => {
                   </FormItem>
                 )}
               />
-
               {/* Gender Section */}
               <FormField
                 control={form.control}
@@ -213,7 +214,6 @@ const CalorieCalculator = () => {
                     <FormControl>
                       <Input
                         {...field}
-
                         className="w-20 text-right"
                         onFocus={() => field.onChange()}
                         onChange={(e) => field.onChange(Number(e.target.value))}

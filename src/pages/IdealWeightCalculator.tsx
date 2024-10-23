@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { ChevronDown, Play } from "lucide-react";
-import { idealWeightTitle } from "@/lib/constants";
+
 
 // IBW Calculation using Devine Formula
 const calculateIBW = (gender: "male" | "female", heightCm: number): number => {
@@ -81,49 +81,34 @@ const IdealWeightCalculator = () => {
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
-        <section>
-          {/* Title Section */}
-          {idealWeightTitle.map((info, index) => (
-            <div key={index} className="mt-5 rounded-sm">
-              {info.title && (
-                <h1 className="font-nunito-sans font-extrabold text-white bg-black p-1 mt-4">
-                  {info.title}
-                </h1>
-              )}
-              <div className=" bg-pink-40 p-4 rounded-sm">
-                <p>{info.content}</p>
-              </div>
+      <div className="w-full max-w-md">
+          <div className="mb-6 text-center">
+            <h1 className="text-2xl font-bold mb-2">Ideal Weight Calculator</h1>
+            <div className="flex justify-center bg-black text-white p-2">
+              <ChevronDown className="mr-2" />
+              <span>Modify the values below and click Calculate</span>
             </div>
-          ))}
-          <div className="flex justify-center bg-black text-white">
-            <ChevronDown />
-            <span>
-              Modify the values below and click the Calculate button to use
-            </span>
           </div>
-        </section>
-        {/* Unit Toggle Buttons */}
-        <div className="relative w-full max-w-md">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
-          <button
-              className={`px-4 py-2 rounded ${
+          <div className="flex justify-center mb-4">
+            <button
+              className={`px-4 py-2 rounded-l ${
                 unitType === "Metric" ? "bg-black text-white" : "bg-gray-200"
               }`}
-              onClick={() => setUnitType("Metric")}
             >
               Metric Units
             </button>
             <button
-              className={`px-4 py-2 rounded ${
-                unitType === "US" ? "bg-black text-white" : "bg-transparent"
+              className={`px-4 py-2 rounded-r ${
+                unitType === "US" ? "bg-black text-white" : "bg-gray-200"
               }`}
               onClick={() => setUnitType("US")}
             >
               US Units
             </button>
           </div>
+        </div>
           {/* Input Card */}
-          <Card className="w-full p-4 mt-8">
+          <Card className="p-4">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -131,89 +116,78 @@ const IdealWeightCalculator = () => {
               >
                 {/* Age Field */}
                 <FormField
-                  control={form.control}
-                  name="age"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                        Age
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                          className="w-20 px-2 py-1 text-end"
-                          placeholder="15"
-                          min={15}
-                          max={100}
-                        />
-                      </FormControl>
-                      <FormDescription className="ml-2">
-                        Ages 15 - 100
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                control={form.control}
+                name="age"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormLabel className="w-24">Age</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="w-20 text-right"
+                        value={field.value ?? ""}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription className="ml-2">
+                      years (15-100)
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
                 {/* Gender Field */}
                 <FormField
-                  control={form.control}
-                  name="gender"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="ml-4">Gender</FormLabel>
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center">
+                      <FormLabel className="w-24">Gender:</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          value={field.value}
                           onValueChange={field.onChange}
-                          className="flex flex-row items-center w-full ml-4"
+                          className="flex gap-4"
                         >
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center">
                             <RadioGroupItem value="male" id="male" />
-                            <Label htmlFor="male">Male</Label>
+                            <Label htmlFor="male" className="ml-2">
+                              Male
+                            </Label>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center">
                             <RadioGroupItem value="female" id="female" />
-                            <Label htmlFor="female">Female</Label>
+                            <Label htmlFor="female" className="ml-2">
+                              Female
+                            </Label>
                           </div>
                         </RadioGroup>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
                 {/* Height Field */}
                 <FormField
-                  control={form.control}
-                  name="height"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                        Height
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                          className="w-20 px-2 py-1 text-end"
-                          placeholder="170"
-                          min={100}
-                          max={250}
-                        />
-                      </FormControl>
-                      <FormDescription className="ml-2">
-                        Height 100cm - 250cm
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                control={form.control}
+                name="height"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormLabel className="w-24">Height:</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="w-20 text-right"
+                        onFocus={() => field.onChange()}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormDescription className="ml-2">cm</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
                 <section className="pb-4">
                   <Button type="submit" className="ml-10 bg-black">
                     Calculate
@@ -233,7 +207,6 @@ const IdealWeightCalculator = () => {
               </form>
             </Form>
           </Card>
-        </div>
         {/* Display IBW Result */}
         {ibwResult !== null && (
           <Card className="w-full max-w-md p-6 mt-8 shadow-lg rounded-lg bg-white">
@@ -247,29 +220,6 @@ const IdealWeightCalculator = () => {
                 <p className="text-lg">
                   Based on your inputs, your Ideal Body Weight is:{" "}
                   <strong>{ibwResult} kg</strong>.
-                </p>
-              </div>
-
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-lg font-semibold">What does IBW mean?</h3>
-                <p className="text-sm text-gray-600">
-                  Ideal Body Weight (IBW) is a guide for determining the weight
-                  that is considered optimal for your height, gender, and age.
-                  It provides a baseline for maintaining good health and
-                  avoiding the risks associated with being underweight or
-                  overweight.
-                </p>
-              </div>
-
-              <div className="p-4 bg-purple-100 rounded-md">
-                <h3 className="text-lg font-semibold">
-                  Tips for maintaining your IBW
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Regular exercise and a balanced diet rich in nutrients can
-                  help you achieve and maintain your IBW. Remember that this is
-                  just a guide, and your overall health is determined by various
-                  factors.
                 </p>
               </div>
             </div>
@@ -291,15 +241,6 @@ const IdealWeightCalculator = () => {
               and consult with healthcare professionals for personalized advice.
             </li>
           </ul>
-        </section>
-        {/* Additional Information */}
-        <section>
-          <div className="mt-5 bg-black text-white rounded-sm p-4">
-            The Ideal Weight Calculator can be used to estimate your ideal body
-            weight based on your height and gender. It serves as a general
-            guideline and should be used in conjunction with other health
-            assessments.
-          </div>
         </section>
       </main>
     </>
