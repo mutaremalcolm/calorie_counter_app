@@ -15,20 +15,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, Play } from "lucide-react";
-import { caloriesBurntTitle } from "@/lib/constants";
-import { Link } from "react-router-dom";
-
-// Function to calculate the calorie deficit
-const calculateEnergyBalance = (
-  caloriesConsumed: number,
-  caloriesBurnt: number
-) => {
-  return caloriesConsumed - caloriesBurnt;
-};
+import { calculateEnergyBalance } from "@/lib/calculators";
+import { useNavigate } from "react-router-dom";
 
 const CaloriesBurntCalculator = () => {
   const [unitType, setUnitType] = React.useState("US");
-  const [energyBalance, setEnergyBalance] = React.useState<number | null>(null);
+  const navigate = useNavigate();
 
   // Form schema
   const formSchema = z.object({
@@ -55,202 +47,117 @@ const CaloriesBurntCalculator = () => {
   });
 
   function onSubmit(values: FormValues) {
-    const result = calculateEnergyBalance(
+    const results = calculateEnergyBalance(
       values.caloriesConsumed,
       values.caloriesBurnt
     );
-    setEnergyBalance(result);
-    console.log(values);
+    navigate("/caloriesBurntResults", { state: { results } });
   }
 
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
-        <section>
-          {caloriesBurntTitle.map((info, index) => (
-            <div key={index} className="mt-5 rounded-sm">
-              {info.title && (
-                <h1 className="font-nunito-sans font-extrabold text-white bg-purple-500 p-1 mt-4">
-                  {info.title}
-                </h1>
-              )}
-              <div className=" bg-pink-40 p-4 rounded-sm">
-                <p>{info.content}</p>
-              </div>
+      <main className="flex min-h-screen flex-col items-center justify-center p-6 dark:bg-gray-900 transition-colors duration-200">
+        <div className="w-full max-w-md">
+          <div className="mb-6 text-center">
+            <h1 className="text-2xl font-bold mb-2">
+              Calories Burnt Calculator
+            </h1>
+            <div className="flex justify-center bg-black text-white p-2 dark:bg-gray-800 rounded-lg">
+              <ChevronDown className="mr-2" />
+              <span>Modify the values below and click Calculate</span>
             </div>
-          ))}
-          <div className="flex justify-center bg-purple-500 text-white">
-            <ChevronDown />
-            <span>
-              Modify the values below and click the Calculate button to use
-            </span>
           </div>
-        </section>
-        <div className="relative w-full max-w-md">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
+          <div className="flex justify-center mb-4">
             <button
-              className={`px-4 py-2 rounded ${
-                unitType === "US"
-                  ? "bg-purple-500 text-white"
-                  : "bg-transparent"
-              }`}
-              onClick={() => setUnitType("US")}
-            >
-              US Units
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
+              className={`px-3 md:px-4 py-2 text-sm md:text-base rounded-l transition-colors duration-200 ${
                 unitType === "Metric"
-                  ? "bg-purple-500 text-white"
-                  : "bg-gray-200"
+                  ? "bg-black dark:bg-gray-800 text-white"
+                  : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
               }`}
               onClick={() => setUnitType("Metric")}
             >
               Metric Units
             </button>
-          </div>
-          <Card className="w-full p-4 mt-8">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
-                {/* Calories Consumed Field */}
-                <FormField
-                  control={form.control}
-                  name="caloriesConsumed"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                        Calories Consumed
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="500"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                          className="w-20 px-2 py-1 text-end"
-                        />
-                      </FormControl>
-                      <FormDescription className="ml-2">
-                        Calories 500 - 3500
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Calories Burnt Field */}
-                <FormField
-                  control={form.control}
-                  name="caloriesBurnt"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center">
-                      <FormLabel className="flex-shrink-0 ml-4 mr-2">
-                        Calories Burnt
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="300"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                          className="w-20 px-2 py-1 text-end"
-                        />
-                      </FormControl>
-                      <FormDescription className="ml-2">
-                        Calories 0 - 5000
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <section className="ml-10 underline">+ Settings</section>
-                <section className="pb-4">
-                  <Button type="submit" className="ml-10 bg-purple-500">
-                    Calculate
-                    <Play className="w-4 h-4 ml-2 fill-light" />
-                  </Button>
-                  <Button
-                    type="button"
-                    className="ml-2 bg-purple-500"
-                    onClick={() => {
-                      form.reset();
-                      setEnergyBalance(null);
-                    }}
-                  >
-                    Clear
-                  </Button>
-                </section>
-              </form>
-            </Form>
-          </Card>
-        </div>
-        <section className="ml-2 text-sm bg-pink-50 rounded-sm p-4 mt-4">
-          <ul>
-            <li>
-              <strong>Calories Burnt:</strong> Track the calories you've burned
-              through various activities.
-            </li>
-            <li>
-              <strong>Calories Consumed:</strong> Monitor your daily calorie
-              intake.
-            </li>
-            <li>
-              <strong>Energy Balance:</strong> Understand the balance between
-              calories consumed and burnt.
-            </li>
-          </ul>
-        </section>
-        {/* Related calculators section */}
-        <section className="relative w-full mt-5">
-          <div className="absolute top-0 left-0 p-2 flex space-x-2 z-10 bg-transparent rounded-tl-lg rounded-tr-lg">
             <button
-              className={`px-4 py-2 rounded ${
+              className={`px-3 md:px-4 py-2 text-sm md:text-base rounded-r transition-colors duration-200 ${
                 unitType === "US"
-                  ? "bg-pink-50 text-purple-500"
-                  : "bg-transparent"
+                  ? "bg-black dark:bg-gray-800 text-white"
+                  : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
               }`}
               onClick={() => setUnitType("US")}
             >
-              Related
+              US Units
             </button>
           </div>
-        <section className="flex justify-center bg-pink-50 mt-10 rounded-sm">
-            <Link to="/CalorieCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Calorie Calculator
-              </Button>
-            </Link>
-            <Link to="/IdealWeightCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                Ideal Weight Calculators
-              </Button>
-            </Link>
-            <Link to="/BmiCalculator">
-              <Button className="ml-10 mr-10 mt-2 mb-2 bg-purple-500">
-                BMI Calculator
-              </Button>
-            </Link>
-          </section>
-          </section>
-        <section>
-          <div className="mt-5 bg-pink-50 rounded-sm p-4">
-            {energyBalance !== null && (
-              <p>
-                <strong>Energy Balance:</strong> {energyBalance}
-              </p>
-            )}
-            The Calories Burnt Calculator can be used to estimate the number of
-            calories you burn during various activities. It helps you understand
-            your energy expenditure and manage your weight effectively.
-          </div>
-        </section>
+        </div>
+        <Card className="p-4 md:p-6 w-full max-w-md dark:bg-gray-800 dark:border-gray-700">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Calories Consumed Field */}
+              <FormField
+                control={form.control}
+                name="caloriesConsumed"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-center">
+                    <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                      Calories Consumed
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        className="w-20 px-2 py-1 text-end dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      />
+                    </FormControl>
+                    <FormDescription className="ml-2 dark:text-gray-400">
+                      Calories 500 - 3500
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Calories Burnt Field */}
+              <FormField
+                control={form.control}
+                name="caloriesBurnt"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-center">
+                    <FormLabel className="flex-shrink-0 ml-4 mr-2">
+                      Calories Burnt
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        className="w-20 px-2 py-1 text-end ml-4 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      />
+                    </FormControl>
+                    <FormDescription className="ml-2 dark:text-gray-400">
+                      Calories 0 - 5000
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <section className="pt-2 pb-4 flex flex-col justify-center md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
+                <Button
+                  type="submit"
+                  className="bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
+                >
+                  Calculate
+                  <Play className="w-4 h-4 ml-2 fill-current" />
+                </Button>
+                <Button
+                  type="button"
+                  className="bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
+                  onClick={() => form.reset()}
+                >
+                  Clear
+                </Button>
+              </section>
+            </form>
+          </Form>
+        </Card>
       </main>
     </>
   );

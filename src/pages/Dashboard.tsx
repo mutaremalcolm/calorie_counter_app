@@ -25,13 +25,13 @@ const Dashboard: React.FC = () => {
       <Sidebar />
 
       {/* Main Content */}
-      <section className="flex-1 bg-pink-40 overflow-y-auto">
+      <section className="flex-1 bg-pink-40 overflow-y-auto dark:bg-gray-900 transition-colors duration-200">
         <section className="container mx-auto p-6"> 
           <CaloriesBurnt />
           <CaloriesConsumed />
           <DailyTarget />
           <WeeklyTarget />
-          <ProgressTracker />
+          <ProgressTracker /> 
         </section>
       </section>
     </main>

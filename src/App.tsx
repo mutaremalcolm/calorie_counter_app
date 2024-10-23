@@ -18,6 +18,9 @@ import BmiCalculator from "./pages/BmiCalculator";
 import CaloriesBurntCalculator from "./pages/CaloriesBurntCalculator";
 import IdealWeightCalculator from "./pages/IdealWeightCalculator";
 import Settings from "./pages/Settings";
+import CalorieResults from "./pages/CalorieResults";
+import BmiResults from "./pages/BmiResults";
+import CaloriesBurntResults from "./pages/CaloriesBurntResults";
 
 const App: React.FC = () => {
   return (
@@ -38,6 +41,14 @@ const App: React.FC = () => {
           <Route path="/CaloriesBurntCalculator" element={<CaloriesBurntCalculator/>} />
           <Route path="/IdealWeightCalculator" element={<IdealWeightCalculator/>} />
           <Route path="/settings" element={<Settings/>} />
+          <Route path="/results" element={<CalorieResults />} />
+          <Route path="/bmiresults" element={<BmiResults results={{
+            age: 0,
+            height: 0,
+            weight: 0,
+            bmi: 0
+          }} />} />
+          <Route path="/caloriesBurntResults" element={<CaloriesBurntResults />} />
           <Route
             path="/dashboard"
             element={
