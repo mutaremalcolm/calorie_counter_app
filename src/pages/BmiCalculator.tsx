@@ -15,7 +15,6 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ChevronDown, Play } from "lucide-react";
-import { calculateBMI } from "@/lib/calculators";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -102,6 +101,25 @@ const BmiCalculator = () => {
     },
   });
 
+  const calculateBMI = (
+    age: number,
+    gender: string,
+    height: number,
+    weight: number
+  ) => {
+    // Convert height from cm to meters
+    const heightInMeters = height / 100;
+    // Calculate BMI
+    const bmi = weight / (heightInMeters * heightInMeters);
+    return {
+      bmi: Math.round(bmi * 10) / 10,
+      age,
+      height,
+      weight,
+      gender: gender as 'male' | 'female'
+    };
+  };
+
   function onSubmit(values: FormValues) {
     const results = calculateBMI(
       values.age,
@@ -109,9 +127,10 @@ const BmiCalculator = () => {
       values.height,
       values.weight
     );
-    navigate("/bmiresults", { state: { results } });
+    navigate("/bmiresults", { 
+      state: { results } 
+    });
   }
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-6 bg-white dark:bg-gray-900 transition-colors duration-200">
       <div className="w-full max-w-md">
@@ -246,7 +265,6 @@ const BmiCalculator = () => {
                 </FormItem>
               )}
             />
-
             <section className="pt-2 pb-4 flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
               <Button
                 type="submit"

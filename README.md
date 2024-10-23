@@ -4,7 +4,7 @@
 <!-- HEADING STUFF  -->
 <div align="center">
   <h2>Calorie Counting Application</h2>
-  <h4>Vite Raect Web based application<h4>
+  <h4>Vite React Web based application<h4>
   <h3> 
     <a href='https://calorie-counter-app-git-main-mutaremalcolms-projects.vercel.app/' target='_blank'>
       <h5>live demo ↗</h5>

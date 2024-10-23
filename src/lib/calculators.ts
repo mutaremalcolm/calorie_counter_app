@@ -43,19 +43,7 @@ export const calculateCalories = (
     loseOneKg: Math.round(loseOneKgCalories),
   };
 };
-  export const calculateBMI = (
-    _age: number,
-    _gender: string,
-    height: number,
-    weight: number
-  ) => {
-    // Convert height from cm to meters
-    const heightInMeters = height / 100;
-    // Calculate BMI
-    const bmi = weight / (heightInMeters * heightInMeters);
-    return Math.round(bmi * 10) / 10; // Round to one decimal place
-  };
-
+  
   // Function to calculate the calorie deficit
 export const calculateEnergyBalance = (
   caloriesConsumed: number,

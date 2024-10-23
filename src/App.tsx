@@ -8,11 +8,11 @@ import Home from "../src/pages/Home"
 import Navigation from "./components/Navigation";
 import Signup from "./Auth/Signup";
 import Footer from "./components/Footer";
-import CaloriesBurnt from "./components/CaloriesBurnt";
-import CaloriesConsumed from "./components/CaloriesConsumed";
-import DailyTarget from "./components/DailyTarget";
-import WeeklyTarget from "./components/WeeklyTarget";
-import ProgressTracker from "./components/ProgressTracker";
+import CaloriesBurnt from "./components/Dashboard/CaloriesBurnt";
+import CaloriesConsumed from "./components/Dashboard/CaloriesConsumed";
+import DailyTarget from "./components/Dashboard/DailyTarget";
+import WeeklyTarget from "./components/Dashboard/WeeklyTarget";
+import ProgressTracker from "./components/Dashboard/ProgressTracker";
 import CalorieCalculator from "./pages/CalorieCalculator";
 import BmiCalculator from "./pages/BmiCalculator";
 import CaloriesBurntCalculator from "./pages/CaloriesBurntCalculator";
@@ -42,12 +42,7 @@ const App: React.FC = () => {
           <Route path="/IdealWeightCalculator" element={<IdealWeightCalculator/>} />
           <Route path="/settings" element={<Settings/>} />
           <Route path="/results" element={<CalorieResults />} />
-          <Route path="/bmiresults" element={<BmiResults results={{
-            age: 0,
-            height: 0,
-            weight: 0,
-            bmi: 0
-          }} />} />
+          <Route path="/bmiresults" element={<BmiResults />} />
           <Route path="/caloriesBurntResults" element={<CaloriesBurntResults />} />
           <Route
             path="/dashboard"

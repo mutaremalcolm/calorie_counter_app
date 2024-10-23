@@ -9,11 +9,11 @@ import {
   Title,
 } from 'chart.js';
 import Sidebar from '../components/Sidebar';
-import CaloriesBurnt from '@/components/CaloriesBurnt';
-import CaloriesConsumed from '@/components/CaloriesConsumed';
-import DailyTarget from '@/components/DailyTarget';
-import WeeklyTarget from '@/components/WeeklyTarget';
-import ProgressTracker from '@/components/ProgressTracker';
+import CaloriesBurnt from '@/components/Dashboard/CaloriesBurnt';
+import CaloriesConsumed from '@/components/Dashboard/CaloriesConsumed';
+import DailyTarget from '@/components/Dashboard/DailyTarget';
+import WeeklyTarget from '@/components/Dashboard/WeeklyTarget';
+import ProgressTracker from '@/components/Dashboard/ProgressTracker';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 

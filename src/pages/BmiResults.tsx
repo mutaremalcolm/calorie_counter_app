@@ -1,89 +1,124 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { useLocation } from 'react-router-dom';
-import  { calculateBMI }  from "@/lib/calculators";
+import { useLocation, useNavigate } from 'react-router-dom';
 
-interface BmiResultsProps {
-    results: {
-      age: number;
-      height: number;
-      weight: number;
-      bmi: number;
-    };
-  }
-
-const BmiResults: React.FC<BmiResultsProps> = () => {
-    const location = useLocation();
-    const results = location.state?.results;
-
-    // bug for bmi value breaks here *** investigate
-    if (!results || typeof results.bmi !== 'number') {
-        return <p>No results found. Please go back and submit the form.</p>; 
-    }
-
-    const bmi = calculateBMI(results.age, 'male', results.height, results.weight);
-
-  return (
-    <>
-      <div className="flex flex-col items-center justify-center mb-4">
-        <Card className="w-full max-w-md p-6 mt-8 shadow-lg rounded-lg bg-white">
-            <h2 className="text-2xl font-bold mb-4 text-black">
-              BMI Results
-            </h2>
-            {/* Display the BMI result */}
-            {results !== null && (
-              <div className="p-4 bg-black text-white rounded-md">
-                <h3 className="text-xl font-semibold mb-2">Your BMI</h3>
-                <p className="text-lg">
-                  Based on your inputs, your BMI is:{" "}
-                  <strong>{bmi}</strong>.
-                </p>
-              </div>
-            )}
-            {results !== null && (
-              <div className="mt-4 p-4 bg-black text-white rounded-md">
-                <h3 className="text-lg font-semibold">BMI Interpretation</h3>
-                <p className="text-sm text-gray-600">
-                  {results < 18.5 && "You are considered underweight."}
-                  {results >= 18.5 &&
-                    results < 24.9 &&
-                    "You have a normal weight."}
-                  {results >= 25 &&
-                    results < 29.9 &&
-                    "You are considered overweight."}
-                  {results >= 30 && "You are considered obese."}
-                </p>
-              </div>
-            )}
-            {/* Tips for a healthy BMI */}
-            <div className="mt-4 p-4 bg-black text-white rounded-md">
-              <h3 className="text-lg font-semibold">Tips for a Healthy BMI</h3>
-              <p className="text-sm text-gray-600">
-                Maintaining a healthy BMI involves a balanced diet, regular
-                exercise, and consistent health monitoring. Consider consulting
-                a healthcare provider for personalized advice.
-              </p>
-            </div>
-          </Card>
-        <div className="ml-2 text-sm bg-black text-white rounded-sm p-4 mt-2">
-          <ul>
-            <li>
-              <strong>Healthy BMI Range:</strong> 18.5 kg/m - 25 kg/m
-            </li>
-            <li>
-              <strong>Healthy weight for the weight:</strong> 59.9kg - 81 kg
-            </li>
-            <li>
-              <strong>BMI Prime:</strong> 0.8
-            </li>
-            <li>
-              <strong>Ponderal Index:</strong> 11.1 kg/m
-            </li>
-          </ul>
-        </div>
-        </div>
-    </>
-  )
+interface BMIResults {
+  bmi: number;
+  age: number;
+  height: number;
+  weight: number;
+  gender: 'male' | 'female';
 }
 
-export default BmiResults
+interface LocationState {
+  results: BMIResults;
+}
+
+const getBMICategory = (bmi: number) => {
+  if (bmi < 18.5) return {
+    category: "Underweight",
+    description: "You are considered underweight. Consider consulting with a healthcare provider about achieving a healthy weight.",
+    color: "text-blue-500"
+  };
+  if (bmi < 24.9) return {
+    category: "Normal Weight",
+    description: "You have a healthy weight. Maintain your healthy lifestyle with balanced diet and regular exercise.",
+    color: "text-green-500"
+  };
+  if (bmi < 29.9) return {
+    category: "Overweight",
+    description: "You are considered overweight. Focus on healthy eating habits and regular physical activity.",
+    color: "text-yellow-500"
+  };
+  return {
+    category: "Obese",
+    description: "You are considered obese. It's recommended to consult with healthcare providers about weight management strategies.",
+    color: "text-red-500"
+  };
+};
+
+const calculateHealthyWeightRange = (height: number) => {
+  const minWeight = Math.round((18.5 * (height / 100) ** 2) * 10) / 10;
+  const maxWeight = Math.round((24.9 * (height / 100) ** 2) * 10) / 10;
+  return { minWeight, maxWeight };
+};
+
+const BmiResults: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const state = location.state as LocationState | null;
+
+  if (!state?.results) {
+    // Redirect to calculator if no results are present
+    React.useEffect(() => {
+      navigate('/');
+    }, [navigate]);
+
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-6">
+        <Card className="w-full max-w-md p-6">
+          <h1 className="text-2xl font-bold mb-4">No Results Found</h1>
+          <p>Redirecting to calculator...</p>
+        </Card>
+      </div>
+    );
+  }
+
+  const { results } = state;
+  const bmiCategory = getBMICategory(results.bmi);
+  const { minWeight, maxWeight } = calculateHealthyWeightRange(results.height);
+  const bmiPrime = (results.bmi / 25).toFixed(1);
+  const ponderalIndex = (results.weight / Math.pow(results.height / 100, 3)).toFixed(1);
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center p-6 dark:bg-gray-900">
+      <div className="w-full max-w-md space-y-6">
+        <h1 className="text-2xl font-bold text-center dark:text-white">BMI Results</h1>
+
+        <Card className="p-6 dark:bg-gray-800">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold dark:text-white">{results.bmi.toFixed(1)}</h2>
+            <p className={`text-lg font-semibold ${bmiCategory.color}`}>
+              {bmiCategory.category}
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+              <h3 className="font-semibold mb-2 dark:text-white">Your Measurements</h3>
+              <ul className="space-y-1 text-sm dark:text-gray-300">
+                <li>Height: {results.height} cm</li>
+                <li>Weight: {results.weight} kg</li>
+                <li>Gender: {results.gender}</li>
+                <li>Age: {results.age} years</li>
+              </ul>
+            </div>
+
+            <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+              <h3 className="font-semibold mb-2 dark:text-white">BMI Analysis</h3>
+              <p className="text-sm mb-4 dark:text-gray-300">{bmiCategory.description}</p>
+              <ul className="space-y-2 text-sm dark:text-gray-300">
+                <li><strong>Healthy BMI Range:</strong> 18.5 - 24.9</li>
+                <li><strong>Healthy Weight Range:</strong> {minWeight} - {maxWeight} kg</li>
+                <li><strong>BMI Prime:</strong> {bmiPrime}</li>
+                <li><strong>Ponderal Index:</strong> {ponderalIndex} kg/m³</li>
+              </ul>
+            </div>
+
+            <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+              <h3 className="font-semibold mb-2 dark:text-white">Health Recommendations</h3>
+              <ul className="space-y-2 text-sm dark:text-gray-300">
+                <li>• Maintain a balanced diet rich in nutrients</li>
+                <li>• Engage in regular physical activity</li>
+                <li>• Stay hydrated and get adequate sleep</li>
+                <li>• Consult healthcare providers for personalized advice</li>
+              </ul>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default BmiResults;
