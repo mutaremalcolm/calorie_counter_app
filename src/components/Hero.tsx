@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-between px-6 py-8 gap-8">
+    <div className="flex flex-col lg:flex-row items-center justify-between px-6 py-8 gap-8 dark:bg-gray-900 transition-colors duration-200">
       {/* Image Section */}
       <div className="w-full lg:w-1/2">
         <img

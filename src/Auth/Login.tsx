@@ -55,20 +55,20 @@ const Login: React.FC = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
-      <Card className="w-full max-w-md">
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24  dark:bg-gray-900 transition-colors duration-200">
+      <Card className="w-full max-w-md dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="text-center mb-5 text-purple-500">
+          <CardTitle className="text-center mb-5 text-black dark:text-white">
             Welcome to the Calorie Application
           </CardTitle>
           <section className="text-center mb-5">
-            <CardDescription className="text-black">
+            <CardDescription className="text-black dark:text-white">
               Your tool to help you track and manage your calorie intake, helping you achieve your fitness goals.
             </CardDescription>
           </section>
           <section className="text-center mt-5">
             <CardDescription>
-              <section className="mt-5 text-purple-500 dark:text-white">
+              <section className="mt-5 text-black dark:text-white">
                 Enter your details to log in and access your Dashboard
               </section>
             </CardDescription>
@@ -78,10 +78,10 @@ const Login: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Email Input */}
             <section className="flex flex-col items-center mb-4 w-full">
-              <div className="flex items-center w-full md:w-3/4 bg-gray-100 rounded-md p-2">
-                <Mail className="mr-2 text-purple-500" />
+              <div className="flex items-center w-full md:w-3/4 bg-gray-100 rounded-md p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <Mail className="mr-2 text-black dark:text-white" />
                 <Input
-                  className="w-full border-none bg-transparent outline-none"
+                  className="w-full border-none bg-transparent outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Enter your email"
                   {...register("email")}
                   onKeyDown={() => clearErrors()}
@@ -94,10 +94,10 @@ const Login: React.FC = () => {
 
             {/* Password Input */}
             <section className="flex flex-col items-center mb-4 w-full">
-              <div className="flex items-center w-full md:w-3/4 bg-gray-100 rounded-md p-2">
-                <Lock className="mr-2 text-purple-500" />
+              <div className="flex items-center w-full md:w-3/4 bg-gray-100 rounded-md p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <Lock className="mr-2 text-black dark:text-white" />
                 <Input
-                  className="w-full border-none bg-transparent outline-none"
+                  className="w-full border-none bg-transparent outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   type="password"
                   placeholder="Enter your password"
                   {...register("password")}
@@ -111,7 +111,7 @@ const Login: React.FC = () => {
 
             {/* Submit Button */}
             <section className="flex justify-center mt-6">
-              <Button className="mt-4 text-white bg-purple-600" type="submit">
+              <Button className="mt-4 text-white bg-black" type="submit">
                 Login
               </Button>
             </section>

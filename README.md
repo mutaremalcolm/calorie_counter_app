@@ -28,23 +28,30 @@ I developed the Calorie Counter application to empower individuals seeking bette
 For the tech stack, I chose Vite for its fast build times, NextAuth for seamless authentication, Firebase for reliable data persistence, and ZOD for robust validation.
 <br/>
 
-<!-- -------------------------------------------------------------------------- -->
-<!-- DEMO IMAGES  -->
-<!-- <div align=center>
-<a href='https://thymia-mutaremalcolms-projects.vercel.app/' align=center>
-    <img src="./src/assets/GitHub/mobile-demo.png" alt="Demo-Mobile-View" title="Demo-Image-Mobile" width="170" height="255">    
-    <img src="./src/assets/GitHub/desktop-demo.png" alt="Demo-Desktop-View" title="Demo-Image-Desktop" width="400" height="250"> 
-</a>
-</div>
-<br> -->
+## Features
 
-<!-- -------------------------------------------------------------------------- -->
+- **BMR & TDEE Calculation:** The app uses the Harris-Benedict formula to calculate Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE).
+- **Weight Goal Estimates:** Provides estimates for calorie intake required to maintain, lose, or gain weight.
+- **Activity Levels:** Users can choose from various activity levels (sedentary, lightly active, moderately active, very active).
+- **BMI Calculator:** A built-in BMI calculator to assess whether users are underweight, normal, or overweight.
+- **Ideal Weight Calculator:** Suggests an ideal weight based on user height and other factors.
+- **Responsive Design:** Fully responsive across all screen sizes (mobile, tablet, desktop).
+<br/>
+
+## Technologies
+
+This app uses the following technologies:
+
+- **React:** JavaScript library for building user interfaces.
+- **TypeScript:** Type-safe JavaScript for scalability and better development experience.
+- **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
+- **Vite:** Next-generation build tool that is fast and modern.
+- **Firebase Auth:** For handling user authentication and access.
+- **Shadcn UI:** For creating accessible, customizable components.
+- **LocalStorage API:** To store theme preferences (light/dark mode).
+- **React Router:** For handling in-app navigation.
 
 
-
-<!-- -------------------------------------------------------------------------- -->
-
-<!-- -------------------------------------------------------------------------- -->
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <br/> <br/>
