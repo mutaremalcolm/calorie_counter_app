@@ -226,7 +226,7 @@ const CalorieCalculator = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-20 text-left dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                          className="w-20 text-left text-white dark:bg-gray-700 dark:border-gray-600 "
                           onFocus={() => field.onChange()}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))

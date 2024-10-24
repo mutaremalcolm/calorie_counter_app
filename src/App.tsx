@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import Login from "./Auth/Login";
+import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import Home from "../src/pages/Home"
 import Navigation from "./components/Navigation";
-import Signup from "./Auth/Signup";
+import Signup from "./pages/Auth/Signup";
 import Footer from "./components/Footer";
 import CaloriesBurnt from "./components/Dashboard/CaloriesBurnt";
 import CaloriesConsumed from "./components/Dashboard/CaloriesConsumed";
