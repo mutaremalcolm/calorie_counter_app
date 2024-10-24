@@ -30,8 +30,8 @@ const App: React.FC = () => {
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Signup" element={<Signup />} />
           <Route path="/CaloriesBurnt" element={<CaloriesBurnt />} />
           <Route path="/CaloriesConsumed" element={<CaloriesConsumed />} />
           <Route path="/DailyTarget" element={<DailyTarget />} />
@@ -41,13 +41,13 @@ const App: React.FC = () => {
           <Route path="/BmiCalculator" element={<BmiCalculator/>} />
           <Route path="/CaloriesBurntCalculator" element={<CaloriesBurntCalculator/>} />
           <Route path="/IdealWeightCalculator" element={<IdealWeightCalculator/>} />
-          <Route path="/settings" element={<Settings/>} />
-          <Route path="/results" element={<CalorieResults />} />
-          <Route path="/bmiresults" element={<BmiResults />} />
-          <Route path="/caloriesBurntResults" element={<CaloriesBurntResults />} />
+          <Route path="/Settings" element={<Settings/>} />
+          <Route path="/Results" element={<CalorieResults />} />
+          <Route path="/Bmiresults" element={<BmiResults />} />
+          <Route path="/CaloriesBurntResults" element={<CaloriesBurntResults />} />
           <Route path="/IdealWeightResults" element={<IdealWeightResults />} />
           <Route
-            path="/dashboard"
+            path="/Dashboard"
             element={
               <PrivateRoute>
                 <Dashboard />
