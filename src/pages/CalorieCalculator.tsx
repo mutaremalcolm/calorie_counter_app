@@ -95,6 +95,7 @@ const CalorieCalculator = () => {
     navigate("/results", { state: { results } });
   }
 
+  // Function to calculate Calories needed (BMR)[using Harris-Benedict formula]
   const calculateBMR = (values: FormValues) => {
     const { age, gender, height, weight } = values;
     if (gender === "male") {
@@ -240,7 +241,6 @@ const CalorieCalculator = () => {
                   </FormItem>
                 )}
               />
-
               {/* Weight Input */}
               <FormField
                 control={form.control}
@@ -263,7 +263,6 @@ const CalorieCalculator = () => {
                   </FormItem>
                 )}
               />
-
               {/* Activity Level */}
               <FormField
                 control={form.control}
@@ -301,7 +300,6 @@ const CalorieCalculator = () => {
                   </FormItem>
                 )}
               />
-
               {/* Buttons */}
               <section className="pt-2 pb-4 flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
                 <Button

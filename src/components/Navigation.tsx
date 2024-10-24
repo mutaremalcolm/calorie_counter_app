@@ -12,24 +12,29 @@ import { useEffect, useState } from "react";
 import Logo from "../assets/logo.png";
 
 export default function Navigation() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState<string | null>(null); // Initially set to null to detect first load
   const { currentUser, logout } = useAuth();
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.add(savedTheme);
-    }
+    const savedTheme = localStorage.getItem("theme") || 
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    
+    setTheme(savedTheme);
+    document.documentElement.classList.add(savedTheme);
   }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.remove(theme);
+    document.documentElement.classList.remove(theme!);
     document.documentElement.classList.add(newTheme);
   };
+
+  if (!theme) {
+    // If theme is not loaded, prevent component from rendering
+    return null;
+  }
 
   return (
     <header className={`sticky top-0 z-50 w-full border-b ${
