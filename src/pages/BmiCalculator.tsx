@@ -25,7 +25,7 @@ interface ThemeProviderProps {
 
 // Create theme context
 const ThemeContext = createContext({
-  theme: 'light',
+  theme: "light",
   toggleTheme: () => {},
 });
 
@@ -33,20 +33,22 @@ const ThemeContext = createContext({
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState(() => {
     // Check for saved theme preference or system preference
-    const saved = localStorage.getItem('theme');
+    const saved = localStorage.getItem("theme");
     if (saved) return saved;
-    
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   });
 
   useEffect(() => {
     // Update document class and localStorage when theme changes
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    localStorage.setItem('theme', theme);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   return (
@@ -116,7 +118,7 @@ const BmiCalculator = () => {
       age,
       height,
       weight,
-      gender: gender as 'male' | 'female'
+      gender: gender as "male" | "female",
     };
   };
 
@@ -127,20 +129,24 @@ const BmiCalculator = () => {
       values.height,
       values.weight
     );
-    navigate("/bmiresults", { 
-      state: { results } 
+    navigate("/bmiresults", {
+      state: { results },
     });
   }
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-6 bg-white dark:bg-gray-900 transition-colors duration-200">
       <div className="w-full max-w-md">
-        <div className="mb-6 text-center">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-xl md:text-2xl font-bold dark:text-white">BMI Calculator</h1>
+        <div className="mb-6">
+          <div className="flex justify-center items-center mb-4">
+            <h1 className="text-xl md:text-2xl font-bold dark:text-white">
+              BMI Calculator
+            </h1>
           </div>
           <div className="flex justify-center bg-black dark:bg-gray-800 text-white p-2 rounded-lg">
             <ChevronDown className="mr-2 h-5 w-5" />
-            <span className="text-sm md:text-base">Modify the values below and click Calculate</span>
+            <span className="text-sm md:text-base">
+              Modify the values below and click Calculate
+            </span>
           </div>
         </div>
 
@@ -176,7 +182,9 @@ const BmiCalculator = () => {
               name="age"
               render={({ field }) => (
                 <FormItem className="flex flex-col md:flex-row md:items-center">
-                  <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">Age</FormLabel>
+                  <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">
+                    Age
+                  </FormLabel>
                   <div className="flex items-center">
                     <FormControl>
                       <Input
@@ -186,7 +194,9 @@ const BmiCalculator = () => {
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
-                    <FormDescription className="ml-2 dark:text-gray-400">years (15-100)</FormDescription>
+                    <FormDescription className="ml-2 dark:text-gray-400">
+                      years (15-100)
+                    </FormDescription>
                   </div>
                   <FormMessage className="mt-1 md:ml-2" />
                 </FormItem>
@@ -199,19 +209,39 @@ const BmiCalculator = () => {
               render={({ field }) => (
                 <FormItem>
                   <div className="flex flex-col md:flex-row md:items-center">
-                    <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">Gender:</FormLabel>
+                    <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">
+                      Gender:
+                    </FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
                         className="flex gap-4"
                       >
                         <div className="flex items-center">
-                          <RadioGroupItem value="male" id="male" className="dark:border-gray-600" />
-                          <Label htmlFor="male" className="ml-2 dark:text-white">Male</Label>
+                          <RadioGroupItem
+                            value="male"
+                            id="male"
+                            className="dark:border-gray-600"
+                          />
+                          <Label
+                            htmlFor="male"
+                            className="ml-2 dark:text-white"
+                          >
+                            Male
+                          </Label>
                         </div>
                         <div className="flex items-center">
-                          <RadioGroupItem value="female" id="female" className="dark:border-gray-600" />
-                          <Label htmlFor="female" className="ml-2 dark:text-white">Female</Label>
+                          <RadioGroupItem
+                            value="female"
+                            id="female"
+                            className="dark:border-gray-600"
+                          />
+                          <Label
+                            htmlFor="female"
+                            className="ml-2 dark:text-white"
+                          >
+                            Female
+                          </Label>
                         </div>
                       </RadioGroup>
                     </FormControl>
@@ -227,7 +257,9 @@ const BmiCalculator = () => {
               name="height"
               render={({ field }) => (
                 <FormItem className="flex flex-col md:flex-row md:items-center">
-                  <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">Height:</FormLabel>
+                  <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">
+                    Height:
+                  </FormLabel>
                   <div className="flex items-center">
                     <FormControl>
                       <Input
@@ -237,7 +269,9 @@ const BmiCalculator = () => {
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
-                    <FormDescription className="ml-2 dark:text-gray-400">cm</FormDescription>
+                    <FormDescription className="ml-2 dark:text-gray-400">
+                      cm
+                    </FormDescription>
                   </div>
                   <FormMessage className="mt-1 md:ml-2" />
                 </FormItem>
@@ -249,7 +283,9 @@ const BmiCalculator = () => {
               name="weight"
               render={({ field }) => (
                 <FormItem className="flex flex-col md:flex-row md:items-center">
-                  <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">Weight:</FormLabel>
+                  <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">
+                    Weight:
+                  </FormLabel>
                   <div className="flex items-center">
                     <FormControl>
                       <Input
@@ -259,7 +295,9 @@ const BmiCalculator = () => {
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
-                    <FormDescription className="ml-2 dark:text-gray-400">kg</FormDescription>
+                    <FormDescription className="ml-2 dark:text-gray-400">
+                      kg
+                    </FormDescription>
                   </div>
                   <FormMessage className="mt-1 md:ml-2" />
                 </FormItem>

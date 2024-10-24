@@ -15,7 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, Play } from "lucide-react";
-import { calculateEnergyBalance } from "@/lib/calculators";
 import { useNavigate } from "react-router-dom";
 
 const CaloriesBurntCalculator = () => {
@@ -42,18 +41,27 @@ const CaloriesBurntCalculator = () => {
 
   type FormValues = z.infer<typeof formSchema>;
 
+  // Initialize form with empty string default values
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      caloriesConsumed: undefined,
+      caloriesBurnt: undefined
+    }
   });
 
-  function onSubmit(values: FormValues) {
-    const results = calculateEnergyBalance(
-      values.caloriesConsumed,
-      values.caloriesBurnt
-    );
-    navigate("/caloriesBurntResults", { state: { results } });
-  }
-
+  const onSubmit = (values: FormValues) => {
+    const energyBalance = values.caloriesConsumed - values.caloriesBurnt;
+    
+    navigate("/caloriesBurntResults", {
+      state: {
+        caloriesConsumed: values.caloriesConsumed,
+        caloriesBurnt: values.caloriesBurnt,
+        energyBalance: energyBalance
+      }
+    });
+  };
+ 
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center p-6 dark:bg-gray-900 transition-colors duration-200">
@@ -97,7 +105,7 @@ const CaloriesBurntCalculator = () => {
               <FormField
                 control={form.control}
                 name="caloriesConsumed"
-                render={({ field }) => (
+                render={({ field: { onChange, ...field } }) => (
                   <FormItem className="flex items-center justify-center">
                     <FormLabel className="flex-shrink-0 ml-4 mr-2">
                       Calories Consumed
@@ -105,7 +113,10 @@ const CaloriesBurntCalculator = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          onChange(value === '' ? undefined : parseFloat(value));
+                        }}
                         className="w-20 px-2 py-1 text-end dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       />
                     </FormControl>
@@ -120,7 +131,7 @@ const CaloriesBurntCalculator = () => {
               <FormField
                 control={form.control}
                 name="caloriesBurnt"
-                render={({ field }) => (
+                render={({ field: { onChange, ...field } }) => (
                   <FormItem className="flex items-center justify-center">
                     <FormLabel className="flex-shrink-0 ml-4 mr-2">
                       Calories Burnt
@@ -128,7 +139,10 @@ const CaloriesBurntCalculator = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          onChange(value === '' ? undefined : parseFloat(value));
+                        }}
                         className="w-20 px-2 py-1 text-end ml-4 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       />
                     </FormControl>

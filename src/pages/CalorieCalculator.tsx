@@ -95,7 +95,7 @@ const CalorieCalculator = () => {
     navigate("/results", { state: { results } });
   }
 
-  // Function to calculate Calories needed (BMR)
+  // Function to calculate Calories needed (BMR)[using Harris-Benedict formula]
   const calculateBMR = (values: FormValues) => {
     const { age, gender, height, weight } = values;
     if (gender === "male") {

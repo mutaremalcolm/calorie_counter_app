@@ -21,6 +21,7 @@ import Settings from "./pages/Settings";
 import CalorieResults from "./pages/CalorieResults";
 import BmiResults from "./pages/BmiResults";
 import CaloriesBurntResults from "./pages/CaloriesBurntResults";
+import IdealWeightResults from "./pages/IdealWeightResults";
 
 const App: React.FC = () => {
   return (
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           <Route path="/results" element={<CalorieResults />} />
           <Route path="/bmiresults" element={<BmiResults />} />
           <Route path="/caloriesBurntResults" element={<CaloriesBurntResults />} />
+          <Route path="/IdealWeightResults" element={<IdealWeightResults />} />
           <Route
             path="/dashboard"
             element={
