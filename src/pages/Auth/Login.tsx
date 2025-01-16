@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, } from "firebase/auth";
+import { useFirebaseAuth } from "@/lib/firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Github } from "lucide-react";
 import {
@@ -18,6 +19,7 @@ interface AuthError {
 }
 
 const Login: React.FC = () => {
+  const { signInWithGoogle, signInWithGithub } = useFirebaseAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -68,17 +70,17 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSocialLogin = async (provider: GoogleAuthProvider | GithubAuthProvider) => {
-    try {
-      await signInWithPopup(auth, provider);
-      navigate("/dashboard");
-    } catch (error) {
-      handleAuthError(error as AuthError);
-    }
-  };
+  // const handleSocialLogin = async (provider: GoogleAuthProvider | GithubAuthProvider) => {
+  //   try {
+  //     await signInWithPopup(auth, provider);
+  //     navigate("/dashboard");
+  //   } catch (error) {
+  //     handleAuthError(error as AuthError);
+  //   }
+  // };
 
-  const handleGoogleLogin = () => handleSocialLogin(new GoogleAuthProvider());
-  const handleGithubLogin = () => handleSocialLogin(new GithubAuthProvider());
+  // const handleGoogleLogin = () => handleSocialLogin(new GoogleAuthProvider());
+  // const handleGithubLogin = () => handleSocialLogin(new GithubAuthProvider());
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24 dark:bg-gray-900 transition-colors duration-200">
@@ -99,7 +101,7 @@ const Login: React.FC = () => {
               type="button"
               variant="outline"
               className="w-full flex items-center justify-center gap-2"
-              onClick={handleGoogleLogin}
+              onClick={signInWithGoogle}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -126,7 +128,7 @@ const Login: React.FC = () => {
               type="button"
               variant="outline"
               className="w-full flex items-center justify-center gap-2"
-              onClick={handleGithubLogin}
+              onClick={signInWithGithub}
             >
               <Github className="w-5 h-5" />
               Continue with GitHub

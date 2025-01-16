@@ -99,7 +99,7 @@ const BmiCalculator = () => {
       age: undefined,
       gender: undefined,
       height: undefined,
-      weight: undefined,
+      weight: undefined, 
     },
   });
 
