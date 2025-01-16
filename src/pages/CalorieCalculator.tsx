@@ -154,7 +154,7 @@ const CalorieCalculator = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        className="w-20 text-right dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        className="w-20 text-left dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         onFocus={() => field.onChange()}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
@@ -226,7 +226,7 @@ const CalorieCalculator = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-20 text-right dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                          className="w-20 text-left text-white dark:bg-gray-700 dark:border-gray-600 "
                           onFocus={() => field.onChange()}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
@@ -251,7 +251,7 @@ const CalorieCalculator = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        className="w-20 text-right dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        className="w-20 text-left dark:bg-gray-700 text-white dark:border-gray-600 "
                         onFocus={() => field.onChange()}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
@@ -304,14 +304,14 @@ const CalorieCalculator = () => {
               <section className="pt-2 pb-4 flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
                 <Button
                   type="submit"
-                  className="bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
+                  className="bg-black dark:bg-gray-700 text-white hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
                 >
                   Calculate
                   <Play className="w-4 h-4 ml-2 fill-current" />
                 </Button>
                 <Button
                   type="button"
-                  className="bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
+                  className="bg-black dark:bg-gray-700 text-white hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
                   onClick={() => form.reset()}
                 >
                   Clear

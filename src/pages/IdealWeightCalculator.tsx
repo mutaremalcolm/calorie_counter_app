@@ -66,7 +66,7 @@ const IdealWeightCalculator = () => {
       gender: undefined,
       height: undefined,
     },
-    mode: "onChange",
+    mode: "onSubmit",
   });
 
   function onSubmit(values: FormValues) {
@@ -133,11 +133,11 @@ const IdealWeightCalculator = () => {
                   <FormLabel className="w-24">Age</FormLabel>
                   <FormControl>
                     <Input
-                      className="w-20 text-right dark:bg-gray-800 dark:border-gray-700"
+                      className="w-20 text-left dark:bg-gray-800 dark:border-gray-700"
                       {...field}
                       onChange={(e) => {
-                        const value = e.target.value ? Number(e.target.value) : undefined;
-                        field.onChange(value);
+                      const value = e.target.value ? Number(e.target.value) : undefined;
+                      field.onChange(value);
                       }}
                       value={field.value ?? ""}
                     />
@@ -185,7 +185,7 @@ const IdealWeightCalculator = () => {
                   <FormLabel className="w-24">Height</FormLabel>
                   <FormControl>
                     <Input
-                      className="w-20 text-right dark:bg-gray-800 dark:border-gray-700"
+                      className="w-20 text-left dark:bg-gray-800 dark:border-gray-700"
                       {...field}
                       onChange={(e) => {
                         const value = e.target.value ? Number(e.target.value) : undefined;
@@ -203,14 +203,14 @@ const IdealWeightCalculator = () => {
             <section className="pt-2 pb-4 flex flex-col justify-center md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
               <Button
                 type="submit"
-                className="bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="bg-black dark:bg-gray-700 text-white hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
               >
                 Calculate
                 <Play className="w-4 h-4 ml-2 fill-current" />
               </Button>
               <Button
                 type="button"
-                className="bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="bg-black dark:bg-gray-700 text-white hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
                 onClick={() => form.reset()}
               >
                 Clear

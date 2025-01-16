@@ -39,7 +39,7 @@ const Hero = () => {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              to="/login/"
+              to="/Login/"
               className="inline-flex items-center justify-center px-6 py-3 text-base font-medium 
                        bg-gray-900 text-white rounded-lg hover:bg-gray-800
                        dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100
@@ -48,7 +48,7 @@ const Hero = () => {
               Log In
             </Link>
             <Link
-              to="/signup/"
+              to="/Signup/"
               className="inline-flex items-center justify-center px-6 py-3 text-base font-medium
                        border-2 border-gray-900 text-gray-900 rounded-lg
                        hover:bg-gray-900 hover:text-white

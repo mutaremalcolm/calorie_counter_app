@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import Logo from "../assets/logo.png";
 
 export default function Navigation() {
-  const [theme, setTheme] = useState<string | null>(null); // Initially set to null to detect first load
+  const [theme, setTheme] = useState<string | null>(null); 
   const { currentUser, logout } = useAuth();
 
   useEffect(() => {
@@ -49,21 +49,19 @@ export default function Navigation() {
           >
             <img src={Logo} alt="logo" className="h-12 w-auto" />
           </Link>
-
           {/* Navigation Links and Auth Section */}
           <div className="flex items-center space-x-8">
             {currentUser ? (
               <div className="flex items-center space-x-6">
                 {/* Protected Links */}
                 <Link 
-                  to="/dashboard" 
+                  to="/Dashboard" 
                   className={`text-sm font-medium transition-colors hover:text-primary ${
                     theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
                   }`}
                 >
                   Dashboard
-                </Link>
-                
+                </Link>   
                 <Link 
                   to="/CalorieCalculator"
                   className={`text-sm font-medium transition-colors hover:text-primary ${
@@ -72,7 +70,6 @@ export default function Navigation() {
                 >
                   Calorie Calculator
                 </Link>
-
                 <DropdownMenu>
                   <DropdownMenuTrigger className={`text-sm font-medium transition-colors ${
                     theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
@@ -95,7 +92,6 @@ export default function Navigation() {
                     </Link>
                   </DropdownMenuContent>
                 </DropdownMenu>
-
                 {/* User Profile Section */}
                 <div className="flex items-center space-x-4">
                   {currentUser.photoURL ? (
@@ -125,14 +121,14 @@ export default function Navigation() {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link 
-                  to="/login"
+                  to="/Login"
                   className={`text-sm font-medium transition-colors ${
                     theme === "light" ? "text-gray-700 hover:text-black" : "text-gray-300 hover:text-white"
                   }`}
                 >
-                  Sign in
+                  Log in
                 </Link>
-                <Link to="/signup">
+                <Link to="/Signup">
                   <Button className="bg-black text-white hover:bg-gray-800">
                     Sign Up
                   </Button>

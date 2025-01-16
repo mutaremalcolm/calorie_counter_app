@@ -99,7 +99,7 @@ const BmiCalculator = () => {
       age: undefined,
       gender: undefined,
       height: undefined,
-      weight: undefined,
+      weight: undefined, 
     },
   });
 
@@ -189,7 +189,7 @@ const BmiCalculator = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        className="w-20 text-right dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        className="w-20 text-left dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         value={field.value ?? ""}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
@@ -257,14 +257,14 @@ const BmiCalculator = () => {
               name="height"
               render={({ field }) => (
                 <FormItem className="flex flex-col md:flex-row md:items-center">
-                  <FormLabel className="w-24 mb-2 md:mb-0 dark:text-white">
+                  <FormLabel className="w-24 mb-2 md:mb-0 text-white">
                     Height:
                   </FormLabel>
                   <div className="flex items-center">
                     <FormControl>
                       <Input
                         {...field}
-                        className="w-20 text-right dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        className="w-20 text-left dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         onFocus={() => field.onChange()}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
@@ -290,7 +290,7 @@ const BmiCalculator = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        className="w-20 text-right dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        className="w-20 text-left dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         onFocus={() => field.onChange()}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
@@ -306,14 +306,14 @@ const BmiCalculator = () => {
             <section className="pt-2 pb-4 flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
               <Button
                 type="submit"
-                className="bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="bg-black dark:bg-gray-700 text-white hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
               >
                 Calculate
                 <Play className="w-4 h-4 ml-2 fill-current" />
               </Button>
               <Button
                 type="button"
-                className="bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="bg-black dark:bg-gray-700 text-white hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
                 onClick={() => form.reset()}
               >
                 Clear

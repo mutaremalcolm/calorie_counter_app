@@ -17,7 +17,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 export const description = "A donut chart with text"
 
@@ -62,6 +62,7 @@ const CaloriesBurnt: React.FC = () => {
   }, [])
 
   return (
+    <>
     <Card className="flex flex-col dark:bg-gray-800 dark:border-gray-700">
       <CardHeader className="items-center pb-0">
         <CardTitle className="text-black dark:text-white">Calories Burned</CardTitle>
@@ -126,6 +127,7 @@ const CaloriesBurnt: React.FC = () => {
         </div>
       </CardFooter>
     </Card>
+    </>
   )
 }
 
